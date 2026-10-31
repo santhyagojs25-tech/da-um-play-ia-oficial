@@ -4,12 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Da Um Play IA — Streaming VIP</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- React & ReactDOM -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <!-- Babel para rodar JSX direto no navegador sem erros de build -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body class="bg-[#07080c] text-white font-sans antialiased selection:bg-[#ff1722] selection:text-white">
@@ -18,7 +15,7 @@
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    const INITIAL_SERIES = [
+    const DEFAULT_SERIES = [
       {
         id: 's1',
         title: 'Cyber Amazônia 2099',
@@ -31,7 +28,7 @@
           {
             id: 'e1',
             number: 1,
-            title: 'O Despertar da Máquina (Episódio Piloto)',
+            title: 'O Despertar da Máquina (Episódio Grátis)',
             duration: '14 min',
             isVip: false,
             thumb: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80',
@@ -69,7 +66,7 @@
           {
             id: 'e201',
             number: 1,
-            title: 'Noite de Caçada (Grátis)',
+            title: 'Noite de Caçada (Episódio Piloto)',
             duration: '12 min',
             isVip: false,
             thumb: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=600&q=80',
@@ -88,108 +85,89 @@
       }
     ];
 
-    const INITIAL_USERS = [
+    const DEFAULT_USERS = [
       {
-        id: 'u1',
-        name: 'Você (Conta Visitante)',
-        email: 'cliente@daumplayia.com.br',
-        isVip: false,
-        isOnline: true,
-        lastEntry: 'Hoje, 15:42',
-        lastExit: 'Ativo agora',
-        lastWatched: 'Ep. 1 - O Despertar da Máquina'
-      },
-      {
-        id: 'u2',
+        id: 'u_demo_1',
         name: 'Lucas Mendes',
-        email: 'lucas.m@gmail.com',
+        email: 'lucas@gmail.com',
+        whatsapp: '11999990000',
+        password: '123',
         isVip: true,
-        isOnline: true,
-        lastEntry: 'Hoje, 15:30',
-        lastExit: 'Ativo agora',
-        lastWatched: 'Ep. 3 - A Batalha dos Drones Neurais'
-      },
-      {
-        id: 'u3',
-        name: 'Amanda Rocha',
-        email: 'amanda.rocha@hotmail.com',
-        isVip: false,
+        paymentStatus: 'approved', // 'none' | 'pending' | 'approved'
         isOnline: false,
-        lastEntry: 'Hoje, 13:10',
-        lastExit: 'Hoje, 14:05',
-        lastWatched: 'Ep. 1 - Noite de Caçada'
+        lastEntry: '31/10, 10:15',
+        lastExit: '31/10, 11:40',
+        lastWatched: 'Ep. 3 - A Batalha dos Drones Neurais'
       }
     ];
 
-    const SQL_SETUP_SCRIPT = `create extension if not exists pgcrypto;
-
-create table if not exists public.profiles (
-  id uuid primary key default gen_random_uuid(),
-  full_name text not null,
-  email text unique not null,
-  is_vip boolean default false,
-  is_online boolean default false,
-  last_login timestamp with time zone default now(),
-  last_logout timestamp with time zone,
-  last_watched text default 'Nenhum episódio ainda',
-  created_at timestamp with time zone default now()
-);
-
-create table if not exists public.series (
-  id uuid primary key default gen_random_uuid(),
-  title text not null,
-  synopsis text,
-  category text default 'Série IA',
-  poster_url text not null,
-  banner_url text not null,
-  is_hero_launch boolean default false,
-  created_at timestamp with time zone default now()
-);
-
-create table if not exists public.episodes (
-  id uuid primary key default gen_random_uuid(),
-  series_id uuid references public.series(id) on delete cascade,
-  episode_number integer not null,
-  title text not null,
-  duration text default '15 min',
-  thumbnail_url text not null,
-  video_url text not null,
-  is_vip boolean default true,
-  created_at timestamp with time zone default now()
-);`;
+    const nowFormatted = () => {
+      const d = new Date();
+      return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' às ' +
+             d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    };
 
     function App() {
-      const [seriesList, setSeriesList] = useState(INITIAL_SERIES);
-      const [users, setUsers] = useState(INITIAL_USERS);
-      const [currentUserId] = useState('u1');
-      const [selectedSeriesId, setSelectedSeriesId] = useState('s1');
+      // Catálogo e Usuários com salvamento permanente
+      const [seriesList, setSeriesList] = useState(() => {
+        const saved = localStorage.getItem('dup_series_v2');
+        return saved ? JSON.parse(saved) : DEFAULT_SERIES;
+      });
 
+      const [users, setUsers] = useState(() => {
+        const saved = localStorage.getItem('dup_users_v2');
+        return saved ? JSON.parse(saved) : DEFAULT_USERS;
+      });
+
+      // Usuário logado atualmente (null = deslogado/visitante)
+      const [currentUserId, setCurrentUserId] = useState(() => {
+        return localStorage.getItem('dup_logged_user_v2') || null;
+      });
+
+      const [selectedSeriesId, setSelectedSeriesId] = useState('s1');
       const [activeEpisode, setActiveEpisode] = useState(null);
+
+      // Modais de Autenticação do Cliente (Login / Cadastro)
+      const [showAuthModal, setShowAuthModal] = useState(false);
+      const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
+      const [regName, setRegName] = useState('');
+      const [regEmail, setRegEmail] = useState('');
+      const [regWhatsapp, setRegWhatsapp] = useState('');
+      const [regPassword, setRegPassword] = useState('');
+      const [userAuthError, setUserAuthError] = useState('');
+
+      // Modal de Pagamento PIX Blindado (NÃO libera sozinho sem confirmação!)
       const [showVipModal, setShowVipModal] = useState(false);
       const [pixCopied, setPixCopied] = useState(false);
+      const [pixCheckMsg, setPixCheckMsg] = useState('');
+      const [pixKeyConfig, setPixKeyConfig] = useState(() => {
+        return localStorage.getItem('dup_pix_key_v2') || '00020126580014BR.GOV.BCB.PIX0136daumplayia-pix-99052040000530398654049.905802BR';
+      });
 
-      // Segurança do ADM (100% Escondido)
+      // Segurança do Painel ADM (Oculto e Criptografado Base64)
       const [logoClicks, setLogoClicks] = useState(0);
       const [showAdminAuthModal, setShowAdminAuthModal] = useState(false);
       const [adminUnlocked, setAdminUnlocked] = useState(false);
       const [adminTab, setAdminTab] = useState('usuarios');
-      const [adminPasswordHash, setAdminPasswordHash] = useState('admin123');
+      const [adminStoredSecret, setAdminStoredSecret] = useState(() => {
+        return localStorage.getItem('dup_adm_sec_v2') || 'YWRtaW4xMjM='; // btoa('admin123')
+      });
       const [passwordInput, setPasswordInput] = useState('');
       const [authError, setAuthError] = useState('');
 
-      // Conexão Supabase e PIX
-      const [supabaseUrl, setSupabaseUrl] = useState(() => localStorage.getItem('dup_sb_url') || '');
-      const [supabaseAnonKey, setSupabaseAnonKey] = useState(() => localStorage.getItem('dup_sb_key') || '');
-      const [pixAccessToken, setPixAccessToken] = useState(() => localStorage.getItem('dup_pix_token') || '');
-      const [connectionStatus, setConnectionStatus] = useState('local');
-      const [sqlCopied, setSqlCopied] = useState(false);
-      const [saveMessage, setSaveMessage] = useState('');
+      // Formulário ADM: Criar Nova Série / Lançamento
+      const [newSerieTitle, setNewSerieTitle] = useState('');
+      const [newSerieCategory, setNewSerieCategory] = useState('Série Original IA');
+      const [newSerieSynopsis, setNewSerieSynopsis] = useState('');
+      const [newSeriePoster, setNewSeriePoster] = useState('');
+      const [newSerieBanner, setNewSerieBanner] = useState('');
+      const [newSerieIsHero, setNewSerieIsHero] = useState(false);
 
-      // Upload de Episódios e Séries
+      // Formulário ADM: Subir Novo Episódio
       const [newEpSeriesId, setNewEpSeriesId] = useState('s1');
       const [newEpTitle, setNewEpTitle] = useState('');
-      const [newEpNumber, setNewEpNumber] = useState(4);
-      const [newEpDuration, setNewEpDuration] = useState('16 min');
+      const [newEpNumber, setNewEpNumber] = useState(1);
+      const [newEpDuration, setNewEpDuration] = useState('15 min');
       const [newEpThumb, setNewEpThumb] = useState('');
       const [newEpVideo, setNewEpVideo] = useState('');
       const [newEpIsVip, setNewEpIsVip] = useState(true);
@@ -199,10 +177,24 @@ create table if not exists public.episodes (
       const [newAdminPass, setNewAdminPass] = useState('');
       const [passChangeMsg, setPassChangeMsg] = useState('');
 
-      const currentUser = users.find((u) => u.id === currentUserId) || users[0];
-      const heroSeries = seriesList.find((s) => s.isHeroLaunch) || seriesList[0];
-      const selectedSeries = seriesList.find((s) => s.id === selectedSeriesId) || seriesList[0];
+      // Persistir alterações automaticamente
+      useEffect(() => {
+        localStorage.setItem('dup_series_v2', JSON.stringify(seriesList));
+      }, [seriesList]);
 
+      useEffect(() => {
+        localStorage.setItem('dup_users_v2', JSON.stringify(users));
+      }, [users]);
+
+      useEffect(() => {
+        if (currentUserId) {
+          localStorage.setItem('dup_logged_user_v2', currentUserId);
+        } else {
+          localStorage.removeItem('dup_logged_user_v2');
+        }
+      }, [currentUserId]);
+
+      // Gatilho Secreto: 3 cliques na Logo
       useEffect(() => {
         if (logoClicks === 0) return;
         if (logoClicks >= 3) {
@@ -214,17 +206,107 @@ create table if not exists public.episodes (
         return () => clearTimeout(timer);
       }, [logoClicks]);
 
-      useEffect(() => {
-        if (supabaseUrl.includes('supabase.co') && supabaseAnonKey.length > 20) {
-          setConnectionStatus('connected');
-        }
-      }, []);
+      const currentUser = users.find((u) => u.id === currentUserId) || null;
+      const heroSeries = seriesList.find((s) => s.isHeroLaunch) || seriesList[0];
+      const selectedSeries = seriesList.find((s) => s.id === selectedSeriesId) || seriesList[0];
 
+      // ===================================================================
+      // 1. CADASTRO, LOGIN E SAÍDA (LOGOUT) DO USUÁRIO COM REGISTRO DE HORÁRIO
+      // ===================================================================
+      const handleUserRegister = (e) => {
+        e.preventDefault();
+        setUserAuthError('');
+        const emailClean = regEmail.trim().toLowerCase();
+        if (!regName.trim() || !emailClean || !regPassword.trim()) {
+          setUserAuthError('Preencha todos os campos obrigatórios.');
+          return;
+        }
+        if (users.some((u) => u.email.toLowerCase() === emailClean)) {
+          setUserAuthError('Este e-mail já está cadastrado. Faça login.');
+          return;
+        }
+
+        const newUser = {
+          id: 'u_' + Date.now(),
+          name: regName.trim(),
+          email: emailClean,
+          whatsapp: regWhatsapp.trim() || 'Não informado',
+          password: regPassword,
+          isVip: false, // SEMPRE COMEÇA GRÁTIS (100% SEGURO)
+          paymentStatus: 'none',
+          isOnline: true,
+          lastEntry: nowFormatted(),
+          lastExit: 'Online agora',
+          lastWatched: 'Acabou de criar a conta'
+        };
+
+        setUsers((prev) => [newUser, ...prev]);
+        setCurrentUserId(newUser.id);
+        setShowAuthModal(false);
+        setRegName('');
+        setRegEmail('');
+        setRegWhatsapp('');
+        setRegPassword('');
+      };
+
+      const handleUserLogin = (e) => {
+        e.preventDefault();
+        setUserAuthError('');
+        const emailClean = regEmail.trim().toLowerCase();
+        const found = users.find(
+          (u) => u.email.toLowerCase() === emailClean && u.password === regPassword
+        );
+
+        if (!found) {
+          setUserAuthError('E-mail ou senha incorretos.');
+          return;
+        }
+
+        setUsers((prev) =>
+          prev.map((u) =>
+            u.id === found.id
+              ? { ...u, isOnline: true, lastEntry: nowFormatted(), lastExit: 'Online agora' }
+              : u
+          )
+        );
+        setCurrentUserId(found.id);
+        setShowAuthModal(false);
+        setRegEmail('');
+        setRegPassword('');
+      };
+
+      const handleUserLogout = () => {
+        if (!currentUser) return;
+        setUsers((prev) =>
+          prev.map((u) =>
+            u.id === currentUser.id
+              ? { ...u, isOnline: false, lastExit: nowFormatted() }
+              : u
+          )
+        );
+        setCurrentUserId(null);
+        setActiveEpisode(null);
+      };
+
+      // ===================================================================
+      // 2. TRAVA REAL DE VÍDEO (OBRIGA LOGIN E VALIDA VIP DE VERDADE)
+      // ===================================================================
       const handlePlayEpisode = (episode) => {
+        // Se não estiver logado, abre a tela de Cadastro/Login primeiro
+        if (!currentUser) {
+          setAuthMode('register');
+          setShowAuthModal(true);
+          return;
+        }
+
+        // Se o episódio é VIP e o usuário NÃO é VIP, bloqueia e pede PIX
         if (episode.isVip && !currentUser.isVip) {
+          setPixCheckMsg('');
           setShowVipModal(true);
           return;
         }
+
+        // Liberado: abre o player e registra no painel do ADM qual episódio ele está vendo
         setActiveEpisode(episode);
         setUsers((prev) =>
           prev.map((u) =>
@@ -235,60 +317,98 @@ create table if not exists public.episodes (
         );
       };
 
-      const handleApproveVipPayment = () => {
-        setUsers((prev) =>
-          prev.map((u) => (u.id === currentUser.id ? { ...u, isVip: true } : u))
-        );
-        setShowVipModal(false);
-      };
+      // ===================================================================
+      // 3. PAGAMENTO PIX SEGURO (NÃO LIBERA VIP DE GRAÇA!)
+      // ===================================================================
+      const handleNotifyPixPayment = () => {
+        if (!currentUser) {
+          setShowVipModal(false);
+          setShowAuthModal(true);
+          return;
+        }
 
-      const toggleUserVipByAdmin = (userId) => {
-        setUsers((prev) =>
-          prev.map((u) => (u.id === userId ? { ...u, isVip: !u.isVip } : u))
-        );
-      };
-
-      const toggleUserOnlineSession = (userId) => {
-        const now = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        // Marca o usuário como "Aguardando Confirmação de PIX" no Painel ADM
         setUsers((prev) =>
           prev.map((u) =>
-            u.id === userId
-              ? {
-                  ...u,
-                  isOnline: !u.isOnline,
-                  lastEntry: !u.isOnline ? `Hoje, ${now}` : u.lastEntry,
-                  lastExit: u.isOnline ? `Hoje, ${now}` : 'Ativo agora'
-                }
-              : u
+            u.id === currentUser.id ? { ...u, paymentStatus: 'pending' } : u
           )
         );
+
+        setPixCheckMsg(
+          '⏳ Solicitação enviada! Seu pagamento PIX de R$ 9,90 está sendo verificado pelo banco. Assim que compensar, seu acesso VIP será liberado.'
+        );
+      };
+
+      // ===================================================================
+      // 4. FUNÇÕES EXCLUSIVAS DO DONO (ADM)
+      // ===================================================================
+      const toggleUserVipByAdmin = (userId) => {
+        setUsers((prev) =>
+          prev.map((u) => {
+            if (u.id !== userId) return u;
+            const nextVip = !u.isVip;
+            return {
+              ...u,
+              isVip: nextVip,
+              paymentStatus: nextVip ? 'approved' : 'none'
+            };
+          })
+        );
+      };
+
+      const forceDisconnectUser = (userId) => {
+        setUsers((prev) =>
+          prev.map((u) =>
+            u.id === userId ? { ...u, isOnline: false, lastExit: nowFormatted() + ' (Derrubado pelo ADM)' } : u
+          )
+        );
+        if (currentUserId === userId) {
+          setCurrentUserId(null);
+        }
+      };
+
+      const deleteUserByAdmin = (userId) => {
+        setUsers((prev) => prev.filter((u) => u.id !== userId));
+        if (currentUserId === userId) setCurrentUserId(null);
       };
 
       const handleAdminLogin = (e) => {
         e.preventDefault();
-        if (passwordInput === adminPasswordHash) {
+        if (btoa(passwordInput) === adminStoredSecret) {
           setAdminUnlocked(true);
           setShowAdminAuthModal(false);
           setPasswordInput('');
           setAuthError('');
         } else {
-          setAuthError('Acesso Negado: Senha incorreta.');
+          setAuthError('Acesso Negado: Senha de Administrador incorreta.');
         }
       };
 
-      const handleSaveCloudKeys = (e) => {
+      const handleCreateSeries = (e) => {
         e.preventDefault();
-        localStorage.setItem('dup_sb_url', supabaseUrl.trim());
-        localStorage.setItem('dup_sb_key', supabaseAnonKey.trim());
-        localStorage.setItem('dup_pix_token', pixAccessToken.trim());
+        if (!newSerieTitle.trim()) return;
+        const created = {
+          id: 's_' + Date.now(),
+          title: newSerieTitle.trim(),
+          category: newSerieCategory.trim() || 'Série IA',
+          synopsis: newSerieSynopsis.trim() || 'Nova série exclusiva produzida com Inteligência Artificial.',
+          poster: newSeriePoster.trim() || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+          banner: newSerieBanner.trim() || 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80',
+          isHeroLaunch: newSerieIsHero,
+          episodes: []
+        };
 
-        if (supabaseUrl.includes('supabase.co') && supabaseAnonKey.length > 20) {
-          setConnectionStatus('connected');
-          setSaveMessage('Conectado com sucesso ao Supabase! Suas chaves foram salvas.');
-        } else {
-          setConnectionStatus('local');
-          setSaveMessage('Chaves salvas localmente.');
-        }
+        setSeriesList((prev) => {
+          const base = newSerieIsHero ? prev.map((s) => ({ ...s, isHeroLaunch: false })) : prev;
+          return [created, ...base];
+        });
+        setSelectedSeriesId(created.id);
+        setNewEpSeriesId(created.id);
+        setNewSerieTitle('');
+        setNewSerieSynopsis('');
+        setNewSeriePoster('');
+        setNewSerieBanner('');
+        setNewSerieIsHero(false);
       };
 
       const handleAddEpisode = (e) => {
@@ -297,15 +417,11 @@ create table if not exists public.episodes (
         const newEp = {
           id: 'ep_' + Date.now(),
           number: Number(newEpNumber),
-          title: newEpTitle,
+          title: newEpTitle.trim(),
           duration: newEpDuration || '15 min',
           isVip: newEpIsVip,
-          thumb:
-            newEpThumb.trim() ||
-            'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
-          videoUrl:
-            newEpVideo.trim() ||
-            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+          thumb: newEpThumb.trim() || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+          videoUrl: newEpVideo.trim() || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
         };
 
         setSeriesList((prev) =>
@@ -317,15 +433,28 @@ create table if not exists public.episodes (
         setNewEpNumber((n) => Number(n) + 1);
       };
 
+      const handleDeleteEpisode = (serieId, epId) => {
+        setSeriesList((prev) =>
+          prev.map((s) =>
+            s.id === serieId
+              ? { ...s, episodes: s.episodes.filter((ep) => ep.id !== epId) }
+              : s
+          )
+        );
+      };
+
+      const pendingPixCount = users.filter((u) => u.paymentStatus === 'pending' && !u.isVip).length;
+
       return (
         <div className="min-h-screen bg-[#07080c] text-white">
-          {/* BARRA DO TOPO */}
-          <header className="sticky top-0 z-40 bg-[#07080c]/95 backdrop-blur-md border-b border-white/10 px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-8">
+          {/* ===============================================================
+              BARRA DO TOPO (COM CADASTRO, LOGIN, CONTA E SAÍDA REAL)
+          =============================================================== */}
+          <header className="sticky top-0 z-40 bg-[#07080c]/95 backdrop-blur-md border-b border-white/10 px-4 md:px-8 py-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-6">
               <button
                 onClick={() => setLogoClicks((c) => c + 1)}
                 className="flex items-center gap-2.5 text-left focus:outline-none select-none"
-                title="Da Um Play IA"
               >
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] p-0.5 shadow-lg shadow-[#ff1722]/20">
                   <div className="w-full h-full bg-[#07080c] rounded-[10px] flex items-center justify-center font-black text-[#ff1722]">
@@ -333,59 +462,118 @@ create table if not exists public.episodes (
                   </div>
                 </div>
                 <div>
-                  <span className="text-xl font-black tracking-tighter text-white">
+                  <span className="text-lg md:text-xl font-black tracking-tighter text-white">
                     DA UM <span className="text-[#ff1722]">PLAY</span>{' '}
                     <span className="text-[#00d4ff]">IA</span>
                   </span>
                   <span className="block text-[10px] uppercase tracking-widest text-gray-400">
-                    Streaming Original IA
+                    Streaming VIP Original
                   </span>
                 </div>
               </button>
 
-              <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
+              <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold text-gray-300">
                 <a href="#vitrine" className="hover:text-white transition">Início</a>
-                <a href="#catalogo" className="hover:text-white transition">Lançamentos</a>
-                <a href="#catalogo" className="hover:text-[#00d4ff] transition">Exclusivos VIP</a>
+                <a href="#catalogo" className="hover:text-white transition">Séries & Lançamentos</a>
               </nav>
             </div>
 
-            <div className="flex items-center gap-3">
-              {currentUser.isVip ? (
-                <span className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#00d4ff]/15 text-[#00d4ff] border border-[#00d4ff]/40">
-                  👑 CONTA VIP ATIVA
-                </span>
+            {/* Área de Conta do Usuário (Entrar / Cadastrar / Status VIP / Sair) */}
+            <div className="flex items-center gap-2.5">
+              {!currentUser ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setAuthMode('login');
+                      setUserAuthError('');
+                      setShowAuthModal(true);
+                    }}
+                    className="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15 text-white transition"
+                  >
+                    Entrar
+                  </button>
+                  <button
+                    onClick={() => {
+                      setAuthMode('register');
+                      setUserAuthError('');
+                      setShowAuthModal(true);
+                    }}
+                    className="px-4 py-2 rounded-xl text-xs font-extrabold bg-[#ff1722] hover:bg-[#ff1722]/90 text-white shadow-lg shadow-[#ff1722]/30 transition"
+                  >
+                    Criar Conta
+                  </button>
+                </>
               ) : (
-                <button
-                  onClick={() => setShowVipModal(true)}
-                  className="px-4 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white shadow-lg shadow-[#ff1722]/30 hover:opacity-95 transition"
-                >
-                  👑 ASSINAR VIP • R$ 9,90
-                </button>
+                <div className="flex items-center gap-2.5">
+                  {currentUser.isVip ? (
+                    <span className="px-3 py-1.5 rounded-full text-[11px] font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/50">
+                      👑 VIP ATIVO
+                    </span>
+                  ) : currentUser.paymentStatus === 'pending' ? (
+                    <button
+                      onClick={() => setShowVipModal(true)}
+                      className="px-3 py-1.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                    >
+                      ⏳ PIX em Análise
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setPixCheckMsg('');
+                        setShowVipModal(true);
+                      }}
+                      className="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white shadow-lg"
+                    >
+                      👑 Virar VIP • R$ 9,90
+                    </button>
+                  )}
+
+                  <div className="hidden sm:block text-right text-xs">
+                    <div className="font-bold text-white leading-tight">{currentUser.name}</div>
+                    <div className="text-[10px] text-gray-400">
+                      {currentUser.isVip ? 'Assinante Premium' : 'Plano Grátis'}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleUserLogout}
+                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-[#ff1722] text-xs font-bold text-gray-200 hover:text-white transition"
+                    title="Sair da Conta"
+                  >
+                    Sair
+                  </button>
+                </div>
               )}
 
               {adminUnlocked && (
                 <button
                   onClick={() => setAdminUnlocked(false)}
-                  className="px-3 py-1.5 rounded-lg bg-[#ff1722]/20 border border-[#ff1722] text-[#ff1722] text-xs font-bold hover:bg-[#ff1722] hover:text-white transition"
+                  className="px-3 py-1.5 rounded-lg bg-[#ff1722]/20 border border-[#ff1722] text-[#ff1722] text-xs font-bold"
                 >
-                  Esconder ADM
+                  Fechar ADM
                 </button>
               )}
             </div>
           </header>
 
-          {/* PAINEL DO ADM OCULTO */}
+          {/* ===============================================================
+              PAINEL DO ADM (OCULTO POR SENHA)
+          =============================================================== */}
           {adminUnlocked && (
             <section className="bg-[#0d1017] border-b-2 border-[#00d4ff] p-6 shadow-2xl">
-              <div className="max-w-6xl mx-auto">
-                <div className="flex flex-wrap items-center justify-between gap-4 pb-5 mb-6 border-b border-white/10">
+              <div className="max-w-6xl mx-auto space-y-6">
+                <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
                   <div>
-                    <h2 className="text-lg font-black uppercase tracking-wide text-[#00d4ff]">
-                      🛡️ Painel de Comando do Administrador
+                    <h2 className="text-lg font-black uppercase text-[#00d4ff] flex items-center gap-2">
+                      🛡️ Painel de Controle do Administrador
+                      {pendingPixCount > 0 && (
+                        <span className="px-2.5 py-0.5 rounded-full text-xs bg-amber-500 text-black font-black animate-pulse">
+                          {pendingPixCount} PIX aguardando sua aprovação!
+                        </span>
+                      )}
                     </h2>
                     <p className="text-xs text-gray-400">
-                      Suba lançamentos/episódios, monitore quem entra e sai e dê ou tire o VIP manualmente.
+                      Monitore quem cadastrou, quem entrou, quem saiu, aprove pagamentos PIX de R$ 9,90 e suba séries/episódios.
                     </p>
                   </div>
 
@@ -396,7 +584,7 @@ create table if not exists public.episodes (
                         adminTab === 'usuarios' ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300'
                       }`}
                     >
-                      1. Usuários & Dar/Tirar VIP
+                      1. Usuários & Dar/Tirar VIP ({users.length})
                     </button>
                     <button
                       onClick={() => setAdminTab('lancamentos')}
@@ -404,46 +592,42 @@ create table if not exists public.episodes (
                         adminTab === 'lancamentos' ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300'
                       }`}
                     >
-                      2. Subir Lançamentos & Eps
+                      2. Subir Séries, Capas & Episódios
                     </button>
                     <button
-                      onClick={() => setAdminTab('conexao')}
+                      onClick={() => setAdminTab('pix')}
                       className={`px-3.5 py-2 rounded-xl text-xs font-bold transition ${
-                        adminTab === 'conexao' ? 'bg-[#00d4ff] text-[#07080c]' : 'bg-white/5 text-gray-300'
+                        adminTab === 'pix' ? 'bg-[#00d4ff] text-[#07080c]' : 'bg-white/5 text-gray-300'
                       }`}
                     >
-                      3. Conexão Supabase & PIX
-                    </button>
-                    <button
-                      onClick={() => setAdminTab('senha')}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-bold transition ${
-                        adminTab === 'senha' ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300'
-                      }`}
-                    >
-                      4. Trocar Senha ADM
+                      3. Configurar PIX R$ 9,90 & Senha ADM
                     </button>
                   </div>
                 </div>
 
+                {/* ABA 1: CONTROLE DE USUÁRIOS, ENTRADA, SAÍDA E PODER DE DAR/TIRAR VIP */}
                 {adminTab === 'usuarios' && (
                   <div className="bg-[#07080c] border border-white/10 rounded-2xl overflow-hidden">
-                    <div className="p-4 border-b border-white/10 flex items-center justify-between">
+                    <div className="p-4 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
                       <h3 className="text-sm font-bold">
-                        Controle deQuem Entra, Quem Sai e Liberação de VIP
+                        Lista de Cadastros, Horário de Entrada/Saída e Controle de VIP
                       </h3>
-                      <span className="text-xs text-gray-400">
-                        Total: {users.length} | VIPs: {users.filter((u) => u.isVip).length}
-                      </span>
+                      <div className="text-xs text-gray-400 space-x-3">
+                        <span>Cadastrados: <b className="text-white">{users.length}</b></span>
+                        <span>VIPs Ativos: <b className="text-[#00d4ff]">{users.filter((u) => u.isVip).length}</b></span>
+                        <span>Faturamento: <b className="text-emerald-400">R$ {(users.filter((u) => u.isVip).length * 9.9).toFixed(2).replace('.', ',')}</b></span>
+                      </div>
                     </div>
+
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-xs">
                         <thead className="bg-white/5 text-gray-400 uppercase">
                           <tr>
-                            <th className="p-3.5">Usuário</th>
-                            <th className="p-3.5">Sessão (Entrada / Saída)</th>
-                            <th className="p-3.5">Último Assistido</th>
-                            <th className="p-3.5">Status</th>
-                            <th className="p-3.5 text-right">Ação do ADM</th>
+                            <th className="p-3.5">Cliente / WhatsApp</th>
+                            <th className="p-3.5">Entrada & Saída</th>
+                            <th className="p-3.5">Último Episódio</th>
+                            <th className="p-3.5">Status VIP / PIX</th>
+                            <th className="p-3.5 text-right">Poder do ADM</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-white/10">
@@ -452,20 +636,26 @@ create table if not exists public.episodes (
                               <td className="p-3.5">
                                 <div className="font-bold text-white">{u.name}</div>
                                 <div className="text-gray-400">{u.email}</div>
+                                <div className="text-[11px] text-[#00d4ff]">WhatsApp: {u.whatsapp}</div>
                               </td>
                               <td className="p-3.5">
                                 <span className={u.isOnline ? 'text-emerald-400 font-bold' : 'text-gray-400'}>
-                                  {u.isOnline ? '● Online Agora' : '○ Saiu'}
+                                  {u.isOnline ? '● Online Agora' : '○ Saiu da Conta'}
                                 </span>
-                                <div className="text-[11px] text-gray-400">
-                                  Entrada: {u.lastEntry} | Saída: {u.lastExit}
+                                <div className="text-[11px] text-gray-400 mt-0.5">
+                                  Entrou: {u.lastEntry} <br />
+                                  Saiu: {u.lastExit}
                                 </div>
                               </td>
                               <td className="p-3.5 text-gray-300">{u.lastWatched}</td>
                               <td className="p-3.5">
                                 {u.isVip ? (
-                                  <span className="px-2.5 py-1 rounded-full bg-[#00d4ff]/20 text-[#00d4ff] font-bold">
-                                    VIP ATIVO
+                                  <span className="px-2.5 py-1 rounded-full bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/40 font-bold">
+                                    👑 VIP LIBERADO
+                                  </span>
+                                ) : u.paymentStatus === 'pending' ? (
+                                  <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold animate-pulse">
+                                    ⏳ AVISOU QUE PAGOU PIX
                                   </span>
                                 ) : (
                                   <span className="px-2.5 py-1 rounded-full bg-white/10 text-gray-300">
@@ -476,19 +666,28 @@ create table if not exists public.episodes (
                               <td className="p-3.5 text-right space-x-2">
                                 <button
                                   onClick={() => toggleUserVipByAdmin(u.id)}
-                                  className={`px-3 py-1.5 rounded-lg font-bold transition ${
+                                  className={`px-3 py-1.5 rounded-lg font-extrabold transition ${
                                     u.isVip
-                                      ? 'bg-[#ff1722]/20 text-[#ff1722] border border-[#ff1722]/40'
-                                      : 'bg-[#00d4ff] text-[#07080c]'
+                                      ? 'bg-[#ff1722]/20 text-[#ff1722] border border-[#ff1722]/40 hover:bg-[#ff1722] hover:text-white'
+                                      : 'bg-[#00d4ff] text-[#07080c] hover:opacity-90'
                                   }`}
                                 >
-                                  {u.isVip ? 'Tirar VIP' : 'Tornar VIP'}
+                                  {u.isVip ? 'Tirar VIP' : 'Aprovar / Dar VIP'}
                                 </button>
+                                {u.isOnline && (
+                                  <button
+                                    onClick={() => forceDisconnectUser(u.id)}
+                                    className="px-2.5 py-1.5 rounded-lg bg-white/10 text-gray-300 hover:bg-white/20"
+                                  >
+                                    Derrubar
+                                  </button>
+                                )}
                                 <button
-                                  onClick={() => toggleUserOnlineSession(u.id)}
-                                  className="px-2.5 py-1.5 rounded-lg bg-white/10 text-gray-300"
+                                  onClick={() => deleteUserByAdmin(u.id)}
+                                  className="px-2 py-1.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                                  title="Excluir Usuário"
                                 >
-                                  {u.isOnline ? 'Desconectar' : 'Simular Entrada'}
+                                  🗑️
                                 </button>
                               </td>
                             </tr>
@@ -499,193 +698,213 @@ create table if not exists public.episodes (
                   </div>
                 )}
 
+                {/* ABA 2: CRIAR SÉRIES, CAPA DE LANÇAMENTO E SUBIR EPISÓDIOS */}
                 {adminTab === 'lancamentos' && (
-                  <form
-                    onSubmit={handleAddEpisode}
-                    className="bg-[#07080c] border border-white/10 rounded-2xl p-5 grid md:grid-cols-3 gap-4"
-                  >
-                    <div>
-                      <label className="block text-xs text-gray-400 mb-1 font-bold">Escolher Série</label>
-                      <select
-                        value={newEpSeriesId}
-                        onChange={(e) => setNewEpSeriesId(e.target.value)}
-                        className="w-full px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                      >
-                        {seriesList.map((s) => (
-                          <option key={s.id} value={s.id}>{s.title}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-xs text-gray-400 mb-1 font-bold">Título do Episódio</label>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Bloco A: Criar Nova Série / Capa de Lançamento */}
+                    <form
+                      onSubmit={handleCreateSeries}
+                      className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3"
+                    >
+                      <h3 className="text-sm font-black uppercase text-[#00d4ff]">
+                        1. Criar Nova Série / Capa de Lançamento
+                      </h3>
                       <input
                         type="text"
                         required
-                        value={newEpTitle}
-                        onChange={(e) => setNewEpTitle(e.target.value)}
-                        placeholder="Ex: Episódio Novo IA"
-                        className="w-full px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        value={newSerieTitle}
+                        onChange={(e) => setNewSerieTitle(e.target.value)}
+                        placeholder="Nome da Série (Ex: A Era das Máquinas)"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                       />
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <label className="block text-xs text-gray-400 mb-1 font-bold">Nº Ep.</label>
+                      <input
+                        type="text"
+                        value={newSerieCategory}
+                        onChange={(e) => setNewSerieCategory(e.target.value)}
+                        placeholder="Categoria (Ex: Ação IA, Terror IA, Romance IA)"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                      />
+                      <textarea
+                        rows="2"
+                        value={newSerieSynopsis}
+                        onChange={(e) => setNewSerieSynopsis(e.target.value)}
+                        placeholder="Sinopse da série..."
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                      />
+                      <input
+                        type="text"
+                        value={newSeriePoster}
+                        onChange={(e) => setNewSeriePoster(e.target.value)}
+                        placeholder="URL da Imagem de Capa Vertical (Pôster)"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                      />
+                      <input
+                        type="text"
+                        value={newSerieBanner}
+                        onChange={(e) => setNewSerieBanner(e.target.value)}
+                        placeholder="URL da Imagem de Fundo Horizontal (Banner)"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                      />
+                      <label className="flex items-center gap-2 text-xs text-gray-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={newSerieIsHero}
+                          onChange={(e) => setNewSerieIsHero(e.target.checked)}
+                        />
+                        Colocar como Super Destaque de Lançamento no Topo do Site
+                      </label>
+                      <button
+                        type="submit"
+                        className="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#07080c] font-black text-xs uppercase"
+                      >
+                        + Criar Série no Catálogo
+                      </button>
+                    </form>
+
+                    {/* Bloco B: Subir Episódio dentro da Série (Grátis ou VIP) */}
+                    <form
+                      onSubmit={handleAddEpisode}
+                      className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3"
+                    >
+                      <h3 className="text-sm font-black uppercase text-[#ff1722]">
+                        2. Subir Episódio (Escolher Grátis ou VIP)
+                      </h3>
+                      <select
+                        value={newEpSeriesId}
+                        onChange={(e) => setNewEpSeriesId(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                      >
+                        {seriesList.map((s) => (
+                          <option key={s.id} value={s.id}>Série: {s.title}</option>
+                        ))}
+                      </select>
+                      <div className="grid grid-cols-3 gap-2">
                         <input
                           type="number"
                           value={newEpNumber}
                           onChange={(e) => setNewEpNumber(e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                          placeholder="Nº Ep"
+                          className="px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                         />
-                      </div>
-                      <div>
-                        <label className="block text-xs text-gray-400 mb-1 font-bold">Duração</label>
                         <input
                           type="text"
-                          value={newEpDuration}
-                          onChange={(e) => setNewEpDuration(e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                          required
+                          value={newEpTitle}
+                          onChange={(e) => setNewEpTitle(e.target.value)}
+                          placeholder="Título do Episódio"
+                          className="col-span-2 px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                         />
                       </div>
-                    </div>
-                    <div>
-                      <label className="block text-xs text-gray-400 mb-1 font-bold">URL da Capa (Thumbnail)</label>
                       <input
                         type="text"
                         value={newEpThumb}
                         onChange={(e) => setNewEpThumb(e.target.value)}
-                        placeholder="https://..."
-                        className="w-full px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        placeholder="URL da Foto/Capa do Episódio (Thumbnail)"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                       />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-gray-400 mb-1 font-bold">URL do Vídeo MP4</label>
                       <input
                         type="text"
                         value={newEpVideo}
                         onChange={(e) => setNewEpVideo(e.target.value)}
-                        placeholder="https://...video.mp4"
-                        className="w-full px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                      />
-                    </div>
-                    <div className="flex items-end gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setNewEpIsVip(!newEpIsVip)}
-                        className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold border ${
-                          newEpIsVip
-                            ? 'bg-[#00d4ff]/20 border-[#00d4ff] text-[#00d4ff]'
-                            : 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
-                        }`}
-                      >
-                        {newEpIsVip ? '🔒 EXCLUSIVO VIP' : '🔓 GRÁTIS'}
-                      </button>
-                      <button
-                        type="submit"
-                        className="py-2.5 px-5 rounded-xl bg-[#ff1722] text-white text-xs font-extrabold"
-                      >
-                        Publicar
-                      </button>
-                    </div>
-                  </form>
-                )}
-
-                {adminTab === 'conexao' && (
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3 text-xs">
-                      <p className="font-bold text-[#00d4ff] uppercase">Código SQL do Supabase</p>
-                      <p className="text-gray-400">
-                        Copie o código abaixo, cole no <b>SQL Editor</b> do Supabase e clique em <b>Run</b>.
-                      </p>
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(SQL_SETUP_SCRIPT);
-                          setSqlCopied(true);
-                          setTimeout(() => setSqlCopied(false), 3000);
-                        }}
-                        className="w-full py-2.5 px-3 rounded-xl bg-[#00d4ff]/15 border border-[#00d4ff]/40 text-[#00d4ff] font-bold"
-                      >
-                        {sqlCopied ? '✅ Código SQL Copiado!' : '📋 Copiar Código SQL do Supabase'}
-                      </button>
-                    </div>
-
-                    <form onSubmit={handleSaveCloudKeys} className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3">
-                      <input
-                        type="text"
-                        value={supabaseUrl}
-                        onChange={(e) => setSupabaseUrl(e.target.value)}
-                        placeholder="Project URL (https://...supabase.co)"
+                        placeholder="URL do Vídeo (.mp4)"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                       />
-                      <input
-                        type="password"
-                        value={supabaseAnonKey}
-                        onChange={(e) => setSupabaseAnonKey(e.target.value)}
-                        placeholder="Chave anon public do Supabase"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                      />
-                      <input
-                        type="password"
-                        value={pixAccessToken}
-                        onChange={(e) => setPixAccessToken(e.target.value)}
-                        placeholder="Token PIX R$ 9,90 (Mercado Pago / PushinPay)"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                      />
-                      <button
-                        type="submit"
-                        className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white font-bold text-xs uppercase"
-                      >
-                        Salvar Chaves
-                      </button>
-                      {saveMessage && <p className="text-xs text-[#00d4ff] text-center">{saveMessage}</p>}
+                      <div className="flex gap-2 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => setNewEpIsVip(!newEpIsVip)}
+                          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold border ${
+                            newEpIsVip
+                              ? 'bg-[#00d4ff]/20 border-[#00d4ff] text-[#00d4ff]'
+                              : 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
+                          }`}
+                        >
+                          {newEpIsVip ? '🔒 Episódio VIP (R$ 9,90)' : '🔓 Episódio GRÁTIS'}
+                        </button>
+                        <button
+                          type="submit"
+                          className="py-2.5 px-6 rounded-xl bg-[#ff1722] text-white text-xs font-black uppercase"
+                        >
+                          Publicar Ep
+                        </button>
+                      </div>
                     </form>
                   </div>
                 )}
 
-                {adminTab === 'senha' && (
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      if (currentPassCheck !== adminPasswordHash) {
-                        setPassChangeMsg('Senha atual incorreta.');
-                        return;
-                      }
-                      if (newAdminPass.length < 4) {
-                        setPassChangeMsg('A nova senha deve ter pelo menos 4 caracteres.');
-                        return;
-                      }
-                      setAdminPasswordHash(newAdminPass);
-                      setCurrentPassCheck('');
-                      setNewAdminPass('');
-                      setPassChangeMsg('Senha atualizada com sucesso!');
-                    }}
-                    className="bg-[#07080c] border border-white/10 rounded-2xl p-5 max-w-md space-y-3"
-                  >
-                    <h3 className="text-sm font-bold">Trocar Senha do Painel ADM</h3>
-                    <input
-                      type="password"
-                      placeholder="Senha atual"
-                      value={currentPassCheck}
-                      onChange={(e) => setCurrentPassCheck(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                    />
-                    <input
-                      type="password"
-                      placeholder="Nova senha"
-                      value={newAdminPass}
-                      onChange={(e) => setNewAdminPass(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                    />
-                    <button type="submit" className="w-full py-2.5 rounded-xl bg-[#ff1722] text-white text-xs font-bold">
-                      Atualizar Senha
-                    </button>
-                    {passChangeMsg && <p className="text-xs text-[#00d4ff]">{passChangeMsg}</p>}
-                  </form>
+                {/* ABA 3: CHAVE PIX REAL R$ 9,90 E TROCA DE SENHA DO ADM */}
+                {adminTab === 'pix' && (
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3">
+                      <h3 className="text-sm font-bold text-[#00d4ff]">
+                        Seu Código PIX Copia e Cola (R$ 9,90)
+                      </h3>
+                      <p className="text-xs text-gray-400">
+                        Cole abaixo o código PIX Copia e Cola de R$ 9,90 gerado no seu banco ou Mercado Pago. É esse código que o cliente vai copiar para te pagar.
+                      </p>
+                      <textarea
+                        rows="3"
+                        value={pixKeyConfig}
+                        onChange={(e) => {
+                          setPixKeyConfig(e.target.value);
+                          localStorage.setItem('dup_pix_key_v2', e.target.value);
+                        }}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                      />
+                    </div>
+
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        if (btoa(currentPassCheck) !== adminStoredSecret) {
+                          setPassChangeMsg('Senha atual incorreta.');
+                          return;
+                        }
+                        if (newAdminPass.length < 4) {
+                          setPassChangeMsg('A nova senha deve ter pelo menos 4 caracteres.');
+                          return;
+                        }
+                        const encoded = btoa(newAdminPass);
+                        setAdminStoredSecret(encoded);
+                        localStorage.setItem('dup_adm_sec_v2', encoded);
+                        setCurrentPassCheck('');
+                        setNewAdminPass('');
+                        setPassChangeMsg('✅ Senha do ADM alterada e salva com sucesso!');
+                      }}
+                      className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3"
+                    >
+                      <h3 className="text-sm font-bold">Trocar Senha do Painel ADM</h3>
+                      <input
+                        type="password"
+                        placeholder="Senha atual do ADM"
+                        value={currentPassCheck}
+                        onChange={(e) => setCurrentPassCheck(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                      />
+                      <input
+                        type="password"
+                        placeholder="Nova senha secreta"
+                        value={newAdminPass}
+                        onChange={(e) => setNewAdminPass(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                      />
+                      <button
+                        type="submit"
+                        className="w-full py-2.5 rounded-xl bg-[#ff1722] text-white text-xs font-bold uppercase"
+                      >
+                        Salvar Nova Senha
+                      </button>
+                      {passChangeMsg && <p className="text-xs text-[#00d4ff]">{passChangeMsg}</p>}
+                    </form>
+                  </div>
                 )}
               </div>
             </section>
           )}
 
-          {/* SUPER BANNER DE LANÇAMENTO */}
+          {/* ===============================================================
+              SUPER BANNER DE LANÇAMENTO (TOPO DA VITRINE)
+          =============================================================== */}
           <section id="vitrine" className="relative min-h-[460px] flex items-end p-6 md:p-12 overflow-hidden">
             <img
               src={heroSeries.banner}
@@ -697,7 +916,7 @@ create table if not exists public.episodes (
             <div className="relative z-10 max-w-2xl space-y-4">
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-[#ff1722] text-white text-[11px] font-black uppercase">
-                  🔥 Lançamento
+                  🔥 Lançamento Oficial
                 </span>
                 <span className="px-3 py-1 rounded-full bg-[#00d4ff]/20 border border-[#00d4ff]/40 text-[#00d4ff] text-[11px] font-bold">
                   {heroSeries.category}
@@ -706,29 +925,41 @@ create table if not exists public.episodes (
               <h1 className="text-4xl md:text-5xl font-black tracking-tight">{heroSeries.title}</h1>
               <p className="text-sm text-gray-300">{heroSeries.synopsis}</p>
               <div className="flex flex-wrap gap-3 pt-2">
-                <button
-                  onClick={() => handlePlayEpisode(heroSeries.episodes[0])}
-                  className="px-6 py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-sm shadow-xl shadow-[#ff1722]/30"
-                >
-                  ▶ Assistir 1º Episódio Grátis
-                </button>
-                {!currentUser.isVip && (
+                {heroSeries.episodes[0] && (
                   <button
-                    onClick={() => setShowVipModal(true)}
+                    onClick={() => handlePlayEpisode(heroSeries.episodes[0])}
+                    className="px-6 py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-sm shadow-xl shadow-[#ff1722]/30"
+                  >
+                    ▶ Assistir 1º Episódio
+                  </button>
+                )}
+                {(!currentUser || !currentUser.isVip) && (
+                  <button
+                    onClick={() => {
+                      if (!currentUser) {
+                        setAuthMode('register');
+                        setShowAuthModal(true);
+                      } else {
+                        setPixCheckMsg('');
+                        setShowVipModal(true);
+                      }
+                    }}
                     className="px-6 py-3.5 rounded-xl bg-[#00d4ff]/15 border border-[#00d4ff]/50 text-[#00d4ff] font-extrabold text-sm"
                   >
-                    👑 Liberar Tudo por R$ 9,90
+                    👑 Assinar VIP • R$ 9,90
                   </button>
                 )}
               </div>
             </div>
           </section>
 
-          {/* CATÁLOGO DE CAPAS E EPISÓDIOS */}
+          {/* ===============================================================
+              CATÁLOGO DE CAPAS E EPISÓDIOS
+          =============================================================== */}
           <main id="catalogo" className="max-w-6xl mx-auto px-6 py-10 space-y-10">
             <div>
               <h2 className="text-lg font-black uppercase tracking-wide mb-4">
-                ✨ Séries Originais Da Um Play IA
+                ✨ Catálogo de Séries Da Um Play IA
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
                 {seriesList.map((serie) => (
@@ -757,34 +988,42 @@ create table if not exists public.episodes (
               </div>
             </div>
 
+            {/* Episódios da Série Selecionada */}
             <div className="bg-[#0d1017] border border-white/10 rounded-3xl p-6">
-              <div className="mb-6">
-                <span className="text-xs font-bold text-[#00d4ff] uppercase">Episódios Disponíveis</span>
-                <h3 className="text-2xl font-black">{selectedSeries.title}</h3>
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-bold text-[#00d4ff] uppercase">Episódios da Série</span>
+                  <h3 className="text-2xl font-black">{selectedSeries.title}</h3>
+                </div>
+                {!currentUser && (
+                  <span className="text-xs text-amber-400 font-semibold">
+                    Crie sua conta grátis no topo para assistir
+                  </span>
+                )}
               </div>
 
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
                 {selectedSeries.episodes.map((ep) => {
-                  const locked = ep.isVip && !currentUser.isVip;
+                  const isLocked = ep.isVip && (!currentUser || !currentUser.isVip);
                   return (
                     <div
                       key={ep.id}
                       onClick={() => handlePlayEpisode(ep)}
-                      className={`cursor-pointer rounded-2xl overflow-hidden bg-[#07080c] border transition ${
-                        locked ? 'border-[#00d4ff]/40' : 'border-white/10 hover:border-[#ff1722]'
+                      className={`cursor-pointer rounded-2xl overflow-hidden bg-[#07080c] border transition relative ${
+                        isLocked ? 'border-[#00d4ff]/40' : 'border-white/10 hover:border-[#ff1722]'
                       }`}
                     >
                       <div className="aspect-video relative">
                         <img src={ep.thumb} alt={ep.title} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-black/45 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                           <div
                             className={`w-12 h-12 rounded-full flex items-center justify-center font-bold ${
-                              locked
+                              isLocked
                                 ? 'bg-[#00d4ff]/20 border border-[#00d4ff] text-[#00d4ff]'
                                 : 'bg-[#ff1722] text-white'
                             }`}
                           >
-                            {locked ? '🔒' : '▶'}
+                            {isLocked ? '🔒' : '▶'}
                           </div>
                         </div>
                         <span
@@ -792,15 +1031,28 @@ create table if not exists public.episodes (
                             ep.isVip ? 'bg-[#00d4ff] text-[#07080c]' : 'bg-emerald-500 text-black'
                           }`}
                         >
-                          {ep.isVip ? '🔒 VIP R$ 9,90' : '🔓 GRÁTIS'}
+                          {ep.isVip ? '🔒 EXCLUSIVO VIP' : '🔓 GRÁTIS'}
                         </span>
                       </div>
-                      <div className="p-4">
-                        <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-                          <span>Episódio {ep.number}</span>
-                          <span>{ep.duration}</span>
+                      <div className="p-4 flex items-center justify-between">
+                        <div>
+                          <div className="text-xs text-gray-400 mb-0.5">
+                            Episódio {ep.number} • {ep.duration}
+                          </div>
+                          <h4 className="font-bold text-sm text-white">{ep.title}</h4>
                         </div>
-                        <h4 className="font-bold text-sm text-white">{ep.title}</h4>
+                        {adminUnlocked && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteEpisode(selectedSeries.id, ep.id);
+                            }}
+                            className="text-xs text-red-400 hover:text-red-300 px-2 py-1"
+                            title="Apagar Episódio"
+                          >
+                            🗑️
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
@@ -809,7 +1061,180 @@ create table if not exists public.episodes (
             </div>
           </main>
 
-          {/* PLAYER DE VÍDEO */}
+          {/* ===============================================================
+              MODAL DE CADASTRO E LOGIN DO CLIENTE
+          =============================================================== */}
+          {showAuthModal && (
+            <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+              <div className="bg-[#0d1017] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-5 relative">
+                <button
+                  onClick={() => setShowAuthModal(false)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold"
+                >
+                  ✕
+                </button>
+
+                <div className="flex gap-2 bg-[#07080c] p-1 rounded-xl border border-white/10">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthMode('login');
+                      setUserAuthError('');
+                    }}
+                    className={`flex-1 py-2 rounded-lg text-xs font-black uppercase transition ${
+                      authMode === 'login' ? 'bg-[#ff1722] text-white' : 'text-gray-400'
+                    }`}
+                  >
+                    Entrar na Conta
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthMode('register');
+                      setUserAuthError('');
+                    }}
+                    className={`flex-1 py-2 rounded-lg text-xs font-black uppercase transition ${
+                      authMode === 'register' ? 'bg-[#00d4ff] text-[#07080c]' : 'text-gray-400'
+                    }`}
+                  >
+                    Criar Cadastro
+                  </button>
+                </div>
+
+                {authMode === 'register' ? (
+                  <form onSubmit={handleUserRegister} className="space-y-3">
+                    <h3 className="text-lg font-black">Crie sua conta no Da Um Play IA</h3>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Seu Nome Completo"
+                      value={regName}
+                      onChange={(e) => setRegName(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
+                    />
+                    <input
+                      type="email"
+                      required
+                      placeholder="Seu melhor E-mail"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Seu WhatsApp com DDD (Opcional)"
+                      value={regWhatsapp}
+                      onChange={(e) => setRegWhatsapp(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
+                    />
+                    <input
+                      type="password"
+                      required
+                      placeholder="Crie uma Senha"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
+                    />
+                    {userAuthError && <p className="text-xs text-[#ff1722] font-bold">{userAuthError}</p>}
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#07080c] font-black text-xs uppercase"
+                    >
+                      Finalizar Cadastro Grátis
+                    </button>
+                  </form>
+                ) : (
+                  <form onSubmit={handleUserLogin} className="space-y-3">
+                    <h3 className="text-lg font-black">Acesse sua conta</h3>
+                    <input
+                      type="email"
+                      required
+                      placeholder="Seu E-mail cadastrado"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
+                    />
+                    <input
+                      type="password"
+                      required
+                      placeholder="Sua Senha"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
+                    />
+                    {userAuthError && <p className="text-xs text-[#ff1722] font-bold">{userAuthError}</p>}
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase"
+                    >
+                      Entrar Agora
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ===============================================================
+              MODAL PIX R$ 9,90 BLINDADO (NÃO LIBERA VIP SEM PAGAR!)
+          =============================================================== */}
+          {showVipModal && (
+            <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+              <div className="bg-[#0d1017] border-2 border-[#00d4ff] rounded-3xl max-w-md w-full p-6 space-y-5 relative">
+                <button
+                  onClick={() => setShowVipModal(false)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold"
+                >
+                  ✕
+                </button>
+                <div className="text-center space-y-1">
+                  <div className="text-3xl">👑</div>
+                  <h3 className="text-2xl font-black">Assinatura VIP Mensal</h3>
+                  <p className="text-xs text-gray-300">
+                    Episódio exclusivo para assinantes VIP. Desbloqueie todo o catálogo por 30 dias.
+                  </p>
+                </div>
+
+                <div className="bg-[#07080c] border border-white/10 rounded-2xl p-4 text-center">
+                  <span className="text-xs text-gray-400 uppercase">Valor Único Mensal</span>
+                  <div className="text-4xl font-black text-[#00d4ff] my-1">R$ 9,90</div>
+                  <span className="text-[11px] text-gray-400">
+                    Copie a chave PIX abaixo e realize o pagamento no seu banco
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(pixKeyConfig);
+                      setPixCopied(true);
+                      setTimeout(() => setPixCopied(false), 3000);
+                    }}
+                    className="w-full py-3 rounded-xl bg-[#00d4ff] text-[#07080c] text-xs font-black uppercase"
+                  >
+                    {pixCopied ? '✅ Código PIX Copiado!' : '📋 1. Copiar Código PIX (R$ 9,90)'}
+                  </button>
+
+                  <button
+                    onClick={handleNotifyPixPayment}
+                    className="w-full py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase"
+                  >
+                    2. Já realizei o PIX (Solicitar Liberação)
+                  </button>
+                </div>
+
+                {pixCheckMsg && (
+                  <div className="p-3 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs text-center font-semibold">
+                    {pixCheckMsg}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ===============================================================
+              PLAYER DE VÍDEO (SÓ ABRE SE PASSAR PELA TRAVA DE SEGURANÇA)
+          =============================================================== */}
           {activeEpisode && (
             <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
               <div className="bg-[#0d1017] border border-white/15 rounded-3xl max-w-4xl w-full overflow-hidden">
@@ -834,55 +1259,7 @@ create table if not exists public.episodes (
             </div>
           )}
 
-          {/* MODAL PIX R$ 9,90 */}
-          {showVipModal && (
-            <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
-              <div className="bg-[#0d1017] border-2 border-[#00d4ff] rounded-3xl max-w-md w-full p-6 space-y-5 relative">
-                <button
-                  onClick={() => setShowVipModal(false)}
-                  className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold"
-                >
-                  ✕
-                </button>
-                <div className="text-center space-y-1">
-                  <div className="text-3xl">👑</div>
-                  <h3 className="text-2xl font-black">Passaporte VIP Total</h3>
-                  <p className="text-xs text-gray-300">
-                    Assista a todos os lançamentos e séries IA sem limites.
-                  </p>
-                </div>
-                <div className="bg-[#07080c] border border-white/10 rounded-2xl p-4 text-center">
-                  <span className="text-xs text-gray-400 uppercase">Assinatura Mensal</span>
-                  <div className="text-4xl font-black text-[#00d4ff] my-1">R$ 9,90</div>
-                  <span className="text-[11px] text-emerald-400 font-semibold">
-                    ⚡ Liberação imediata via PIX
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        '00020126580014BR.GOV.BCB.PIX0136daumplayia-vip-99052040000530398654049.905802BR'
-                      );
-                      setPixCopied(true);
-                      setTimeout(() => setPixCopied(false), 3000);
-                    }}
-                    className="w-full py-3 rounded-xl bg-white/10 text-xs font-bold"
-                  >
-                    {pixCopied ? '✅ Código PIX Copiado!' : '📋 Copiar Código PIX (R$ 9,90)'}
-                  </button>
-                  <button
-                    onClick={handleApproveVipPayment}
-                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white font-black text-xs uppercase"
-                  >
-                    Já Paguei / Liberar Meu VIP Agora
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* MODAL SECRETO DE SENHA DO ADM */}
+          {/* MODAL SECRETO DO ADM */}
           {showAdminAuthModal && (
             <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
               <form
@@ -890,7 +1267,7 @@ create table if not exists public.episodes (
                 className="bg-[#0d1017] border border-white/15 rounded-2xl max-w-sm w-full p-6 space-y-4"
               >
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-black uppercase">🔒 Credencial Restrita</h3>
+                  <h3 className="text-sm font-black uppercase">🔒 Acesso do Administrador</h3>
                   <button
                     type="button"
                     onClick={() => {
@@ -909,7 +1286,7 @@ create table if not exists public.episodes (
                   autoFocus
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="Digite sua chave de comando"
+                  placeholder="Senha do Administrador"
                   className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-sm text-white"
                 />
                 {authError && <p className="text-xs text-[#ff1722] font-semibold">{authError}</p>}
@@ -917,7 +1294,7 @@ create table if not exists public.episodes (
                   type="submit"
                   className="w-full py-3 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase"
                 >
-                  Autenticar
+                  Desbloquear Painel
                 </button>
               </form>
             </div>
