@@ -15,6 +15,7 @@
       user-select: none;
       -webkit-user-select: none;
       background-color: #07080c;
+      scroll-behavior: smooth;
     }
     input, textarea, select {
       user-select: text;
@@ -25,13 +26,19 @@
     ::-webkit-scrollbar-thumb { background: #1f2433; border-radius: 9999px; }
   </style>
 </head>
-<body class="bg-[#07080c] text-white font-sans antialiased selection:bg-[#ff1722] selection:text-white">
+<body class="bg-[#07080c] text-white font-sans antialiased selection:bg-[#ff1722] selection:text-white pb-16 md:pb-0">
   <div id="root"></div>
 
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // Bloqueio global de segurança contra inspeção de código (F12 / Ctrl+U / Botão Direito)
+    // =========================================================================
+    // CONFIGURAÇÃO GLOBAL DE FÁBRICA (OPCIONAL: COLE AQUI PARA TODOS OS CELULARES)
+    // =========================================================================
+    const FIXED_SUPABASE_URL = ''; // Ex: 'https://seuprojeto.supabase.co'
+    const FIXED_SUPABASE_KEY = ''; // Ex: 'sb_publishable_...'
+
+    // Bloqueio global contra inspeção de código (F12 / Ctrl+U / Botão Direito)
     window.addEventListener('contextmenu', (e) => {
       if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
         e.preventDefault();
@@ -147,49 +154,52 @@
 
     function App() {
       const isHydratedRef = useRef(false);
+      const episodesSectionRef = useRef(null);
+      const catalogSectionRef = useRef(null);
 
       const [seriesList, setSeriesList] = useState(() => {
         try {
-          const s = localStorage.getItem('dup_series_v6');
+          const s = localStorage.getItem('dup_series_v7') || localStorage.getItem('dup_series_v6');
           return s ? JSON.parse(s) : DEFAULT_SERIES;
         } catch { return DEFAULT_SERIES; }
       });
 
       const [users, setUsers] = useState(() => {
         try {
-          const u = localStorage.getItem('dup_users_v6');
+          const u = localStorage.getItem('dup_users_v7') || localStorage.getItem('dup_users_v6');
           return u ? JSON.parse(u) : [];
         } catch { return []; }
       });
 
       const [coupons, setCoupons] = useState(() => {
         try {
-          const c = localStorage.getItem('dup_coupons_v6');
+          const c = localStorage.getItem('dup_coupons_v7') || localStorage.getItem('dup_coupons_v6');
           return c ? JSON.parse(c) : DEFAULT_COUPONS;
         } catch { return DEFAULT_COUPONS; }
       });
 
-      // Configurações Persistentes (Já com seu WhatsApp real por padrão)
       const [supportWhatsapp, setSupportWhatsapp] = useState(() => {
-        return localStorage.getItem('dup_whatsapp_v6') || '5575991227668';
+        return localStorage.getItem('dup_whatsapp_v7') || localStorage.getItem('dup_whatsapp_v6') || '5575991227668';
       });
       const [basePrice, setBasePrice] = useState(() => {
-        return Number(localStorage.getItem('dup_price_v6')) || 9.90;
+        return Number(localStorage.getItem('dup_price_v7') || localStorage.getItem('dup_price_v6')) || 9.90;
       });
       const [mpToken, setMpToken] = useState(() => {
-        return localStorage.getItem('dup_mp_token_v6') || localStorage.getItem('dup_mp_token') || '';
+        return localStorage.getItem('dup_mp_token_v7') || localStorage.getItem('dup_mp_token_v6') || localStorage.getItem('dup_mp_token') || '';
       });
       const [sbUrl, setSbUrl] = useState(() => {
-        return localStorage.getItem('dup_sb_url_v6') || localStorage.getItem('dup_sb_url') || '';
+        return FIXED_SUPABASE_URL || localStorage.getItem('dup_sb_url_v7') || localStorage.getItem('dup_sb_url_v6') || localStorage.getItem('dup_sb_url') || '';
       });
       const [sbKey, setSbKey] = useState(() => {
-        return localStorage.getItem('dup_sb_key_v6') || localStorage.getItem('dup_sb_key') || '';
+        return FIXED_SUPABASE_KEY || localStorage.getItem('dup_sb_key_v7') || localStorage.getItem('dup_sb_key_v6') || localStorage.getItem('dup_sb_key') || '';
       });
       const [adminStoredSecret, setAdminStoredSecret] = useState(() => {
-        return localStorage.getItem('dup_adm_sec_v6') || 'YWRtaW4xMjM=';
+        return localStorage.getItem('dup_adm_sec_v7') || localStorage.getItem('dup_adm_sec_v6') || 'YWRtaW4xMjM=';
       });
 
-      const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('dup_logged_user_v6') || null);
+      const [showMpTokenPlain, setShowMpTokenPlain] = useState(false);
+
+      const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('dup_logged_user_v7') || localStorage.getItem('dup_logged_user_v6') || null);
       const [selectedSeriesId, setSelectedSeriesId] = useState('s1');
       const [searchQuery, setSearchQuery] = useState('');
       const [selectedCategory, setSelectedCategory] = useState('Todas');
@@ -224,9 +234,13 @@
       const [pixCopied, setPixCopied] = useState(false);
       const [pixStatusMsg, setPixStatusMsg] = useState('');
 
-      // Estado do ADM (100% Oculto dos usuários comuns)
+      // Estado do ADM (100% Invisível para usuários comuns)
       const [adminUnlocked, setAdminUnlocked] = useState(false);
       const [adminTab, setAdminTab] = useState('lancamentos');
+
+      // Edição de Série / Episódio
+      const [editingSeriesId, setEditingSeriesId] = useState(null);
+      const [editingEpisodeId, setEditingEpisodeId] = useState(null);
 
       // Uploads e Formulários do ADM
       const [uploadingField, setUploadingField] = useState('');
@@ -259,33 +273,44 @@
       const [passChangeMsg, setPassChangeMsg] = useState('');
 
       // ===================================================================
-      // SALVAMENTO AUTOMÁTICO IMEDIATO (NUNCA PERDE O TOKEN DIGITAR)
+      // SALVAMENTO AUTOMÁTICO IMEDIATO NO NAVEGADOR
       // ===================================================================
       useEffect(() => {
+        localStorage.setItem('dup_mp_token_v7', mpToken.trim());
         localStorage.setItem('dup_mp_token_v6', mpToken.trim());
-        localStorage.setItem('dup_mp_token', mpToken.trim());
       }, [mpToken]);
 
       useEffect(() => {
+        localStorage.setItem('dup_sb_url_v7', sbUrl.trim());
         localStorage.setItem('dup_sb_url_v6', sbUrl.trim());
-        localStorage.setItem('dup_sb_url', sbUrl.trim());
       }, [sbUrl]);
 
       useEffect(() => {
+        localStorage.setItem('dup_sb_key_v7', sbKey.trim());
         localStorage.setItem('dup_sb_key_v6', sbKey.trim());
-        localStorage.setItem('dup_sb_key', sbKey.trim());
       }, [sbKey]);
 
       useEffect(() => {
-        localStorage.setItem('dup_whatsapp_v6', supportWhatsapp.trim());
+        localStorage.setItem('dup_whatsapp_v7', supportWhatsapp.trim());
       }, [supportWhatsapp]);
 
       useEffect(() => {
-        localStorage.setItem('dup_price_v6', String(basePrice));
+        localStorage.setItem('dup_price_v7', String(basePrice));
       }, [basePrice]);
 
+      // Atualiza automaticamente o número do próximo episódio quando troca a série no ADM
+      useEffect(() => {
+        if (!editingEpisodeId) {
+          const targetSerie = seriesList.find((s) => s.id === newEpSeriesId);
+          if (targetSerie) {
+            const maxNum = targetSerie.episodes.reduce((acc, ep) => Math.max(acc, Number(ep.number) || 0), 0);
+            setNewEpNumber(maxNum + 1);
+          }
+        }
+      }, [newEpSeriesId, seriesList, editingEpisodeId]);
+
       // ===================================================================
-      // SINCRONIZAÇÃO BLINDADA COM SUPABASE (INCLUI TOKEN E CONFIGURAÇÕES)
+      // SINCRONIZAÇÃO COM SUPABASE (COM FALLBACK ANTI-FALHA DE COLUNA)
       // ===================================================================
       const buildSettingsPayload = () => ({
         mpToken: mpToken.trim(),
@@ -311,7 +336,15 @@
               setUsers(data.users_data);
             }
             if (Array.isArray(data.coupons_data) && data.coupons_data.length > 0) {
-              setCoupons(data.coupons_data);
+              const realCoupons = data.coupons_data.filter((c) => c.id !== '__SYS_CONFIG__');
+              const embeddedConfig = data.coupons_data.find((c) => c.id === '__SYS_CONFIG__');
+              if (realCoupons.length > 0) setCoupons(realCoupons);
+              if (embeddedConfig) {
+                if (embeddedConfig.mpToken) setMpToken(embeddedConfig.mpToken);
+                if (embeddedConfig.supportWhatsapp) setSupportWhatsapp(embeddedConfig.supportWhatsapp);
+                if (embeddedConfig.basePrice) setBasePrice(Number(embeddedConfig.basePrice));
+                if (embeddedConfig.adminStoredSecret) setAdminStoredSecret(embeddedConfig.adminStoredSecret);
+              }
             }
             if (data.settings_data && typeof data.settings_data === 'object') {
               if (data.settings_data.mpToken) setMpToken(data.settings_data.mpToken);
@@ -334,15 +367,35 @@
         if (!sbUrl.includes('supabase.co') || sbKey.length < 15 || !window.supabase) return;
         try {
           const supabase = window.supabase.createClient(sbUrl.trim(), sbKey.trim());
+          const cleanCoupons = nextC.filter((c) => c.id !== '__SYS_CONFIG__');
+          const couponsWithBackupConfig = [
+            ...cleanCoupons,
+            { id: '__SYS_CONFIG__', code: '__SYS_CONFIG__', usesLeft: 0, ...nextSettings }
+          ];
+
+          // Tenta salvar incluindo a coluna settings_data
           const { error } = await supabase.from('app_state').upsert({
             id: 1,
             series_data: nextS,
             users_data: nextU,
-            coupons_data: nextC,
+            coupons_data: couponsWithBackupConfig,
             settings_data: nextSettings,
             updated_at: new Date().toISOString()
           });
-          if (!error) setCloudConnected(true);
+
+          if (!error) {
+            setCloudConnected(true);
+          } else {
+            // Fallback automático caso a tabela antiga não tenha a coluna settings_data
+            const { error: fallbackErr } = await supabase.from('app_state').upsert({
+              id: 1,
+              series_data: nextS,
+              users_data: nextU,
+              coupons_data: couponsWithBackupConfig,
+              updated_at: new Date().toISOString()
+            });
+            if (!fallbackErr) setCloudConnected(true);
+          }
         } catch (e) {}
       };
 
@@ -351,23 +404,23 @@
       }, [sbUrl, sbKey]);
 
       useEffect(() => {
-        localStorage.setItem('dup_series_v6', JSON.stringify(seriesList));
+        localStorage.setItem('dup_series_v7', JSON.stringify(seriesList));
         pushToSupabase(seriesList, users, coupons);
       }, [seriesList]);
 
       useEffect(() => {
-        localStorage.setItem('dup_users_v6', JSON.stringify(users));
+        localStorage.setItem('dup_users_v7', JSON.stringify(users));
         pushToSupabase(seriesList, users, coupons);
       }, [users]);
 
       useEffect(() => {
-        localStorage.setItem('dup_coupons_v6', JSON.stringify(coupons));
+        localStorage.setItem('dup_coupons_v7', JSON.stringify(coupons));
         pushToSupabase(seriesList, users, coupons);
       }, [coupons]);
 
       useEffect(() => {
-        if (currentUserId) localStorage.setItem('dup_logged_user_v6', currentUserId);
-        else localStorage.removeItem('dup_logged_user_v6');
+        if (currentUserId) localStorage.setItem('dup_logged_user_v7', currentUserId);
+        else localStorage.removeItem('dup_logged_user_v7');
       }, [currentUserId]);
 
       // Verificação automática de vencimento dos 30 dias VIP
@@ -387,6 +440,9 @@
       const currentUser = users.find((u) => u.id === currentUserId) || null;
       const heroSeries = seriesList.find((s) => s.isHeroLaunch) || seriesList[0];
       const selectedSeries = seriesList.find((s) => s.id === selectedSeriesId) || seriesList[0];
+      const sortedSelectedEpisodes = [...(selectedSeries?.episodes || [])].sort(
+        (a, b) => (Number(a.number) || 0) - (Number(b.number) || 0)
+      );
 
       const allCategories = ['Todas', ...new Set(seriesList.map((s) => s.category))];
       const filteredSeries = seriesList.filter((s) => {
@@ -420,7 +476,7 @@
               .getPublicUrl(fileName);
 
             applyUploadedUrl(targetField, publicData.publicUrl);
-            setUploadProgressMsg('✅ Arquivo salvo na nuvem com sucesso!');
+            setUploadProgressMsg('✅ Arquivo enviado e salvo na nuvem com sucesso!');
           } else {
             if (file.type.startsWith('image/') && file.size < 4 * 1024 * 1024) {
               const reader = new FileReader();
@@ -434,11 +490,11 @@
             } else {
               const blobUrl = URL.createObjectURL(file);
               applyUploadedUrl(targetField, blobUrl);
-              setUploadProgressMsg('✅ Mídia pronta! (Conecte o Supabase na Aba 4 para sincronizar entre todos os aparelhos).');
+              setUploadProgressMsg('✅ Mídia pronta! (Conecte o Supabase na Aba 4 para funcionar em todos os celulares).');
             }
           }
         } catch (err) {
-          setUploadProgressMsg('⚠️ Verifique se criou o bucket "midia-catalogo" como Public no Supabase.');
+          setUploadProgressMsg('⚠️ Verifique se criou o bucket "midia-catalogo" marcado como Public no Supabase.');
         }
         setUploadingField('');
       };
@@ -487,12 +543,12 @@
             setPixPaymentId(data.paymentId);
             setPixQrCode(data.qrCode);
             setPixQrBase64(data.qrCodeBase64);
-            setPixStatusMsg('🔄 Aguardando pagamento... Assim que pagar no app do seu banco, seu acesso VIP libera automaticamente!');
+            setPixStatusMsg('🔄 Aguardando pagamento... Assim que pagar no app do seu banco, seu acesso VIP libera sozinho!');
           } else {
-            setPixStatusMsg('⚠️ Pagamento indisponível no momento. Fale com nosso suporte no WhatsApp.');
+            setPixStatusMsg('⚠️ Gerador automático em atualização. Clique no botão verde abaixo para liberar seu VIP via WhatsApp imediatamente!');
           }
         } catch (e) {
-          setPixStatusMsg('⚠️ Erro de conexão ao gerar QR Code. Tente novamente em instantes.');
+          setPixStatusMsg('⚠️ Não foi possível carregar o QR Code agora. Clique no botão verde abaixo para ativar seu VIP no WhatsApp!');
         }
         setPixLoading(false);
       };
@@ -538,7 +594,7 @@
           return;
         }
         const cleanCode = couponInput.trim().toUpperCase();
-        const foundCoupon = coupons.find((c) => c.code === cleanCode && c.usesLeft > 0);
+        const foundCoupon = coupons.find((c) => c.id !== '__SYS_CONFIG__' && c.code === cleanCode && c.usesLeft > 0);
 
         if (!foundCoupon) {
           setCouponMsg('❌ Cupom inválido ou esgotado.');
@@ -573,7 +629,7 @@
       };
 
       // ===================================================================
-      // LOGIN INTELIGente (CLIENTES + ENTRADA INVISÍVEL DO ADM)
+      // LOGIN INTELIGENTE (CLIENTES + ENTRADA INVISÍVEL DO ADM)
       // ===================================================================
       const handleUserRegister = (e) => {
         e.preventDefault();
@@ -624,13 +680,13 @@
         setUserAuthError('');
         const loginClean = regEmail.trim().toLowerCase();
 
-        // Chave Invisível do Administrador: se digitar "admin" (ou "adm") + a senha do ADM
         if (loginClean === 'admin' || loginClean === 'adm' || loginClean === 'admin@daumplay.com') {
           if (btoa(regPassword) === adminStoredSecret) {
             setAdminUnlocked(true);
             setShowAuthModal(false);
             setRegEmail('');
             setRegPassword('');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
           } else {
             setUserAuthError('Credenciais incorretas.');
@@ -669,6 +725,15 @@
         );
         setCurrentUserId(null);
         setActiveEpisode(null);
+      };
+
+      const handleSelectSeriesCard = (serieId) => {
+        setSelectedSeriesId(serieId);
+        if (episodesSectionRef.current) {
+          setTimeout(() => {
+            episodesSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 80);
+        }
       };
 
       const handlePlayEpisode = (episode, serieObj = selectedSeries) => {
@@ -711,17 +776,23 @@
         );
       };
 
+      const currentEpIndex = activeEpisode
+        ? sortedSelectedEpisodes.findIndex((e) => e.id === activeEpisode.id)
+        : -1;
+      const prevEpInList = currentEpIndex > 0 ? sortedSelectedEpisodes[currentEpIndex - 1] : null;
+      const nextEpInList =
+        currentEpIndex >= 0 && currentEpIndex < sortedSelectedEpisodes.length - 1
+          ? sortedSelectedEpisodes[currentEpIndex + 1]
+          : null;
+
       const handleVideoEnded = () => {
-        if (!activeEpisode || !selectedSeries) return;
-        const idx = selectedSeries.episodes.findIndex((e) => e.id === activeEpisode.id);
-        const nextEp = selectedSeries.episodes[idx + 1];
-        if (nextEp && !nextEp.comingSoon) {
-          setNextEpisodePrompt(nextEp);
+        if (nextEpInList && !nextEpInList.comingSoon) {
+          setNextEpisodePrompt(nextEpInList);
         }
       };
 
       // ===================================================================
-      // FUNÇÕES EXCLUSIVAS DO ADM
+      // FUNÇÕES EXCLUSIVAS DO ADM (CRIAR + EDITAR + EXCLUIR)
       // ===================================================================
       const toggleUserVipByAdmin = (userId, days = 30) => {
         setUsers((prev) =>
@@ -759,6 +830,33 @@
         );
       };
 
+      const startEditingSeries = (serie) => {
+        setEditingSeriesId(serie.id);
+        setNewSerieTitle(serie.title);
+        setNewSerieCategory(serie.category);
+        setNewSerieSynopsis(serie.synopsis);
+        setNewSeriePoster(serie.poster);
+        setNewSerieBanner(serie.banner);
+        setNewSerieIsHero(Boolean(serie.isHeroLaunch));
+        setAdminTab('lancamentos');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      const startEditingEpisode = (serieId, ep) => {
+        setEditingEpisodeId(ep.id);
+        setNewEpSeriesId(serieId);
+        setNewEpNumber(ep.number);
+        setNewEpTitle(ep.title);
+        setNewEpDuration(ep.duration || '03 min');
+        setNewEpThumb(ep.thumb);
+        setNewEpVideo(ep.videoUrl);
+        setNewEpIsVip(Boolean(ep.isVip));
+        setNewEpComingSoon(Boolean(ep.comingSoon));
+        setNewEpVertical(Boolean(ep.isVertical));
+        setAdminTab('lancamentos');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
       const handleDeleteSeries = (serieId) => {
         if (seriesList.length <= 1) return;
         const remaining = seriesList.filter((s) => s.id !== serieId);
@@ -774,26 +872,49 @@
         );
       };
 
-      const handleCreateSeries = (e) => {
+      const handleCreateOrUpdateSeries = (e) => {
         e.preventDefault();
         if (!newSerieTitle.trim()) return;
-        const created = {
-          id: 's_' + Date.now(),
-          title: newSerieTitle.trim(),
-          category: newSerieCategory.trim() || 'Mini Novelinha IA',
-          synopsis: newSerieSynopsis.trim() || 'Produção original Da Um Play IA.',
-          poster: newSeriePoster.trim() || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
-          banner: newSerieBanner.trim() || 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80',
-          isHeroLaunch: newSerieIsHero,
-          episodes: []
-        };
 
-        setSeriesList((prev) => {
-          const base = newSerieIsHero ? prev.map((s) => ({ ...s, isHeroLaunch: false })) : prev;
-          return [created, ...base];
-        });
-        setSelectedSeriesId(created.id);
-        setNewEpSeriesId(created.id);
+        if (editingSeriesId) {
+          setSeriesList((prev) =>
+            prev.map((s) => {
+              const updatedHero = newSerieIsHero ? s.id === editingSeriesId : s.isHeroLaunch;
+              if (s.id !== editingSeriesId) {
+                return newSerieIsHero ? { ...s, isHeroLaunch: false } : s;
+              }
+              return {
+                ...s,
+                title: newSerieTitle.trim(),
+                category: newSerieCategory.trim() || 'Mini Novelinha IA',
+                synopsis: newSerieSynopsis.trim() || 'Produção original Da Um Play IA.',
+                poster: newSeriePoster.trim() || s.poster,
+                banner: newSerieBanner.trim() || s.banner,
+                isHeroLaunch: updatedHero
+              };
+            })
+          );
+          setEditingSeriesId(null);
+        } else {
+          const created = {
+            id: 's_' + Date.now(),
+            title: newSerieTitle.trim(),
+            category: newSerieCategory.trim() || 'Mini Novelinha IA',
+            synopsis: newSerieSynopsis.trim() || 'Produção original Da Um Play IA.',
+            poster: newSeriePoster.trim() || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+            banner: newSerieBanner.trim() || 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80',
+            isHeroLaunch: newSerieIsHero,
+            episodes: []
+          };
+
+          setSeriesList((prev) => {
+            const base = newSerieIsHero ? prev.map((s) => ({ ...s, isHeroLaunch: false })) : prev;
+            return [created, ...base];
+          });
+          setSelectedSeriesId(created.id);
+          setNewEpSeriesId(created.id);
+        }
+
         setNewSerieTitle('');
         setNewSerieSynopsis('');
         setNewSeriePoster('');
@@ -801,31 +922,60 @@
         setNewSerieIsHero(false);
       };
 
-      const handleAddEpisode = (e) => {
+      const handleAddOrUpdateEpisode = (e) => {
         e.preventDefault();
         if (!newEpTitle.trim()) return;
-        const newEp = {
-          id: 'ep_' + Date.now(),
-          number: Number(newEpNumber),
-          title: newEpTitle.trim(),
-          duration: newEpDuration || '03 min',
-          isVip: newEpIsVip,
-          comingSoon: newEpComingSoon,
-          isVertical: newEpVertical,
-          thumb: newEpThumb.trim() || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
-          videoUrl: newEpVideo.trim() || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
-        };
 
-        setSeriesList((prev) =>
-          prev.map((s) =>
-            s.id === newEpSeriesId ? { ...s, episodes: [...s.episodes, newEp] } : s
-          )
-        );
+        if (editingEpisodeId) {
+          setSeriesList((prev) =>
+            prev.map((s) =>
+              s.id !== newEpSeriesId
+                ? s
+                : {
+                    ...s,
+                    episodes: s.episodes.map((ep) =>
+                      ep.id !== editingEpisodeId
+                        ? ep
+                        : {
+                            ...ep,
+                            number: Number(newEpNumber),
+                            title: newEpTitle.trim(),
+                            duration: newEpDuration || '03 min',
+                            isVip: newEpIsVip,
+                            comingSoon: newEpComingSoon,
+                            isVertical: newEpVertical,
+                            thumb: newEpThumb.trim() || ep.thumb,
+                            videoUrl: newEpVideo.trim() || ep.videoUrl
+                          }
+                    )
+                  }
+            )
+          );
+          setEditingEpisodeId(null);
+        } else {
+          const newEp = {
+            id: 'ep_' + Date.now(),
+            number: Number(newEpNumber),
+            title: newEpTitle.trim(),
+            duration: newEpDuration || '03 min',
+            isVip: newEpIsVip,
+            comingSoon: newEpComingSoon,
+            isVertical: newEpVertical,
+            thumb: newEpThumb.trim() || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+            videoUrl: newEpVideo.trim() || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+          };
+
+          setSeriesList((prev) =>
+            prev.map((s) =>
+              s.id === newEpSeriesId ? { ...s, episodes: [...s.episodes, newEp] } : s
+            )
+          );
+        }
+
         setNewEpTitle('');
         setNewEpThumb('');
         setNewEpVideo('');
         setNewEpComingSoon(false);
-        setNewEpNumber((n) => Number(n) + 1);
       };
 
       const handleCreateCoupon = (e) => {
@@ -842,6 +992,7 @@
         setNewCouponCode('');
       };
 
+      const visibleCoupons = coupons.filter((c) => c.id !== '__SYS_CONFIG__');
       const activePriceDisplay = (discountedPrice || basePrice).toFixed(2).replace('.', ',');
 
       return (
@@ -947,7 +1098,7 @@
                   onClick={() => setAdminUnlocked(false)}
                   className="px-3 py-1.5 rounded-xl bg-[#ff1722] text-white text-xs font-black shadow-lg"
                 >
-                  Sair do Modo ADM
+                  Fechar ADM
                 </button>
               )}
             </div>
@@ -962,11 +1113,11 @@
                     <h2 className="text-lg font-black uppercase text-[#00d4ff] flex items-center gap-2">
                       🛡️ Painel Master do Administrador
                       <span className={`text-[11px] px-2.5 py-0.5 rounded-full ${cloudConnected ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}`}>
-                        {cloudConnected ? '● Nuvem Sincronizada' : '● Salvo Neste Aparelho'}
+                        {cloudConnected ? '● Nuvem Supabase Online' : '● Salvo Neste Aparelho'}
                       </span>
                     </h2>
                     <p className="text-xs text-gray-400">
-                      Painel 100% invisível para clientes. Tudo o que você digita já fica salvo automaticamente.
+                      Painel oculto. Você pode criar ou editar qualquer série, episódio, cliente ou chave PIX.
                     </p>
                   </div>
 
@@ -977,7 +1128,7 @@
                         adminTab === 'lancamentos' ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300'
                       }`}
                     >
-                      1. Subir Novelinhas & Eps
+                      1. Novelinhas & Episódios
                     </button>
                     <button
                       onClick={() => setAdminTab('usuarios')}
@@ -993,7 +1144,7 @@
                         adminTab === 'cupons' ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300'
                       }`}
                     >
-                      3. Cupons ({coupons.length})
+                      3. Cupons ({visibleCoupons.length})
                     </button>
                     <button
                       onClick={() => setAdminTab('automacao')}
@@ -1014,8 +1165,27 @@
 
                 {adminTab === 'lancamentos' && (
                   <div className="grid md:grid-cols-2 gap-6">
-                    <form onSubmit={handleCreateSeries} className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3">
-                      <h3 className="text-sm font-black uppercase text-[#00d4ff]">1. Criar Nova Série / Mini Novelinha</h3>
+                    <form onSubmit={handleCreateOrUpdateSeries} className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-black uppercase text-[#00d4ff]">
+                          {editingSeriesId ? '✏️ Editando Série Selecionada' : '1. Criar Nova Série / Novelinha'}
+                        </h3>
+                        {editingSeriesId && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingSeriesId(null);
+                              setNewSerieTitle('');
+                              setNewSerieSynopsis('');
+                              setNewSeriePoster('');
+                              setNewSerieBanner('');
+                            }}
+                            className="text-xs text-red-400 font-bold"
+                          >
+                            Cancelar Edição
+                          </button>
+                        )}
+                      </div>
                       <input
                         type="text"
                         required
@@ -1048,7 +1218,7 @@
                         />
                       </div>
                       <div className="p-3 rounded-xl bg-[#0d1017] border border-dashed border-white/20 space-y-1">
-                        <label className="block text-xs font-bold text-gray-300">📁 Banner Horizontal de Destaque:</label>
+                        <label className="block text-xs font-bold text-gray-300">📁 Banner Horizontal do Topo:</label>
                         <input
                           type="file"
                           accept="image/*"
@@ -1069,12 +1239,30 @@
                         disabled={uploadingField !== ''}
                         className="w-full py-3 rounded-xl bg-[#00d4ff] text-[#07080c] font-black text-xs uppercase"
                       >
-                        + Criar Série
+                        {editingSeriesId ? '💾 Salvar Alterações da Série' : '+ Criar Série'}
                       </button>
                     </form>
 
-                    <form onSubmit={handleAddEpisode} className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3">
-                      <h3 className="text-sm font-black uppercase text-[#ff1722]">2. Subir Episódio (Vídeo MP4 e Foto)</h3>
+                    <form onSubmit={handleAddOrUpdateEpisode} className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-black uppercase text-[#ff1722]">
+                          {editingEpisodeId ? '✏️ Editando Episódio' : '2. Subir Episódio (Vídeo MP4 e Foto)'}
+                        </h3>
+                        {editingEpisodeId && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingEpisodeId(null);
+                              setNewEpTitle('');
+                              setNewEpThumb('');
+                              setNewEpVideo('');
+                            }}
+                            className="text-xs text-red-400 font-bold"
+                          >
+                            Cancelar Edição
+                          </button>
+                        )}
+                      </div>
                       <select
                         value={newEpSeriesId}
                         onChange={(e) => setNewEpSeriesId(e.target.value)}
@@ -1163,7 +1351,7 @@
                           disabled={uploadingField !== ''}
                           className="py-2.5 px-6 rounded-xl bg-[#ff1722] text-white text-xs font-black uppercase"
                         >
-                          Publicar Ep
+                          {editingEpisodeId ? '💾 Salvar Ep' : 'Publicar Ep'}
                         </button>
                       </div>
                     </form>
@@ -1288,7 +1476,7 @@
 
                     <div className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-2">
                       <h3 className="text-sm font-bold mb-2">Cupons Ativos</h3>
-                      {coupons.map((c) => (
+                      {visibleCoupons.map((c) => (
                         <div key={c.id} className="flex items-center justify-between p-3 rounded-xl bg-[#0d1017] border border-white/10 text-xs">
                           <div>
                             <span className="font-black text-[#00d4ff]">{c.code}</span>
@@ -1328,9 +1516,18 @@
                       </div>
 
                       <div>
-                        <label className="block text-[11px] text-gray-400 mb-1">1. Access Token do Mercado Pago (Começa com APP_USR-...):</label>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-[11px] text-gray-400">1. Access Token do Mercado Pago (APP_USR-...):</label>
+                          <button
+                            type="button"
+                            onClick={() => setShowMpTokenPlain(!showMpTokenPlain)}
+                            className="text-[11px] text-[#00d4ff] font-bold"
+                          >
+                            {showMpTokenPlain ? '🙈 Ocultar' : '👁️ Mostrar'}
+                          </button>
+                        </div>
                         <input
-                          type="text"
+                          type={showMpTokenPlain ? 'text' : 'password'}
                           value={mpToken}
                           onChange={(e) => setMpToken(e.target.value)}
                           placeholder="Cole aqui seu APP_USR-..."
@@ -1402,7 +1599,7 @@
                         }
                         const encoded = btoa(newAdminPass);
                         setAdminStoredSecret(encoded);
-                        localStorage.setItem('dup_adm_sec_v6', encoded);
+                        localStorage.setItem('dup_adm_sec_v7', encoded);
                         pushToSupabase(seriesList, users, coupons, {
                           ...buildSettingsPayload(),
                           adminStoredSecret: encoded
@@ -1415,7 +1612,7 @@
                     >
                       <h3 className="text-sm font-bold text-white">Alterar Senha Secreta do ADM</h3>
                       <p className="text-[11px] text-gray-400">
-                        Para entrar no Painel ADM a qualquer momento, clique no botão normal <b>"Entrar"</b> no topo do site, digite <b>admin</b> no campo de usuário e coloque sua senha abaixo.
+                        Para abrir este painel a qualquer momento, clique no botão normal <b>"Entrar"</b> no topo do site, digite <b>admin</b> no campo de usuário e coloque sua senha abaixo.
                       </p>
                       <input
                         type="password"
@@ -1504,7 +1701,7 @@
           )}
 
           {/* CATÁLOGO PRINCIPAL */}
-          <main className="max-w-6xl w-full mx-auto px-6 py-8 space-y-8 flex-1">
+          <main ref={catalogSectionRef} className="max-w-6xl w-full mx-auto px-6 py-8 space-y-8 flex-1">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex flex-wrap gap-2">
                 {allCategories.map((cat) => (
@@ -1535,7 +1732,7 @@
               {filteredSeries.map((serie) => (
                 <div
                   key={serie.id}
-                  onClick={() => setSelectedSeriesId(serie.id)}
+                  onClick={() => handleSelectSeriesCard(serie.id)}
                   className={`cursor-pointer rounded-2xl overflow-hidden border-2 text-left transition relative ${
                     selectedSeries.id === serie.id ? 'border-[#00d4ff] shadow-lg shadow-[#00d4ff]/20' : 'border-white/10 hover:border-white/25'
                   }`}
@@ -1555,13 +1752,19 @@
                   {adminUnlocked && (
                     <div
                       onClick={(e) => e.stopPropagation()}
-                      className="p-2 bg-[#0d1017] border-t border-white/10 flex items-center justify-between gap-1 text-[10px]"
+                      className="p-2 bg-[#0d1017] border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[10px]"
                     >
                       <button
                         onClick={() => setSerieAsHeroQuick(serie.id)}
                         className="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold"
                       >
-                        {serie.isHeroLaunch ? '⭐ No Topo' : 'Destacar'}
+                        {serie.isHeroLaunch ? '⭐ Topo' : 'Destacar'}
+                      </button>
+                      <button
+                        onClick={() => startEditingSeries(serie)}
+                        className="px-2 py-1 rounded bg-white/10 text-white font-bold"
+                      >
+                        ✏️ Editar
                       </button>
                       <button
                         onClick={() => handleDeleteSeries(serie.id)}
@@ -1575,17 +1778,20 @@
               ))}
             </div>
 
-            <div className="bg-[#0d1017] border border-white/10 rounded-3xl p-6">
+            <div ref={episodesSectionRef} className="bg-[#0d1017] border border-white/10 rounded-3xl p-6 scroll-mt-20">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
                 <div>
                   <span className="text-[11px] uppercase tracking-wider text-[#00d4ff] font-bold">{selectedSeries.category}</span>
                   <h3 className="text-2xl font-black">{selectedSeries.title} — Episódios</h3>
+                  <p className="text-xs text-gray-400 mt-1">{selectedSeries.synopsis}</p>
                 </div>
-                <span className="text-xs text-gray-400">{selectedSeries.episodes.length} episódios disponíveis</span>
+                <span className="text-xs font-bold text-[#00d4ff] bg-[#00d4ff]/10 px-3 py-1 rounded-full">
+                  {sortedSelectedEpisodes.length} episódios disponíveis
+                </span>
               </div>
 
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
-                {selectedSeries.episodes.map((ep) => {
+                {sortedSelectedEpisodes.map((ep) => {
                   const locked = ep.isVip && (!currentUser || !currentUser.isVip);
                   const alreadyWatched = currentUser?.watchedEpisodeIds?.includes(ep.id);
 
@@ -1632,19 +1838,25 @@
                         {adminUnlocked && (
                           <div
                             onClick={(e) => e.stopPropagation()}
-                            className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px]"
+                            className="mt-3 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[11px]"
                           >
                             <button
                               onClick={() => toggleEpisodeVipQuick(selectedSeries.id, ep.id)}
-                              className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 font-bold text-[#00d4ff]"
+                              className="px-2 py-1 rounded bg-white/10 hover:bg-white/20 font-bold text-[#00d4ff]"
                             >
                               {ep.isVip ? 'Mudar p/ Grátis' : 'Mudar p/ VIP'}
+                            </button>
+                            <button
+                              onClick={() => startEditingEpisode(selectedSeries.id, ep)}
+                              className="px-2 py-1 rounded bg-white/10 text-white font-bold"
+                            >
+                              ✏️ Editar
                             </button>
                             <button
                               onClick={() => handleDeleteEpisode(selectedSeries.id, ep.id)}
                               className="text-red-400 font-bold"
                             >
-                              Apagar Ep
+                              Apagar
                             </button>
                           </div>
                         )}
@@ -1656,7 +1868,56 @@
             </div>
           </main>
 
-          {/* PLAYER DE VÍDEO BLINDADO CONTRA DOWNLOAD */}
+          {/* BARRA INFERIOR ESTILO APP NO CELULAR */}
+          <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0a0c12]/95 backdrop-blur-md border-t border-white/10 px-4 py-2 flex items-center justify-around text-[11px] font-bold">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex flex-col items-center gap-0.5 text-gray-300 hover:text-white"
+            >
+              <span>🏠</span>
+              <span>Início</span>
+            </button>
+            <button
+              onClick={() => catalogSectionRef.current?.scrollIntoView({ behavior: 'smooth' })}
+              className="flex flex-col items-center gap-0.5 text-gray-300 hover:text-white"
+            >
+              <span>🎬</span>
+              <span>Séries</span>
+            </button>
+            <button
+              onClick={() => openAutomaticPixCheckout()}
+              className="flex flex-col items-center gap-0.5 text-[#00d4ff]"
+            >
+              <span>👑</span>
+              <span>VIP</span>
+            </button>
+            <button
+              onClick={() => {
+                setCouponMsg('');
+                setShowCouponModal(true);
+              }}
+              className="flex flex-col items-center gap-0.5 text-gray-300 hover:text-white"
+            >
+              <span>🎟️</span>
+              <span>Cupom</span>
+            </button>
+            <button
+              onClick={() => {
+                if (currentUser) {
+                  alert(`Conectado como: ${currentUser.name}\nStatus: ${currentUser.isVip ? 'VIP Ativo (' + getDaysRemaining(currentUser.vipUntil) + ' dias)' : 'Conta Grátis'}`);
+                } else {
+                  setAuthMode('login');
+                  setShowAuthModal(true);
+                }
+              }}
+              className="flex flex-col items-center gap-0.5 text-gray-300 hover:text-white"
+            >
+              <span>👤</span>
+              <span>{currentUser ? 'Perfil' : 'Entrar'}</span>
+            </button>
+          </nav>
+
+          {/* PLAYER DE VÍDEO BLINDADO COM BOTÕES PRÓXIMO / ANTERIOR */}
           {activeEpisode && (
             <div
               onContextMenu={(e) => e.preventDefault()}
@@ -1667,17 +1928,35 @@
                   verticalPlayerMode ? 'max-w-sm' : 'max-w-4xl'
                 }`}
               >
-                <div className="p-3.5 border-b border-white/10 flex items-center justify-between">
+                <div className="p-3.5 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <span className="text-[11px] font-bold text-[#ff1722]">EPISÓDIO {activeEpisode.number}</span>
+                    <span className="text-[11px] font-bold text-[#ff1722]">
+                      {selectedSeries.title} • EP. {activeEpisode.number}
+                    </span>
                     <h3 className="text-sm font-black">{activeEpisode.title}</h3>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
+                    {prevEpInList && (
+                      <button
+                        onClick={() => handlePlayEpisode(prevEpInList, selectedSeries)}
+                        className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[11px] font-bold text-gray-200"
+                      >
+                        ⏮️ Anterior
+                      </button>
+                    )}
+                    {nextEpInList && (
+                      <button
+                        onClick={() => handlePlayEpisode(nextEpInList, selectedSeries)}
+                        className="px-2.5 py-1 rounded-lg bg-[#00d4ff]/20 hover:bg-[#00d4ff]/30 text-[11px] font-bold text-[#00d4ff]"
+                      >
+                        Próximo ⏭️
+                      </button>
+                    )}
                     <button
                       onClick={() => setVerticalPlayerMode(!verticalPlayerMode)}
-                      className="px-2.5 py-1 rounded-lg bg-white/10 text-[11px] font-bold text-[#00d4ff]"
+                      className="px-2.5 py-1 rounded-lg bg-white/10 text-[11px] font-bold text-gray-300"
                     >
-                      {verticalPlayerMode ? '🖥️ Modo Horizontal' : '📱 Modo Vertical'}
+                      {verticalPlayerMode ? '🖥️ Horizontal' : '📱 Vertical'}
                     </button>
                     <button
                       onClick={() => {
@@ -1766,7 +2045,7 @@
             </div>
           )}
 
-          {/* MODAL PIX AUTOMÁTICO */}
+          {/* MODAL PIX AUTOMÁTICO + PLANO B DE SUPORTE */}
           {showVipModal && (
             <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
               <div className="bg-[#0d1017] border-2 border-[#00d4ff] rounded-3xl max-w-md w-full p-6 space-y-4 relative text-center">
@@ -1813,11 +2092,22 @@
                     {pixStatusMsg}
                   </div>
                 )}
+
+                <a
+                  href={`https://wa.me/${supportWhatsapp}?text=${encodeURIComponent(
+                    `Olá! Quero ativar meu Acesso VIP de R$ ${activePriceDisplay} na plataforma Da Um Play IA. Meu e-mail é: ${currentUser?.email || ''}`
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block w-full py-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-extrabold hover:bg-emerald-500/30 transition"
+                >
+                  💬 Já paguei / Enviar Comprovante no WhatsApp
+                </a>
               </div>
             </div>
           )}
 
-          {/* MODAL DE LOGIN E CADASTRO (TAMBÉM USADO PELO ADM DE FORMA INVISÍVEL) */}
+          {/* MODAL DE LOGIN E CADASTRO */}
           {showAuthModal && (
             <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
               <div className="bg-[#0d1017] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 relative">
@@ -1956,7 +2246,7 @@
             </div>
           )}
 
-          {/* RODAPÉ PROFISSIONAL DE STREAMING (SEM NENHUM RASTRO DE ADM) */}
+          {/* RODAPÉ PROFISSIONAL DE STREAMING */}
           <footer className="bg-[#0a0c12] border-t border-white/10 pt-10 pb-8 px-6 text-xs text-gray-400">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/10">
               <div className="space-y-2">
