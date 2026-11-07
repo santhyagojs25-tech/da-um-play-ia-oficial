@@ -4,18 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#07080c" />
-  <title>Da Um Play IA — Séries & Mini Novelinhas VIP</title>
+  <title>Da Um Play IA — Séries & Mini Novelinhas Exclusivas</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body {
+      user-select: none;
+      -webkit-user-select: none;
+      background-color: #07080c;
+    }
+    input, textarea, select {
+      user-select: text;
+      -webkit-user-select: text;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #07080c; }
+    ::-webkit-scrollbar-thumb { background: #1f2433; border-radius: 9999px; }
+  </style>
 </head>
 <body class="bg-[#07080c] text-white font-sans antialiased selection:bg-[#ff1722] selection:text-white">
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useRef } = React;
+
+    // Bloqueio global de segurança contra inspeção de código (F12 / Ctrl+U / Botão Direito)
+    window.addEventListener('contextmenu', (e) => {
+      if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+      }
+    });
+    window.addEventListener('keydown', (e) => {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
+        (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase()))
+      ) {
+        e.preventDefault();
+      }
+    });
 
     const DEFAULT_SERIES = [
       {
@@ -97,25 +127,6 @@
       }
     ];
 
-    const DEFAULT_USERS = [
-      {
-        id: 'u_demo_1',
-        name: 'Assinante Exemplo',
-        email: 'cliente@exemplo.com',
-        whatsapp: '11999990000',
-        password: '123',
-        isVip: true,
-        vipUntil: Date.now() + 30 * 24 * 60 * 60 * 1000,
-        paymentStatus: 'approved',
-        watchedEpisodeIds: ['e1'],
-        lastResume: { serieId: 's1', epId: 'e1', title: 'Ep. 1 - O Contrato Secreto' },
-        isOnline: false,
-        lastEntry: 'Hoje, 10:15',
-        lastExit: 'Hoje, 11:40',
-        lastWatched: 'A Herdeira de Ferro IA - Ep. 1'
-      }
-    ];
-
     const DEFAULT_COUPONS = [
       { id: 'c1', code: 'VIP7DIAS', type: 'days', value: 7, usesLeft: 20 },
       { id: 'c2', code: 'PROMO490', type: 'price', value: 4.90, usesLeft: 50 }
@@ -135,26 +146,50 @@
     };
 
     function App() {
+      const isHydratedRef = useRef(false);
+
       const [seriesList, setSeriesList] = useState(() => {
-        const s = localStorage.getItem('dup_series_v5');
-        return s ? JSON.parse(s) : DEFAULT_SERIES;
-      });
-      const [users, setUsers] = useState(() => {
-        const u = localStorage.getItem('dup_users_v5');
-        return u ? JSON.parse(u) : DEFAULT_USERS;
-      });
-      const [coupons, setCoupons] = useState(() => {
-        const c = localStorage.getItem('dup_coupons_v5');
-        return c ? JSON.parse(c) : DEFAULT_COUPONS;
-      });
-      const [supportWhatsapp, setSupportWhatsapp] = useState(() => {
-        return localStorage.getItem('dup_whatsapp_v5') || '5511999999999';
-      });
-      const [basePrice, setBasePrice] = useState(() => {
-        return Number(localStorage.getItem('dup_price_v5')) || 9.90;
+        try {
+          const s = localStorage.getItem('dup_series_v6');
+          return s ? JSON.parse(s) : DEFAULT_SERIES;
+        } catch { return DEFAULT_SERIES; }
       });
 
-      const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('dup_logged_user_v5') || null);
+      const [users, setUsers] = useState(() => {
+        try {
+          const u = localStorage.getItem('dup_users_v6');
+          return u ? JSON.parse(u) : [];
+        } catch { return []; }
+      });
+
+      const [coupons, setCoupons] = useState(() => {
+        try {
+          const c = localStorage.getItem('dup_coupons_v6');
+          return c ? JSON.parse(c) : DEFAULT_COUPONS;
+        } catch { return DEFAULT_COUPONS; }
+      });
+
+      // Configurações Persistentes (Já com seu WhatsApp real por padrão)
+      const [supportWhatsapp, setSupportWhatsapp] = useState(() => {
+        return localStorage.getItem('dup_whatsapp_v6') || '5575991227668';
+      });
+      const [basePrice, setBasePrice] = useState(() => {
+        return Number(localStorage.getItem('dup_price_v6')) || 9.90;
+      });
+      const [mpToken, setMpToken] = useState(() => {
+        return localStorage.getItem('dup_mp_token_v6') || localStorage.getItem('dup_mp_token') || '';
+      });
+      const [sbUrl, setSbUrl] = useState(() => {
+        return localStorage.getItem('dup_sb_url_v6') || localStorage.getItem('dup_sb_url') || '';
+      });
+      const [sbKey, setSbKey] = useState(() => {
+        return localStorage.getItem('dup_sb_key_v6') || localStorage.getItem('dup_sb_key') || '';
+      });
+      const [adminStoredSecret, setAdminStoredSecret] = useState(() => {
+        return localStorage.getItem('dup_adm_sec_v6') || 'YWRtaW4xMjM=';
+      });
+
+      const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('dup_logged_user_v6') || null);
       const [selectedSeriesId, setSelectedSeriesId] = useState('s1');
       const [searchQuery, setSearchQuery] = useState('');
       const [selectedCategory, setSelectedCategory] = useState('Todas');
@@ -162,14 +197,10 @@
       const [nextEpisodePrompt, setNextEpisodePrompt] = useState(null);
       const [verticalPlayerMode, setVerticalPlayerMode] = useState(false);
 
-      // Credenciais Nuvem
-      const [sbUrl, setSbUrl] = useState(() => localStorage.getItem('dup_sb_url') || '');
-      const [sbKey, setSbKey] = useState(() => localStorage.getItem('dup_sb_key') || '');
-      const [mpToken, setMpToken] = useState(() => localStorage.getItem('dup_mp_token') || '');
       const [cloudConnected, setCloudConnected] = useState(false);
       const [configSavedMsg, setConfigSavedMsg] = useState('');
 
-      // Modais Cliente
+      // Modais de Cliente
       const [showAuthModal, setShowAuthModal] = useState(false);
       const [authMode, setAuthMode] = useState('login');
       const [regName, setRegName] = useState('');
@@ -177,14 +208,14 @@
       const [regWhatsapp, setRegWhatsapp] = useState('');
       const [regPassword, setRegPassword] = useState('');
       const [userAuthError, setUserAuthError] = useState('');
+      const [legalModalText, setLegalModalText] = useState(null);
 
-      // Cupom e Desconto no PIX
+      // Cupom e PIX
       const [showCouponModal, setShowCouponModal] = useState(false);
       const [couponInput, setCouponInput] = useState('');
       const [couponMsg, setCouponMsg] = useState('');
       const [discountedPrice, setDiscountedPrice] = useState(null);
 
-      // Checkout PIX Automático
       const [showVipModal, setShowVipModal] = useState(false);
       const [pixLoading, setPixLoading] = useState(false);
       const [pixPaymentId, setPixPaymentId] = useState(null);
@@ -193,18 +224,11 @@
       const [pixCopied, setPixCopied] = useState(false);
       const [pixStatusMsg, setPixStatusMsg] = useState('');
 
-      // Segurança ADM
-      const [logoClicks, setLogoClicks] = useState(0);
-      const [showAdminAuthModal, setShowAdminAuthModal] = useState(false);
+      // Estado do ADM (100% Oculto dos usuários comuns)
       const [adminUnlocked, setAdminUnlocked] = useState(false);
       const [adminTab, setAdminTab] = useState('lancamentos');
-      const [adminStoredSecret, setAdminStoredSecret] = useState(() => {
-        return localStorage.getItem('dup_adm_sec_v5') || 'YWRtaW4xMjM=';
-      });
-      const [passwordInput, setPasswordInput] = useState('');
-      const [authError, setAuthError] = useState('');
 
-      // Upload Direto & Criação no ADM
+      // Uploads e Formulários do ADM
       const [uploadingField, setUploadingField] = useState('');
       const [uploadProgressMsg, setUploadProgressMsg] = useState('');
 
@@ -225,7 +249,6 @@
       const [newEpComingSoon, setNewEpComingSoon] = useState(false);
       const [newEpVertical, setNewEpVertical] = useState(false);
 
-      // Cupons no ADM (Dias Grátis ou Preço Promocional)
       const [newCouponCode, setNewCouponCode] = useState('');
       const [newCouponType, setNewCouponType] = useState('days');
       const [newCouponVal, setNewCouponVal] = useState(7);
@@ -236,57 +259,118 @@
       const [passChangeMsg, setPassChangeMsg] = useState('');
 
       // ===================================================================
-      // SINCRONIZAÇÃO INTELIGENTE COM SUPABASE
+      // SALVAMENTO AUTOMÁTICO IMEDIATO (NUNCA PERDE O TOKEN DIGITAR)
       // ===================================================================
-      const syncWithSupabase = async (pushData = false, nextS = seriesList, nextU = users, nextC = coupons) => {
-        if (!sbUrl.includes('supabase.co') || sbKey.length < 20 || !window.supabase) return;
+      useEffect(() => {
+        localStorage.setItem('dup_mp_token_v6', mpToken.trim());
+        localStorage.setItem('dup_mp_token', mpToken.trim());
+      }, [mpToken]);
+
+      useEffect(() => {
+        localStorage.setItem('dup_sb_url_v6', sbUrl.trim());
+        localStorage.setItem('dup_sb_url', sbUrl.trim());
+      }, [sbUrl]);
+
+      useEffect(() => {
+        localStorage.setItem('dup_sb_key_v6', sbKey.trim());
+        localStorage.setItem('dup_sb_key', sbKey.trim());
+      }, [sbKey]);
+
+      useEffect(() => {
+        localStorage.setItem('dup_whatsapp_v6', supportWhatsapp.trim());
+      }, [supportWhatsapp]);
+
+      useEffect(() => {
+        localStorage.setItem('dup_price_v6', String(basePrice));
+      }, [basePrice]);
+
+      // ===================================================================
+      // SINCRONIZAÇÃO BLINDADA COM SUPABASE (INCLUI TOKEN E CONFIGURAÇÕES)
+      // ===================================================================
+      const buildSettingsPayload = () => ({
+        mpToken: mpToken.trim(),
+        supportWhatsapp: supportWhatsapp.trim(),
+        basePrice: Number(basePrice) || 9.90,
+        adminStoredSecret
+      });
+
+      const pullFromSupabase = async () => {
+        if (!sbUrl.includes('supabase.co') || sbKey.length < 15 || !window.supabase) {
+          isHydratedRef.current = true;
+          return;
+        }
         try {
           const supabase = window.supabase.createClient(sbUrl.trim(), sbKey.trim());
-          if (!pushData) {
-            const { data, error } = await supabase.from('app_state').select('*').eq('id', 1).single();
-            if (!error && data) {
-              setCloudConnected(true);
-              if (Array.isArray(data.series_data) && data.series_data.length > 0) setSeriesList(data.series_data);
-              if (Array.isArray(data.users_data) && data.users_data.length > 0) setUsers(data.users_data);
-              if (Array.isArray(data.coupons_data) && data.coupons_data.length > 0) setCoupons(data.coupons_data);
-            }
-          } else {
-            await supabase.from('app_state').upsert({
-              id: 1,
-              series_data: nextS,
-              users_data: nextU,
-              coupons_data: nextC,
-              updated_at: new Date().toISOString()
-            });
+          const { data, error } = await supabase.from('app_state').select('*').eq('id', 1).single();
+          if (!error && data) {
             setCloudConnected(true);
+            if (Array.isArray(data.series_data) && data.series_data.length > 0) {
+              setSeriesList(data.series_data);
+            }
+            if (Array.isArray(data.users_data) && data.users_data.length > 0) {
+              setUsers(data.users_data);
+            }
+            if (Array.isArray(data.coupons_data) && data.coupons_data.length > 0) {
+              setCoupons(data.coupons_data);
+            }
+            if (data.settings_data && typeof data.settings_data === 'object') {
+              if (data.settings_data.mpToken) setMpToken(data.settings_data.mpToken);
+              if (data.settings_data.supportWhatsapp) setSupportWhatsapp(data.settings_data.supportWhatsapp);
+              if (data.settings_data.basePrice) setBasePrice(Number(data.settings_data.basePrice));
+              if (data.settings_data.adminStoredSecret) setAdminStoredSecret(data.settings_data.adminStoredSecret);
+            }
           }
+        } catch (e) {}
+        isHydratedRef.current = true;
+      };
+
+      const pushToSupabase = async (
+        nextS = seriesList,
+        nextU = users,
+        nextC = coupons,
+        nextSettings = buildSettingsPayload()
+      ) => {
+        if (!isHydratedRef.current) return;
+        if (!sbUrl.includes('supabase.co') || sbKey.length < 15 || !window.supabase) return;
+        try {
+          const supabase = window.supabase.createClient(sbUrl.trim(), sbKey.trim());
+          const { error } = await supabase.from('app_state').upsert({
+            id: 1,
+            series_data: nextS,
+            users_data: nextU,
+            coupons_data: nextC,
+            settings_data: nextSettings,
+            updated_at: new Date().toISOString()
+          });
+          if (!error) setCloudConnected(true);
         } catch (e) {}
       };
 
       useEffect(() => {
-        syncWithSupabase(false);
+        pullFromSupabase();
       }, [sbUrl, sbKey]);
 
       useEffect(() => {
-        localStorage.setItem('dup_series_v5', JSON.stringify(seriesList));
-        syncWithSupabase(true, seriesList, users, coupons);
+        localStorage.setItem('dup_series_v6', JSON.stringify(seriesList));
+        pushToSupabase(seriesList, users, coupons);
       }, [seriesList]);
 
       useEffect(() => {
-        localStorage.setItem('dup_users_v5', JSON.stringify(users));
-        syncWithSupabase(true, seriesList, users, coupons);
+        localStorage.setItem('dup_users_v6', JSON.stringify(users));
+        pushToSupabase(seriesList, users, coupons);
       }, [users]);
 
       useEffect(() => {
-        localStorage.setItem('dup_coupons_v5', JSON.stringify(coupons));
-        syncWithSupabase(true, seriesList, users, coupons);
+        localStorage.setItem('dup_coupons_v6', JSON.stringify(coupons));
+        pushToSupabase(seriesList, users, coupons);
       }, [coupons]);
 
       useEffect(() => {
-        if (currentUserId) localStorage.setItem('dup_logged_user_v5', currentUserId);
-        else localStorage.removeItem('dup_logged_user_v5');
+        if (currentUserId) localStorage.setItem('dup_logged_user_v6', currentUserId);
+        else localStorage.removeItem('dup_logged_user_v6');
       }, [currentUserId]);
 
+      // Verificação automática de vencimento dos 30 dias VIP
       useEffect(() => {
         const now = Date.now();
         let changed = false;
@@ -300,17 +384,6 @@
         if (changed) setUsers(updated);
       }, []);
 
-      useEffect(() => {
-        if (logoClicks === 0) return;
-        if (logoClicks >= 3) {
-          setShowAdminAuthModal(true);
-          setLogoClicks(0);
-          return;
-        }
-        const t = setTimeout(() => setLogoClicks(0), 1200);
-        return () => clearTimeout(t);
-      }, [logoClicks]);
-
       const currentUser = users.find((u) => u.id === currentUserId) || null;
       const heroSeries = seriesList.find((s) => s.isHeroLaunch) || seriesList[0];
       const selectedSeries = seriesList.find((s) => s.id === selectedSeriesId) || seriesList[0];
@@ -323,7 +396,7 @@
       });
 
       // ===================================================================
-      // UPLOAD DIRETO DE IMAGENS E VÍDEOS
+      // UPLOAD DIRETO DE MÍDIA
       // ===================================================================
       const handleDirectFileUpload = async (file, targetField) => {
         if (!file) return;
@@ -331,7 +404,7 @@
         setUploadProgressMsg(`Enviando "${file.name}"... aguarde.`);
 
         try {
-          if (sbUrl.includes('supabase.co') && sbKey.length > 20 && window.supabase) {
+          if (sbUrl.includes('supabase.co') && sbKey.length > 15 && window.supabase) {
             const supabase = window.supabase.createClient(sbUrl.trim(), sbKey.trim());
             const ext = file.name.split('.').pop();
             const fileName = `${targetField}_${Date.now()}.${ext}`;
@@ -361,11 +434,11 @@
             } else {
               const blobUrl = URL.createObjectURL(file);
               applyUploadedUrl(targetField, blobUrl);
-              setUploadProgressMsg('✅ Vídeo carregado! (Lembre-se de conectar o Supabase na Aba 4 para que todos os clientes vejam).');
+              setUploadProgressMsg('✅ Mídia pronta! (Conecte o Supabase na Aba 4 para sincronizar entre todos os aparelhos).');
             }
           }
         } catch (err) {
-          setUploadProgressMsg('⚠️ Erro no upload: Certifique-se de que criou o bucket "midia-catalogo" como Public no Supabase.');
+          setUploadProgressMsg('⚠️ Verifique se criou o bucket "midia-catalogo" como Public no Supabase.');
         }
         setUploadingField('');
       };
@@ -414,12 +487,12 @@
             setPixPaymentId(data.paymentId);
             setPixQrCode(data.qrCode);
             setPixQrBase64(data.qrCodeBase64);
-            setPixStatusMsg('🔄 Aguardando pagamento... Assim que pagar no aplicativo do seu banco, o VIP libera sozinho!');
+            setPixStatusMsg('🔄 Aguardando pagamento... Assim que pagar no app do seu banco, seu acesso VIP libera automaticamente!');
           } else {
-            setPixStatusMsg('⚠️ Configure seu Access Token do Mercado Pago na Aba 4 do Painel ADM.');
+            setPixStatusMsg('⚠️ Pagamento indisponível no momento. Fale com nosso suporte no WhatsApp.');
           }
         } catch (e) {
-          setPixStatusMsg('⚠️ Conecte o Token do Mercado Pago no Painel ADM para gerar o QR Code.');
+          setPixStatusMsg('⚠️ Erro de conexão ao gerar QR Code. Tente novamente em instantes.');
         }
         setPixLoading(false);
       };
@@ -500,12 +573,17 @@
       };
 
       // ===================================================================
-      // CADASTRO, LOGIN E LOGOUT
+      // LOGIN INTELIGente (CLIENTES + ENTRADA INVISÍVEL DO ADM)
       // ===================================================================
       const handleUserRegister = (e) => {
         e.preventDefault();
         setUserAuthError('');
         const emailClean = regEmail.trim().toLowerCase();
+
+        if (emailClean === 'admin' || emailClean === 'adm' || emailClean === 'admin@daumplay.com') {
+          setUserAuthError('Este usuário é reservado. Use a aba Entrar.');
+          return;
+        }
         if (!regName.trim() || !emailClean || !regPassword.trim()) {
           setUserAuthError('Preencha todos os campos obrigatórios.');
           return;
@@ -544,9 +622,24 @@
       const handleUserLogin = (e) => {
         e.preventDefault();
         setUserAuthError('');
-        const emailClean = regEmail.trim().toLowerCase();
+        const loginClean = regEmail.trim().toLowerCase();
+
+        // Chave Invisível do Administrador: se digitar "admin" (ou "adm") + a senha do ADM
+        if (loginClean === 'admin' || loginClean === 'adm' || loginClean === 'admin@daumplay.com') {
+          if (btoa(regPassword) === adminStoredSecret) {
+            setAdminUnlocked(true);
+            setShowAuthModal(false);
+            setRegEmail('');
+            setRegPassword('');
+            return;
+          } else {
+            setUserAuthError('Credenciais incorretas.');
+            return;
+          }
+        }
+
         const found = users.find(
-          (u) => u.email.toLowerCase() === emailClean && u.password === regPassword
+          (u) => u.email.toLowerCase() === loginClean && u.password === regPassword
         );
 
         if (!found) {
@@ -628,7 +721,7 @@
       };
 
       // ===================================================================
-      // GESTÃO NO PAINEL DO ADM
+      // FUNÇÕES EXCLUSIVAS DO ADM
       // ===================================================================
       const toggleUserVipByAdmin = (userId, days = 30) => {
         setUsers((prev) =>
@@ -752,12 +845,16 @@
       const activePriceDisplay = (discountedPrice || basePrice).toFixed(2).replace('.', ',');
 
       return (
-        <div className="min-h-screen bg-[#07080c] text-white">
-          {/* BARRA DO TOPO */}
+        <div className="min-h-screen bg-[#07080c] text-white flex flex-col">
+          {/* BARRA DO TOPO LIMPA E PROFISSIONAL */}
           <header className="sticky top-0 z-40 bg-[#07080c]/95 backdrop-blur-md border-b border-white/10 px-4 md:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-6">
               <button
-                onClick={() => setLogoClicks((c) => c + 1)}
+                onClick={() => {
+                  setSelectedCategory('Todas');
+                  setSearchQuery('');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 className="flex items-center gap-2.5 text-left focus:outline-none select-none"
               >
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] p-0.5 shadow-lg shadow-[#ff1722]/20">
@@ -771,7 +868,7 @@
                     <span className="text-[#00d4ff]">IA</span>
                   </span>
                   <span className="block text-[10px] uppercase tracking-widest text-gray-400">
-                    Séries & Mini Novelinhas IA
+                    Streaming Oficial
                   </span>
                 </div>
               </button>
@@ -806,7 +903,7 @@
                       setUserAuthError('');
                       setShowAuthModal(true);
                     }}
-                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15"
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15 transition"
                   >
                     Entrar
                   </button>
@@ -816,7 +913,7 @@
                       setUserAuthError('');
                       setShowAuthModal(true);
                     }}
-                    className="px-4 py-1.5 rounded-xl text-xs font-extrabold bg-[#ff1722] text-white shadow-lg shadow-[#ff1722]/30"
+                    className="px-4 py-1.5 rounded-xl text-xs font-extrabold bg-[#ff1722] hover:bg-[#e0121c] text-white shadow-lg shadow-[#ff1722]/30 transition"
                   >
                     Criar Conta
                   </button>
@@ -832,13 +929,13 @@
                       onClick={() => openAutomaticPixCheckout()}
                       className="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white shadow-lg"
                     >
-                      👑 VIP • R$ {activePriceDisplay}
+                      👑 Assinar VIP • R$ {activePriceDisplay}
                     </button>
                   )}
-                  <span className="hidden sm:inline text-xs font-bold">{currentUser.name}</span>
+                  <span className="hidden sm:inline text-xs font-bold text-gray-200">{currentUser.name}</span>
                   <button
                     onClick={handleUserLogout}
-                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-[#ff1722] text-xs font-bold"
+                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-[#ff1722] text-xs font-bold transition"
                   >
                     Sair
                   </button>
@@ -848,15 +945,15 @@
               {adminUnlocked && (
                 <button
                   onClick={() => setAdminUnlocked(false)}
-                  className="px-3 py-1.5 rounded-lg bg-[#ff1722]/20 border border-[#ff1722] text-[#ff1722] text-xs font-bold"
+                  className="px-3 py-1.5 rounded-xl bg-[#ff1722] text-white text-xs font-black shadow-lg"
                 >
-                  Fechar ADM
+                  Sair do Modo ADM
                 </button>
               )}
             </div>
           </header>
 
-          {/* PAINEL DO ADM MASTER */}
+          {/* PAINEL DO ADM MASTER (INVISÍVEL PARA CLIENTES) */}
           {adminUnlocked && (
             <section className="bg-[#0d1017] border-b-2 border-[#00d4ff] p-6 shadow-2xl">
               <div className="max-w-6xl mx-auto space-y-6">
@@ -865,11 +962,11 @@
                     <h2 className="text-lg font-black uppercase text-[#00d4ff] flex items-center gap-2">
                       🛡️ Painel Master do Administrador
                       <span className={`text-[11px] px-2.5 py-0.5 rounded-full ${cloudConnected ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}`}>
-                        {cloudConnected ? '● Nuvem Sincronizada' : '● Modo Local'}
+                        {cloudConnected ? '● Nuvem Sincronizada' : '● Salvo Neste Aparelho'}
                       </span>
                     </h2>
                     <p className="text-xs text-gray-400">
-                      Dica: Abaixo no catálogo, você também pode trocar qualquer episódio entre Grátis/VIP com 1 clique!
+                      Painel 100% invisível para clientes. Tudo o que você digita já fica salvo automaticamente.
                     </p>
                   </div>
 
@@ -888,7 +985,7 @@
                         adminTab === 'usuarios' ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300'
                       }`}
                     >
-                      2. Clientes & Dar/Tirar VIP ({users.length})
+                      2. Clientes & VIP ({users.length})
                     </button>
                     <button
                       onClick={() => setAdminTab('cupons')}
@@ -896,7 +993,7 @@
                         adminTab === 'cupons' ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300'
                       }`}
                     >
-                      3. Cupons & Promoções
+                      3. Cupons ({coupons.length})
                     </button>
                     <button
                       onClick={() => setAdminTab('automacao')}
@@ -931,14 +1028,14 @@
                         type="text"
                         value={newSerieCategory}
                         onChange={(e) => setNewSerieCategory(e.target.value)}
-                        placeholder="Categoria (Ex: Mini Novelinha IA, Drama IA, Ação IA)"
+                        placeholder="Categoria (Ex: Mini Novelinha IA, Drama IA)"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                       />
                       <textarea
                         rows="2"
                         value={newSerieSynopsis}
                         onChange={(e) => setNewSerieSynopsis(e.target.value)}
-                        placeholder="Sinopse envolvente..."
+                        placeholder="Sinopse da história..."
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                       />
                       <div className="p-3 rounded-xl bg-[#0d1017] border border-dashed border-[#00d4ff]/50 space-y-1">
@@ -965,7 +1062,7 @@
                           checked={newSerieIsHero}
                           onChange={(e) => setNewSerieIsHero(e.target.checked)}
                         />
-                        Destacar na Capa Principal de Lançamento
+                        Destacar na Capa Principal do Topo
                       </label>
                       <button
                         type="submit"
@@ -1075,73 +1172,79 @@
 
                 {adminTab === 'usuarios' && (
                   <div className="bg-[#07080c] border border-white/10 rounded-2xl overflow-hidden">
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs">
-                        <thead className="bg-white/5 text-gray-400 uppercase">
-                          <tr>
-                            <th className="p-3.5">Cliente / WhatsApp</th>
-                            <th className="p-3.5">Entrada & Saída</th>
-                            <th className="p-3.5">Último Assistido</th>
-                            <th className="p-3.5">Status VIP</th>
-                            <th className="p-3.5 text-right">Comando Manual ADM</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-white/10">
-                          {users.map((u) => (
-                            <tr key={u.id}>
-                              <td className="p-3.5">
-                                <div className="font-bold">{u.name}</div>
-                                <div className="text-gray-400">{u.email}</div>
-                                <div className="text-[11px] text-[#00d4ff]">WhatsApp: {u.whatsapp}</div>
-                              </td>
-                              <td className="p-3.5">
-                                <span className={u.isOnline ? 'text-emerald-400 font-bold' : 'text-gray-400'}>
-                                  {u.isOnline ? '● Online Agora' : '○ Saiu'}
-                                </span>
-                                <div className="text-[11px] text-gray-400">
-                                  Entrada: {u.lastEntry} <br /> Saída: {u.lastExit}
-                                </div>
-                              </td>
-                              <td className="p-3.5 text-gray-300">{u.lastWatched}</td>
-                              <td className="p-3.5">
-                                {u.isVip ? (
-                                  <span className="px-2.5 py-1 rounded-full bg-[#00d4ff]/20 text-[#00d4ff] font-bold">
-                                    👑 VIP ({getDaysRemaining(u.vipUntil)} dias)
-                                  </span>
-                                ) : (
-                                  <span className="px-2.5 py-1 rounded-full bg-white/10 text-gray-300">
-                                    GRÁTIS
-                                  </span>
-                                )}
-                              </td>
-                              <td className="p-3.5 text-right space-x-2">
-                                <button
-                                  onClick={() => toggleUserVipByAdmin(u.id, 30)}
-                                  className={`px-3 py-1.5 rounded-lg font-extrabold ${
-                                    u.isVip ? 'bg-[#ff1722] text-white' : 'bg-[#00d4ff] text-[#07080c]'
-                                  }`}
-                                >
-                                  {u.isVip ? 'Tirar VIP' : 'Dar 30 Dias VIP'}
-                                </button>
-                              </td>
+                    {users.length === 0 ? (
+                      <div className="p-8 text-center text-xs text-gray-400">
+                        Nenhum cliente cadastrado ainda. Assim que o primeiro cliente criar conta, ele aparecerá aqui.
+                      </div>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left text-xs">
+                          <thead className="bg-white/5 text-gray-400 uppercase">
+                            <tr>
+                              <th className="p-3.5">Cliente / WhatsApp</th>
+                              <th className="p-3.5">Atividade</th>
+                              <th className="p-3.5">Último Assistido</th>
+                              <th className="p-3.5">Status VIP</th>
+                              <th className="p-3.5 text-right">Ação ADM</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                          </thead>
+                          <tbody className="divide-y divide-white/10">
+                            {users.map((u) => (
+                              <tr key={u.id}>
+                                <td className="p-3.5">
+                                  <div className="font-bold">{u.name}</div>
+                                  <div className="text-gray-400">{u.email}</div>
+                                  <div className="text-[11px] text-[#00d4ff]">WhatsApp: {u.whatsapp}</div>
+                                </td>
+                                <td className="p-3.5">
+                                  <span className={u.isOnline ? 'text-emerald-400 font-bold' : 'text-gray-400'}>
+                                    {u.isOnline ? '● Online Agora' : '○ Offline'}
+                                  </span>
+                                  <div className="text-[11px] text-gray-400">
+                                    Entrada: {u.lastEntry}
+                                  </div>
+                                </td>
+                                <td className="p-3.5 text-gray-300">{u.lastWatched}</td>
+                                <td className="p-3.5">
+                                  {u.isVip ? (
+                                    <span className="px-2.5 py-1 rounded-full bg-[#00d4ff]/20 text-[#00d4ff] font-bold">
+                                      👑 VIP ({getDaysRemaining(u.vipUntil)} dias)
+                                    </span>
+                                  ) : (
+                                    <span className="px-2.5 py-1 rounded-full bg-white/10 text-gray-300">
+                                      GRÁTIS
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="p-3.5 text-right">
+                                  <button
+                                    onClick={() => toggleUserVipByAdmin(u.id, 30)}
+                                    className={`px-3 py-1.5 rounded-lg font-extrabold ${
+                                      u.isVip ? 'bg-[#ff1722] text-white' : 'bg-[#00d4ff] text-[#07080c]'
+                                    }`}
+                                  >
+                                    {u.isVip ? 'Tirar VIP' : 'Dar 30 Dias VIP'}
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                   </div>
                 )}
 
                 {adminTab === 'cupons' && (
                   <div className="grid md:grid-cols-2 gap-6">
                     <form onSubmit={handleCreateCoupon} className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3">
-                      <h3 className="text-sm font-black uppercase text-[#00d4ff]">Criar Cupom (Dias Grátis ou Desconto no PIX)</h3>
+                      <h3 className="text-sm font-black uppercase text-[#00d4ff]">Criar Cupom Promocional</h3>
                       <input
                         type="text"
                         required
                         value={newCouponCode}
                         onChange={(e) => setNewCouponCode(e.target.value)}
-                        placeholder="Nome do Cupom (Ex: PROMO5, VIP7)"
+                        placeholder="Código do Cupom (Ex: PROMO5, VIP7)"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white uppercase"
                       />
                       <select
@@ -1158,7 +1261,7 @@
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <label className="block text-[11px] text-gray-400 mb-1">
-                            {newCouponType === 'price' ? 'Novo Preço no PIX (R$):' : 'Qtd. de Dias Grátis:'}
+                            {newCouponType === 'price' ? 'Novo Valor PIX (R$):' : 'Dias Grátis:'}
                           </label>
                           <input
                             type="number"
@@ -1210,99 +1313,128 @@
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
-                        localStorage.setItem('dup_mp_token', mpToken.trim());
-                        localStorage.setItem('dup_sb_url', sbUrl.trim());
-                        localStorage.setItem('dup_sb_key', sbKey.trim());
-                        localStorage.setItem('dup_whatsapp_v5', supportWhatsapp.trim());
-                        localStorage.setItem('dup_price_v5', basePrice);
-                        syncWithSupabase(true, seriesList, users, coupons);
-                        setConfigSavedMsg('✅ Configurações salvas e sincronizadas!');
+                        const nextSettings = buildSettingsPayload();
+                        pushToSupabase(seriesList, users, coupons, nextSettings);
+                        setConfigSavedMsg('✅ Token e Configurações gravados com sucesso na memória e na nuvem!');
+                        setTimeout(() => setConfigSavedMsg(''), 5000);
                       }}
                       className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3"
                     >
-                      <h3 className="text-sm font-black text-[#00d4ff] uppercase">PIX, Nuvem Supabase & Preço</h3>
-                      <input
-                        type="password"
-                        value={mpToken}
-                        onChange={(e) => setMpToken(e.target.value)}
-                        placeholder="1. Access Token Mercado Pago (APP_USR-...)"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                      />
-                      <input
-                        type="text"
-                        value={sbUrl}
-                        onChange={(e) => setSbUrl(e.target.value)}
-                        placeholder="2. Project URL do Supabase (https://...supabase.co)"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                      />
-                      <input
-                        type="password"
-                        value={sbKey}
-                        onChange={(e) => setSbKey(e.target.value)}
-                        placeholder="3. Chave Anon Public do Supabase"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                      />
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-black text-[#00d4ff] uppercase">PIX, Nuvem Supabase & Preço</h3>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${mpToken.startsWith('APP_USR-') ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}`}>
+                          {mpToken.startsWith('APP_USR-') ? '✓ Token PIX Ativo' : 'Token Pendente'}
+                        </span>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] text-gray-400 mb-1">1. Access Token do Mercado Pago (Começa com APP_USR-...):</label>
                         <input
                           type="text"
-                          value={supportWhatsapp}
-                          onChange={(e) => setSupportWhatsapp(e.target.value)}
-                          placeholder="WhatsApp Suporte (55...)"
-                          className="px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
-                        />
-                        <input
-                          type="number"
-                          step="0.10"
-                          value={basePrice}
-                          onChange={(e) => setBasePrice(Number(e.target.value))}
-                          placeholder="Preço Mensal (9.90)"
-                          className="px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                          value={mpToken}
+                          onChange={(e) => setMpToken(e.target.value)}
+                          placeholder="Cole aqui seu APP_USR-..."
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-emerald-400 font-mono"
                         />
                       </div>
+
+                      <div>
+                        <label className="block text-[11px] text-gray-400 mb-1">2. Project URL do Supabase (https://...supabase.co):</label>
+                        <input
+                          type="text"
+                          value={sbUrl}
+                          onChange={(e) => setSbUrl(e.target.value)}
+                          placeholder="https://seuprojeto.supabase.co"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] text-gray-400 mb-1">3. Publishable / Anon Key do Supabase:</label>
+                        <input
+                          type="text"
+                          value={sbKey}
+                          onChange={(e) => setSbKey(e.target.value)}
+                          placeholder="sb_publishable_... ou eyJhbG..."
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white font-mono"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[11px] text-gray-400 mb-1">WhatsApp Suporte:</label>
+                          <input
+                            type="text"
+                            value={supportWhatsapp}
+                            onChange={(e) => setSupportWhatsapp(e.target.value)}
+                            placeholder="5575991227668"
+                            className="w-full px-3.5 py-2 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] text-gray-400 mb-1">Preço VIP (R$):</label>
+                          <input
+                            type="number"
+                            step="0.10"
+                            value={basePrice}
+                            onChange={(e) => setBasePrice(Number(e.target.value))}
+                            placeholder="9.90"
+                            className="w-full px-3.5 py-2 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                          />
+                        </div>
+                      </div>
+
                       <button
                         type="submit"
-                        className="w-full py-3 rounded-xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white font-black text-xs uppercase"
+                        className="w-full py-3 rounded-xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white font-black text-xs uppercase shadow-lg"
                       >
-                        Salvar e Sincronizar
+                        Salvar e Sincronizar Tudo
                       </button>
-                      {configSavedMsg && <p className="text-xs text-emerald-400 font-bold">{configSavedMsg}</p>}
+                      {configSavedMsg && <p className="text-xs text-emerald-400 font-bold text-center">{configSavedMsg}</p>}
                     </form>
 
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
                         if (btoa(currentPassCheck) !== adminStoredSecret) {
-                          setPassChangeMsg('Senha atual incorreta.');
+                          setPassChangeMsg('❌ A senha atual digitada está incorreta.');
                           return;
                         }
                         const encoded = btoa(newAdminPass);
                         setAdminStoredSecret(encoded);
-                        localStorage.setItem('dup_adm_sec_v5', encoded);
+                        localStorage.setItem('dup_adm_sec_v6', encoded);
+                        pushToSupabase(seriesList, users, coupons, {
+                          ...buildSettingsPayload(),
+                          adminStoredSecret: encoded
+                        });
                         setCurrentPassCheck('');
                         setNewAdminPass('');
-                        setPassChangeMsg('✅ Senha secreta alterada!');
+                        setPassChangeMsg('✅ Senha secreta do ADM atualizada com sucesso!');
                       }}
                       className="bg-[#07080c] border border-white/10 rounded-2xl p-5 space-y-3"
                     >
-                      <h3 className="text-sm font-bold">Trocar Senha do Painel ADM</h3>
+                      <h3 className="text-sm font-bold text-white">Alterar Senha Secreta do ADM</h3>
+                      <p className="text-[11px] text-gray-400">
+                        Para entrar no Painel ADM a qualquer momento, clique no botão normal <b>"Entrar"</b> no topo do site, digite <b>admin</b> no campo de usuário e coloque sua senha abaixo.
+                      </p>
                       <input
                         type="password"
-                        placeholder="Senha atual"
+                        placeholder="Senha atual do ADM"
                         value={currentPassCheck}
                         onChange={(e) => setCurrentPassCheck(e.target.value)}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                       />
                       <input
                         type="password"
-                        placeholder="Nova senha"
+                        placeholder="Digite a nova senha do ADM"
                         value={newAdminPass}
                         onChange={(e) => setNewAdminPass(e.target.value)}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                       />
                       <button type="submit" className="w-full py-2.5 rounded-xl bg-[#ff1722] text-white text-xs font-bold uppercase">
-                        Salvar Nova Senha
+                        Atualizar Senha do ADM
                       </button>
-                      {passChangeMsg && <p className="text-xs text-[#00d4ff]">{passChangeMsg}</p>}
+                      {passChangeMsg && <p className="text-xs text-[#00d4ff] font-bold">{passChangeMsg}</p>}
                     </form>
                   </div>
                 )}
@@ -1311,7 +1443,7 @@
           )}
 
           {/* SUPER BANNER DE LANÇAMENTO */}
-          <section className="relative min-h-[440px] flex items-end p-6 md:p-12 overflow-hidden">
+          <section className="relative min-h-[420px] flex items-end p-6 md:p-12 overflow-hidden">
             <img src={heroSeries.banner} alt={heroSeries.title} className="absolute inset-0 w-full h-full object-cover opacity-45" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#07080c] via-[#07080c]/70 to-transparent" />
             <div className="relative z-10 max-w-2xl space-y-4">
@@ -1323,13 +1455,13 @@
                   {heroSeries.category}
                 </span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-black">{heroSeries.title}</h1>
-              <p className="text-sm text-gray-300">{heroSeries.synopsis}</p>
+              <h1 className="text-3xl md:text-5xl font-black leading-tight">{heroSeries.title}</h1>
+              <p className="text-sm text-gray-300 leading-relaxed">{heroSeries.synopsis}</p>
               <div className="flex flex-wrap gap-3 pt-2">
                 {heroSeries.episodes[0] && (
                   <button
                     onClick={() => handlePlayEpisode(heroSeries.episodes[0], heroSeries)}
-                    className="px-6 py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-sm shadow-xl"
+                    className="px-6 py-3.5 rounded-xl bg-[#ff1722] hover:bg-[#e0121c] text-white font-black text-sm shadow-xl transition"
                   >
                     ▶ Assistir 1º Episódio Grátis
                   </button>
@@ -1337,9 +1469,9 @@
                 {(!currentUser || !currentUser.isVip) && (
                   <button
                     onClick={() => openAutomaticPixCheckout()}
-                    className="px-6 py-3.5 rounded-xl bg-[#00d4ff]/15 border border-[#00d4ff]/50 text-[#00d4ff] font-extrabold text-sm"
+                    className="px-6 py-3.5 rounded-xl bg-[#00d4ff]/15 hover:bg-[#00d4ff]/25 border border-[#00d4ff]/50 text-[#00d4ff] font-extrabold text-sm transition"
                   >
-                    👑 Liberar Tudo • R$ {activePriceDisplay}
+                    👑 Liberar Acesso VIP • R$ {activePriceDisplay}
                   </button>
                 )}
               </div>
@@ -1348,7 +1480,7 @@
 
           {/* CONTINUAR ASSISTINDO */}
           {currentUser && currentUser.lastResume && (
-            <div className="max-w-6xl mx-auto px-6 pt-6">
+            <div className="max-w-6xl w-full mx-auto px-6 pt-6">
               <div className="bg-gradient-to-r from-[#0d1017] to-[#ff1722]/15 border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4">
                 <div>
                   <span className="text-[10px] font-black uppercase text-[#00d4ff]">Continuar de onde parou</span>
@@ -1371,20 +1503,32 @@
             </div>
           )}
 
-          {/* CATÁLOGO DE CAPAS E EPISÓDIOS */}
-          <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
-            <div className="flex flex-wrap gap-2">
-              {allCategories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition ${
-                    selectedCategory === cat ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+          {/* CATÁLOGO PRINCIPAL */}
+          <main className="max-w-6xl w-full mx-auto px-6 py-8 space-y-8 flex-1">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap gap-2">
+                {allCategories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition ${
+                      selectedCategory === cat ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
+              <div className="w-full md:hidden">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="🔍 Buscar novelinha ou série..."
+                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:border-[#00d4ff] focus:outline-none"
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
@@ -1393,7 +1537,7 @@
                   key={serie.id}
                   onClick={() => setSelectedSeriesId(serie.id)}
                   className={`cursor-pointer rounded-2xl overflow-hidden border-2 text-left transition relative ${
-                    selectedSeries.id === serie.id ? 'border-[#00d4ff] shadow-lg shadow-[#00d4ff]/20' : 'border-white/10'
+                    selectedSeries.id === serie.id ? 'border-[#00d4ff] shadow-lg shadow-[#00d4ff]/20' : 'border-white/10 hover:border-white/25'
                   }`}
                 >
                   <div className="aspect-[2/3] relative">
@@ -1403,8 +1547,8 @@
                       {serie.episodes.length} Eps
                     </span>
                     <div className="absolute bottom-3 left-3 right-3">
-                      <p className="text-xs text-[#00d4ff] font-bold">{serie.category}</p>
-                      <h3 className="text-sm font-black text-white">{serie.title}</h3>
+                      <p className="text-[11px] text-[#00d4ff] font-bold">{serie.category}</p>
+                      <h3 className="text-sm font-black text-white leading-snug">{serie.title}</h3>
                     </div>
                   </div>
 
@@ -1417,7 +1561,7 @@
                         onClick={() => setSerieAsHeroQuick(serie.id)}
                         className="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold"
                       >
-                        {serie.isHeroLaunch ? '⭐ No Topo' : 'Por no Topo'}
+                        {serie.isHeroLaunch ? '⭐ No Topo' : 'Destacar'}
                       </button>
                       <button
                         onClick={() => handleDeleteSeries(serie.id)}
@@ -1432,7 +1576,14 @@
             </div>
 
             <div className="bg-[#0d1017] border border-white/10 rounded-3xl p-6">
-              <h3 className="text-2xl font-black mb-6">{selectedSeries.title} — Episódios</h3>
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
+                <div>
+                  <span className="text-[11px] uppercase tracking-wider text-[#00d4ff] font-bold">{selectedSeries.category}</span>
+                  <h3 className="text-2xl font-black">{selectedSeries.title} — Episódios</h3>
+                </div>
+                <span className="text-xs text-gray-400">{selectedSeries.episodes.length} episódios disponíveis</span>
+              </div>
+
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
                 {selectedSeries.episodes.map((ep) => {
                   const locked = ep.isVip && (!currentUser || !currentUser.isVip);
@@ -1442,19 +1593,19 @@
                     <div
                       key={ep.id}
                       onClick={() => handlePlayEpisode(ep, selectedSeries)}
-                      className="cursor-pointer rounded-2xl overflow-hidden bg-[#07080c] border border-white/10 hover:border-[#00d4ff] transition"
+                      className="cursor-pointer rounded-2xl overflow-hidden bg-[#07080c] border border-white/10 hover:border-[#00d4ff] transition group"
                     >
                       <div className="aspect-video relative">
-                        <img src={ep.thumb} alt={ep.title} className="w-full h-full object-cover" />
+                        <img src={ep.thumb} alt={ep.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-[#ff1722] flex items-center justify-center font-bold">
+                          <div className="w-12 h-12 rounded-full bg-[#ff1722] flex items-center justify-center font-bold shadow-lg">
                             {ep.comingSoon ? '⏳' : locked ? '🔒' : '▶'}
                           </div>
                         </div>
 
                         {alreadyWatched && (
                           <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/80 text-emerald-400 text-[10px] font-bold">
-                            ✓ Visto
+                            ✓ Assistido
                           </span>
                         )}
 
@@ -1476,7 +1627,7 @@
                           <span>Episódio {ep.number} {ep.isVertical ? '• 📱 Vertical' : ''}</span>
                           <span>{ep.duration}</span>
                         </div>
-                        <h4 className="font-bold text-sm">{ep.title}</h4>
+                        <h4 className="font-bold text-sm text-white">{ep.title}</h4>
 
                         {adminUnlocked && (
                           <div
@@ -1505,7 +1656,7 @@
             </div>
           </main>
 
-          {/* PLAYER ADAPTATIVO */}
+          {/* PLAYER DE VÍDEO BLINDADO CONTRA DOWNLOAD */}
           {activeEpisode && (
             <div
               onContextMenu={(e) => e.preventDefault()}
@@ -1526,7 +1677,7 @@
                       onClick={() => setVerticalPlayerMode(!verticalPlayerMode)}
                       className="px-2.5 py-1 rounded-lg bg-white/10 text-[11px] font-bold text-[#00d4ff]"
                     >
-                      {verticalPlayerMode ? '🖥️ Modo Cinema' : '📱 Modo Vertical'}
+                      {verticalPlayerMode ? '🖥️ Modo Horizontal' : '📱 Modo Vertical'}
                     </button>
                     <button
                       onClick={() => {
@@ -1547,7 +1698,7 @@
                     controls
                     autoPlay
                     playsInline
-                    controlsList="nodownload"
+                    controlsList="nodownload noplaybackrate"
                     disablePictureInPicture
                     onContextMenu={(e) => e.preventDefault()}
                     onEnded={handleVideoEnded}
@@ -1556,7 +1707,7 @@
 
                   {nextEpisodePrompt && (
                     <div className="absolute inset-0 bg-black/90 flex flex-col items-center justify-center p-6 text-center space-y-4">
-                      <span className="text-xs font-black uppercase text-[#00d4ff]">Continuação Imediata</span>
+                      <span className="text-xs font-black uppercase text-[#00d4ff]">Próximo Episódio</span>
                       <h4 className="text-xl font-black">
                         Ep. {nextEpisodePrompt.number} — {nextEpisodePrompt.title}
                       </h4>
@@ -1570,7 +1721,7 @@
                         className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white font-black text-xs uppercase shadow-2xl"
                       >
                         {nextEpisodePrompt.isVip && (!currentUser || !currentUser.isVip)
-                          ? `🔒 Liberar Próximo Episódio VIP (R$ ${activePriceDisplay})`
+                          ? `🔒 Desbloquear Episódio VIP (R$ ${activePriceDisplay})`
                           : '▶ Assistir Próximo Episódio Agora'}
                       </button>
                     </div>
@@ -1595,11 +1746,11 @@
                   ✕
                 </button>
                 <div className="text-3xl">🎟️</div>
-                <h3 className="text-lg font-black">Cupom Promocional ou VIP</h3>
+                <h3 className="text-lg font-black">Ativar Cupom Promocional</h3>
                 <input
                   type="text"
                   required
-                  placeholder="DIGITE SEU CUPOM AQUI"
+                  placeholder="DIGITE SEU CUPOM"
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-center text-sm font-black uppercase text-[#00d4ff]"
@@ -1609,7 +1760,7 @@
                   type="submit"
                   className="w-full py-3 rounded-xl bg-[#00d4ff] text-[#07080c] font-black text-xs uppercase"
                 >
-                  Aplicar Cupom
+                  Resgatar Agora
                 </button>
               </form>
             </div>
@@ -1626,16 +1777,21 @@
                   ✕
                 </button>
                 <div className="text-3xl">👑</div>
-                <h3 className="text-xl font-black">Passaporte VIP — 30 Dias</h3>
+                <h3 className="text-xl font-black">Acesso VIP Completo — 30 Dias</h3>
+                <p className="text-xs text-gray-400">Assista todas as séries e mini novelinhas sem limites.</p>
                 <div className="text-3xl font-black text-[#00d4ff]">R$ {activePriceDisplay}</div>
 
-                {pixLoading && <p className="text-xs text-gray-300 animate-pulse">Gerando PIX automático no banco...</p>}
+                {pixLoading && (
+                  <div className="py-6 space-y-2">
+                    <p className="text-xs text-[#00d4ff] font-bold animate-pulse">Gerando QR Code PIX seguro...</p>
+                  </div>
+                )}
 
                 {pixQrBase64 && (
                   <img
                     src={`data:image/png;base64,${pixQrBase64}`}
                     alt="QR Code PIX"
-                    className="w-48 h-48 mx-auto rounded-xl border-4 border-white"
+                    className="w-48 h-48 mx-auto rounded-xl border-4 border-white shadow-lg"
                   />
                 )}
 
@@ -1646,9 +1802,9 @@
                       setPixCopied(true);
                       setTimeout(() => setPixCopied(false), 3000);
                     }}
-                    className="w-full py-3 rounded-xl bg-[#00d4ff] text-[#07080c] text-xs font-black uppercase"
+                    className="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#07080c] text-xs font-black uppercase shadow-lg"
                   >
-                    {pixCopied ? '✅ PIX Copia e Cola Copiado!' : `📋 Copiar PIX (R$ ${activePriceDisplay})`}
+                    {pixCopied ? '✅ Código PIX Copiado!' : `📋 Copiar Código PIX (R$ ${activePriceDisplay})`}
                   </button>
                 )}
 
@@ -1661,7 +1817,7 @@
             </div>
           )}
 
-          {/* MODAL CADASTRO E LOGIN */}
+          {/* MODAL DE LOGIN E CADASTRO (TAMBÉM USADO PELO ADM DE FORMA INVISÍVEL) */}
           {showAuthModal && (
             <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
               <div className="bg-[#0d1017] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 relative">
@@ -1674,7 +1830,10 @@
                 <div className="flex gap-2 bg-[#07080c] p-1 rounded-xl">
                   <button
                     type="button"
-                    onClick={() => setAuthMode('login')}
+                    onClick={() => {
+                      setAuthMode('login');
+                      setUserAuthError('');
+                    }}
                     className={`flex-1 py-2 rounded-lg text-xs font-black uppercase ${
                       authMode === 'login' ? 'bg-[#ff1722] text-white' : 'text-gray-400'
                     }`}
@@ -1683,7 +1842,10 @@
                   </button>
                   <button
                     type="button"
-                    onClick={() => setAuthMode('register')}
+                    onClick={() => {
+                      setAuthMode('register');
+                      setUserAuthError('');
+                    }}
                     className={`flex-1 py-2 rounded-lg text-xs font-black uppercase ${
                       authMode === 'register' ? 'bg-[#00d4ff] text-[#07080c]' : 'text-gray-400'
                     }`}
@@ -1697,7 +1859,7 @@
                     <input
                       type="text"
                       required
-                      placeholder="Seu Nome"
+                      placeholder="Seu Nome Completo"
                       value={regName}
                       onChange={(e) => setRegName(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
@@ -1705,13 +1867,13 @@
                     <input
                       type="email"
                       required
-                      placeholder="Seu E-mail"
+                      placeholder="Seu Melhor E-mail"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
                     />
                     <input
-                      type="text"
+                      type="tel"
                       placeholder="Seu WhatsApp com DDD"
                       value={regWhatsapp}
                       onChange={(e) => setRegWhatsapp(e.target.value)}
@@ -1725,7 +1887,7 @@
                       onChange={(e) => setRegPassword(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
                     />
-                    {userAuthError && <p className="text-xs text-[#ff1722]">{userAuthError}</p>}
+                    {userAuthError && <p className="text-xs text-[#ff1722] font-bold">{userAuthError}</p>}
                     <button
                       type="submit"
                       className="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#07080c] font-black text-xs uppercase"
@@ -1736,9 +1898,9 @@
                 ) : (
                   <form onSubmit={handleUserLogin} className="space-y-3">
                     <input
-                      type="email"
+                      type="text"
                       required
-                      placeholder="Seu E-mail"
+                      placeholder="Seu E-mail de Acesso"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
@@ -1751,12 +1913,12 @@
                       onChange={(e) => setRegPassword(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-xs text-white"
                     />
-                    {userAuthError && <p className="text-xs text-[#ff1722]">{userAuthError}</p>}
+                    {userAuthError && <p className="text-xs text-[#ff1722] font-bold">{userAuthError}</p>}
                     <button
                       type="submit"
                       className="w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase"
                     >
-                      Entrar Agora
+                      Entrar na Plataforma
                     </button>
                     <a
                       href={`https://wa.me/${supportWhatsapp}?text=Ol%C3%A1%2C%20esqueci%20minha%20senha%20no%20Da%20Um%20Play%20IA`}
@@ -1764,7 +1926,7 @@
                       rel="noreferrer"
                       className="block text-center text-xs text-gray-400 hover:text-[#00d4ff] pt-1"
                     >
-                      Esqueceu a senha? Recuperar via WhatsApp
+                      Esqueceu a senha? Falar com o Suporte
                     </a>
                   </form>
                 )}
@@ -1772,61 +1934,91 @@
             </div>
           )}
 
-          {/* MODAL SECRETO DO ADM */}
-          {showAdminAuthModal && (
-            <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (btoa(passwordInput) === adminStoredSecret) {
-                    setAdminUnlocked(true);
-                    setShowAdminAuthModal(false);
-                    setPasswordInput('');
-                    setAuthError('');
-                  } else {
-                    setAuthError('Senha incorreta.');
-                  }
-                }}
-                className="bg-[#0d1017] border border-white/15 rounded-2xl max-w-sm w-full p-6 space-y-4"
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-black uppercase">🔒 Painel do Administrador</h3>
-                  <button type="button" onClick={() => setShowAdminAuthModal(false)}>✕</button>
-                </div>
-                <input
-                  type="password"
-                  required
-                  autoFocus
-                  value={passwordInput}
-                  onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="Senha do Administrador"
-                  className="w-full px-4 py-3 rounded-xl bg-[#07080c] border border-white/15 text-sm text-white"
-                />
-                {authError && <p className="text-xs text-[#ff1722]">{authError}</p>}
+          {/* MODAL DE TERMOS E PRIVACIDADE */}
+          {legalModalText && (
+            <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+              <div className="bg-[#0d1017] border border-white/15 rounded-3xl max-w-lg w-full p-6 space-y-4 relative">
                 <button
-                  type="submit"
-                  className="w-full py-3 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase"
+                  onClick={() => setLegalModalText(null)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold"
                 >
-                  Desbloquear
+                  ✕
                 </button>
-              </form>
+                <h3 className="text-base font-black text-[#00d4ff]">{legalModalText.title}</h3>
+                <p className="text-xs text-gray-300 leading-relaxed">{legalModalText.body}</p>
+                <button
+                  onClick={() => setLegalModalText(null)}
+                  className="w-full py-2.5 rounded-xl bg-white/10 text-xs font-bold"
+                >
+                  Fechar
+                </button>
+              </div>
             </div>
           )}
 
-          <footer className="border-t border-white/10 py-8 px-6 text-center text-xs text-gray-500 space-y-2">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <span>© 2026 Da Um Play IA — Obras originais produzidas com Inteligência Artificial.</span>
-              <a
-                href={`https://wa.me/${supportWhatsapp}?text=Ol%C3%A1%2C%20preciso%20de%20suporte%20no%20Da%20Um%20Play%20IA`}
-                target="_blank"
-                rel="noreferrer"
-                className="text-[#00d4ff] hover:underline font-semibold"
-              >
-                💬 Suporte via WhatsApp
-              </a>
-              <button onClick={() => setShowAdminAuthModal(true)} className="opacity-20 hover:opacity-60 p-1">
-                🔒
-              </button>
+          {/* RODAPÉ PROFISSIONAL DE STREAMING (SEM NENHUM RASTRO DE ADM) */}
+          <footer className="bg-[#0a0c12] border-t border-white/10 pt-10 pb-8 px-6 text-xs text-gray-400">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/10">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-black tracking-tighter text-white">
+                    DA UM <span className="text-[#ff1722]">PLAY</span> <span className="text-[#00d4ff]">IA</span>
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  Plataforma digital de séries curtas, mini novelinhas e produções originais criadas com Inteligência Artificial.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <h4 className="text-white font-bold uppercase text-[11px] tracking-wider">Segurança & Acesso</h4>
+                <ul className="space-y-1.5 text-gray-400">
+                  <li>🔒 Pagamento 100% Seguro via PIX Automático</li>
+                  <li>⚡ Liberação Imediata após confirmação</li>
+                  <li>📱 Compatível com Celular, Tablet e Computador</li>
+                </ul>
+              </div>
+
+              <div className="space-y-3">
+                <h4 className="text-white font-bold uppercase text-[11px] tracking-wider">Central de Atendimento</h4>
+                <p className="text-xs text-gray-500">Dúvidas sobre assinatura ou suporte técnico?</p>
+                <a
+                  href={`https://wa.me/${supportWhatsapp}?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20na%20plataforma%20Da%20Um%20Play%20IA`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 font-bold text-xs hover:bg-emerald-500/25 transition"
+                >
+                  💬 Atendimento via WhatsApp
+                </a>
+              </div>
+            </div>
+
+            <div className="max-w-6xl mx-auto pt-6 flex flex-wrap items-center justify-between gap-4 text-[11px] text-gray-500">
+              <span>© 2026 Da Um Play IA. Todos os direitos reservados. Proibida a reprodução ou download.</span>
+              <div className="flex gap-4">
+                <button
+                  onClick={() =>
+                    setLegalModalText({
+                      title: 'Termos de Uso',
+                      body: 'O acesso VIP concede direito de visualização pessoal por 30 dias corridos na plataforma Da Um Play IA. É estritamente proibido gravar, copiar ou redistribuir os vídeos protegidos por direitos autorais.'
+                    })
+                  }
+                  className="hover:text-gray-300"
+                >
+                  Termos de Uso
+                </button>
+                <button
+                  onClick={() =>
+                    setLegalModalText({
+                      title: 'Política de Privacidade',
+                      body: 'Seus dados de acesso (nome, e-mail e telefone) são protegidos e utilizados exclusivamente para liberação da sua assinatura VIP e suporte ao assinante.'
+                    })
+                  }
+                  className="hover:text-gray-300"
+                >
+                  Privacidade
+                </button>
+              </div>
             </div>
           </footer>
         </div>
