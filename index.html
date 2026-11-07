@@ -33,10 +33,15 @@
     const { useState, useEffect, useRef } = React;
 
     // =========================================================================
-    // CONFIGURAÇÃO GLOBAL DE FÁBRICA (OPCIONAL: COLE AQUI PARA TODOS OS CELULARES)
+    // CHAVES OFICIAIS DO SEU SUPABASE JÁ INTEGRADAS DE FÁBRICA
     // =========================================================================
-    const FIXED_SUPABASE_URL = ''; // Ex: 'https://seuprojeto.supabase.co'
-    const FIXED_SUPABASE_KEY = ''; // Ex: 'sb_publishable_...'
+    const FIXED_SUPABASE_URL = 'https://wqtiqgyzayacwypugrik.supabase.co';
+    const FIXED_SUPABASE_KEY = 'sb_publishable_vPzmMtwGYn2JJq9bNqEWOA_BLPKrppF';
+
+    const cleanSupabaseUrl = (rawUrl) => {
+      if (!rawUrl) return FIXED_SUPABASE_URL;
+      return rawUrl.trim().replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
+    };
 
     // Bloqueio global contra inspeção de código (F12 / Ctrl+U / Botão Direito)
     window.addEventListener('contextmenu', (e) => {
@@ -159,47 +164,47 @@
 
       const [seriesList, setSeriesList] = useState(() => {
         try {
-          const s = localStorage.getItem('dup_series_v7') || localStorage.getItem('dup_series_v6');
+          const s = localStorage.getItem('dup_series_v8') || localStorage.getItem('dup_series_v7');
           return s ? JSON.parse(s) : DEFAULT_SERIES;
         } catch { return DEFAULT_SERIES; }
       });
 
       const [users, setUsers] = useState(() => {
         try {
-          const u = localStorage.getItem('dup_users_v7') || localStorage.getItem('dup_users_v6');
+          const u = localStorage.getItem('dup_users_v8') || localStorage.getItem('dup_users_v7');
           return u ? JSON.parse(u) : [];
         } catch { return []; }
       });
 
       const [coupons, setCoupons] = useState(() => {
         try {
-          const c = localStorage.getItem('dup_coupons_v7') || localStorage.getItem('dup_coupons_v6');
+          const c = localStorage.getItem('dup_coupons_v8') || localStorage.getItem('dup_coupons_v7');
           return c ? JSON.parse(c) : DEFAULT_COUPONS;
         } catch { return DEFAULT_COUPONS; }
       });
 
       const [supportWhatsapp, setSupportWhatsapp] = useState(() => {
-        return localStorage.getItem('dup_whatsapp_v7') || localStorage.getItem('dup_whatsapp_v6') || '5575991227668';
+        return localStorage.getItem('dup_whatsapp_v8') || localStorage.getItem('dup_whatsapp_v7') || '5575991227668';
       });
       const [basePrice, setBasePrice] = useState(() => {
-        return Number(localStorage.getItem('dup_price_v7') || localStorage.getItem('dup_price_v6')) || 9.90;
+        return Number(localStorage.getItem('dup_price_v8') || localStorage.getItem('dup_price_v7')) || 9.90;
       });
       const [mpToken, setMpToken] = useState(() => {
-        return localStorage.getItem('dup_mp_token_v7') || localStorage.getItem('dup_mp_token_v6') || localStorage.getItem('dup_mp_token') || '';
+        return localStorage.getItem('dup_mp_token_v8') || localStorage.getItem('dup_mp_token_v7') || localStorage.getItem('dup_mp_token_v6') || localStorage.getItem('dup_mp_token') || '';
       });
       const [sbUrl, setSbUrl] = useState(() => {
-        return FIXED_SUPABASE_URL || localStorage.getItem('dup_sb_url_v7') || localStorage.getItem('dup_sb_url_v6') || localStorage.getItem('dup_sb_url') || '';
+        return FIXED_SUPABASE_URL;
       });
       const [sbKey, setSbKey] = useState(() => {
-        return FIXED_SUPABASE_KEY || localStorage.getItem('dup_sb_key_v7') || localStorage.getItem('dup_sb_key_v6') || localStorage.getItem('dup_sb_key') || '';
+        return FIXED_SUPABASE_KEY;
       });
       const [adminStoredSecret, setAdminStoredSecret] = useState(() => {
-        return localStorage.getItem('dup_adm_sec_v7') || localStorage.getItem('dup_adm_sec_v6') || 'YWRtaW4xMjM=';
+        return localStorage.getItem('dup_adm_sec_v8') || localStorage.getItem('dup_adm_sec_v7') || 'YWRtaW4xMjM=';
       });
 
       const [showMpTokenPlain, setShowMpTokenPlain] = useState(false);
 
-      const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('dup_logged_user_v7') || localStorage.getItem('dup_logged_user_v6') || null);
+      const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('dup_logged_user_v8') || localStorage.getItem('dup_logged_user_v7') || null);
       const [selectedSeriesId, setSelectedSeriesId] = useState('s1');
       const [searchQuery, setSearchQuery] = useState('');
       const [selectedCategory, setSelectedCategory] = useState('Todas');
@@ -276,29 +281,26 @@
       // SALVAMENTO AUTOMÁTICO IMEDIATO NO NAVEGADOR
       // ===================================================================
       useEffect(() => {
+        localStorage.setItem('dup_mp_token_v8', mpToken.trim());
         localStorage.setItem('dup_mp_token_v7', mpToken.trim());
-        localStorage.setItem('dup_mp_token_v6', mpToken.trim());
       }, [mpToken]);
 
       useEffect(() => {
-        localStorage.setItem('dup_sb_url_v7', sbUrl.trim());
-        localStorage.setItem('dup_sb_url_v6', sbUrl.trim());
+        localStorage.setItem('dup_sb_url_v8', cleanSupabaseUrl(sbUrl));
       }, [sbUrl]);
 
       useEffect(() => {
-        localStorage.setItem('dup_sb_key_v7', sbKey.trim());
-        localStorage.setItem('dup_sb_key_v6', sbKey.trim());
+        localStorage.setItem('dup_sb_key_v8', sbKey.trim());
       }, [sbKey]);
 
       useEffect(() => {
-        localStorage.setItem('dup_whatsapp_v7', supportWhatsapp.trim());
+        localStorage.setItem('dup_whatsapp_v8', supportWhatsapp.trim());
       }, [supportWhatsapp]);
 
       useEffect(() => {
-        localStorage.setItem('dup_price_v7', String(basePrice));
+        localStorage.setItem('dup_price_v8', String(basePrice));
       }, [basePrice]);
 
-      // Atualiza automaticamente o número do próximo episódio quando troca a série no ADM
       useEffect(() => {
         if (!editingEpisodeId) {
           const targetSerie = seriesList.find((s) => s.id === newEpSeriesId);
@@ -310,7 +312,7 @@
       }, [newEpSeriesId, seriesList, editingEpisodeId]);
 
       // ===================================================================
-      // SINCRONIZAÇÃO COM SUPABASE (COM FALLBACK ANTI-FALHA DE COLUNA)
+      // SINCRONIZAÇÃO COM SUPABASE (COM AUTO-LIMPEZA DE URL E FALLBACK)
       // ===================================================================
       const buildSettingsPayload = () => ({
         mpToken: mpToken.trim(),
@@ -320,12 +322,13 @@
       });
 
       const pullFromSupabase = async () => {
-        if (!sbUrl.includes('supabase.co') || sbKey.length < 15 || !window.supabase) {
+        const validUrl = cleanSupabaseUrl(sbUrl);
+        if (!validUrl.includes('supabase.co') || sbKey.length < 15 || !window.supabase) {
           isHydratedRef.current = true;
           return;
         }
         try {
-          const supabase = window.supabase.createClient(sbUrl.trim(), sbKey.trim());
+          const supabase = window.supabase.createClient(validUrl, sbKey.trim());
           const { data, error } = await supabase.from('app_state').select('*').eq('id', 1).single();
           if (!error && data) {
             setCloudConnected(true);
@@ -364,16 +367,16 @@
         nextSettings = buildSettingsPayload()
       ) => {
         if (!isHydratedRef.current) return;
-        if (!sbUrl.includes('supabase.co') || sbKey.length < 15 || !window.supabase) return;
+        const validUrl = cleanSupabaseUrl(sbUrl);
+        if (!validUrl.includes('supabase.co') || sbKey.length < 15 || !window.supabase) return;
         try {
-          const supabase = window.supabase.createClient(sbUrl.trim(), sbKey.trim());
+          const supabase = window.supabase.createClient(validUrl, sbKey.trim());
           const cleanCoupons = nextC.filter((c) => c.id !== '__SYS_CONFIG__');
           const couponsWithBackupConfig = [
             ...cleanCoupons,
             { id: '__SYS_CONFIG__', code: '__SYS_CONFIG__', usesLeft: 0, ...nextSettings }
           ];
 
-          // Tenta salvar incluindo a coluna settings_data
           const { error } = await supabase.from('app_state').upsert({
             id: 1,
             series_data: nextS,
@@ -386,7 +389,6 @@
           if (!error) {
             setCloudConnected(true);
           } else {
-            // Fallback automático caso a tabela antiga não tenha a coluna settings_data
             const { error: fallbackErr } = await supabase.from('app_state').upsert({
               id: 1,
               series_data: nextS,
@@ -404,26 +406,25 @@
       }, [sbUrl, sbKey]);
 
       useEffect(() => {
-        localStorage.setItem('dup_series_v7', JSON.stringify(seriesList));
+        localStorage.setItem('dup_series_v8', JSON.stringify(seriesList));
         pushToSupabase(seriesList, users, coupons);
       }, [seriesList]);
 
       useEffect(() => {
-        localStorage.setItem('dup_users_v7', JSON.stringify(users));
+        localStorage.setItem('dup_users_v8', JSON.stringify(users));
         pushToSupabase(seriesList, users, coupons);
       }, [users]);
 
       useEffect(() => {
-        localStorage.setItem('dup_coupons_v7', JSON.stringify(coupons));
+        localStorage.setItem('dup_coupons_v8', JSON.stringify(coupons));
         pushToSupabase(seriesList, users, coupons);
       }, [coupons]);
 
       useEffect(() => {
-        if (currentUserId) localStorage.setItem('dup_logged_user_v7', currentUserId);
-        else localStorage.removeItem('dup_logged_user_v7');
+        if (currentUserId) localStorage.setItem('dup_logged_user_v8', currentUserId);
+        else localStorage.removeItem('dup_logged_user_v8');
       }, [currentUserId]);
 
-      // Verificação automática de vencimento dos 30 dias VIP
       useEffect(() => {
         const now = Date.now();
         let changed = false;
@@ -452,7 +453,7 @@
       });
 
       // ===================================================================
-      // UPLOAD DIRETO DE MÍDIA
+      // UPLOAD DIRETO DE MÍDIA NO SUPABASE STORAGE
       // ===================================================================
       const handleDirectFileUpload = async (file, targetField) => {
         if (!file) return;
@@ -460,8 +461,9 @@
         setUploadProgressMsg(`Enviando "${file.name}"... aguarde.`);
 
         try {
-          if (sbUrl.includes('supabase.co') && sbKey.length > 15 && window.supabase) {
-            const supabase = window.supabase.createClient(sbUrl.trim(), sbKey.trim());
+          const validUrl = cleanSupabaseUrl(sbUrl);
+          if (validUrl.includes('supabase.co') && sbKey.length > 15 && window.supabase) {
+            const supabase = window.supabase.createClient(validUrl, sbKey.trim());
             const ext = file.name.split('.').pop();
             const fileName = `${targetField}_${Date.now()}.${ext}`;
 
@@ -490,11 +492,11 @@
             } else {
               const blobUrl = URL.createObjectURL(file);
               applyUploadedUrl(targetField, blobUrl);
-              setUploadProgressMsg('✅ Mídia pronta! (Conecte o Supabase na Aba 4 para funcionar em todos os celulares).');
+              setUploadProgressMsg('✅ Mídia pronta!');
             }
           }
         } catch (err) {
-          setUploadProgressMsg('⚠️ Verifique se criou o bucket "midia-catalogo" marcado como Public no Supabase.');
+          setUploadProgressMsg('⚠️ Crie o bucket "midia-catalogo" marcado como Public no menu Storage do Supabase.');
         }
         setUploadingField('');
       };
@@ -1113,11 +1115,11 @@
                     <h2 className="text-lg font-black uppercase text-[#00d4ff] flex items-center gap-2">
                       🛡️ Painel Master do Administrador
                       <span className={`text-[11px] px-2.5 py-0.5 rounded-full ${cloudConnected ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}`}>
-                        {cloudConnected ? '● Nuvem Supabase Online' : '● Salvo Neste Aparelho'}
+                        {cloudConnected ? '● Nuvem Supabase Online' : '● Conectando Nuvem...'}
                       </span>
                     </h2>
                     <p className="text-xs text-gray-400">
-                      Painel oculto. Você pode criar ou editar qualquer série, episódio, cliente ou chave PIX.
+                      Painel oculto. Suas chaves do Supabase já estão integradas de fábrica.
                     </p>
                   </div>
 
@@ -1501,6 +1503,8 @@
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
+                        const cleaned = cleanSupabaseUrl(sbUrl);
+                        setSbUrl(cleaned);
                         const nextSettings = buildSettingsPayload();
                         pushToSupabase(seriesList, users, coupons, nextSettings);
                         setConfigSavedMsg('✅ Token e Configurações gravados com sucesso na memória e na nuvem!');
@@ -1536,23 +1540,21 @@
                       </div>
 
                       <div>
-                        <label className="block text-[11px] text-gray-400 mb-1">2. Project URL do Supabase (https://...supabase.co):</label>
+                        <label className="block text-[11px] text-gray-400 mb-1">2. Project URL do Supabase:</label>
                         <input
                           type="text"
                           value={sbUrl}
                           onChange={(e) => setSbUrl(e.target.value)}
-                          placeholder="https://seuprojeto.supabase.co"
                           className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-[11px] text-gray-400 mb-1">3. Publishable / Anon Key do Supabase:</label>
+                        <label className="block text-[11px] text-gray-400 mb-1">3. Publishable Key do Supabase:</label>
                         <input
                           type="text"
                           value={sbKey}
                           onChange={(e) => setSbKey(e.target.value)}
-                          placeholder="sb_publishable_... ou eyJhbG..."
                           className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white font-mono"
                         />
                       </div>
@@ -1599,7 +1601,7 @@
                         }
                         const encoded = btoa(newAdminPass);
                         setAdminStoredSecret(encoded);
-                        localStorage.setItem('dup_adm_sec_v7', encoded);
+                        localStorage.setItem('dup_adm_sec_v8', encoded);
                         pushToSupabase(seriesList, users, coupons, {
                           ...buildSettingsPayload(),
                           adminStoredSecret: encoded
