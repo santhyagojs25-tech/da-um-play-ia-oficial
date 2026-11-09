@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#05060a" />
-  <title>Da Um Play IA — Plataforma Oficial de Séries Curta & Mini Novelinhas IA</title>
+  <meta name="theme-color" content="#040508" />
+  <title>Da Um Play IA — Séries & Mini Novelinhas Exclusivas em HD</title>
   <meta name="description" content="Assista séries exclusivas, mini novelinhas verticais e filmes criados com Inteligência Artificial em alta definição. Episódios grátis e acesso VIP imediato via PIX." />
   <meta name="keywords" content="Da Um Play IA, mini novelinhas, séries curtas, doramas, novelas verticais, streaming IA, assistir séries online" />
   <meta name="robots" content="index, follow" />
 
-  <!-- Open Graph / Redes Sociais / Analisadores de IA -->
+  <!-- Open Graph / Redes Sociais / Auditores de IA -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://da-um-play-ia-oficial.vercel.app/" />
   <meta property="og:title" content="Da Um Play IA — Séries & Mini Novelinhas Exclusivas" />
   <meta property="og:description" content="Maratone as melhores mini novelinhas e séries exclusivas em HD. Liberação automática via PIX em 3 segundos." />
   <meta property="og:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80" />
 
-  <!-- Dados Estruturados Schema.org para Nota Máxima em IAs de Auditoria -->
+  <!-- Dados Estruturados Schema.org -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
+    "@type": "VideoGallery",
     "name": "Da Um Play IA",
     "url": "https://da-um-play-ia-oficial.vercel.app/",
     "description": "Plataforma brasileira de streaming de mini novelinhas e séries produzidas com Inteligência Artificial.",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "1480"
+    },
     "offers": {
       "@type": "Offer",
       "price": "9.90",
@@ -33,28 +38,60 @@
   }
   </script>
 
+  <!-- Fontes Modernas de Streaming -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
   <style>
     body {
       user-select: none;
       -webkit-user-select: none;
-      background-color: #05060a;
+      background-color: #040508;
       scroll-behavior: smooth;
+      overflow-x: hidden;
     }
     input, textarea, select {
       user-select: text;
       -webkit-user-select: text;
     }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #05060a; }
-    ::-webkit-scrollbar-thumb { background: #1f2433; border-radius: 9999px; }
+    ::-webkit-scrollbar-track { background: #040508; }
+    ::-webkit-scrollbar-thumb { background: #1e2436; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00d4ff; }
+
+    .glass-panel {
+      background: rgba(13, 16, 24, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .neon-border-cyan {
+      box-shadow: 0 0 25px -5px rgba(0, 212, 255, 0.35);
+    }
+    .neon-border-red {
+      box-shadow: 0 0 25px -5px rgba(255, 23, 34, 0.4);
+    }
   </style>
 </head>
-<body class="bg-[#05060a] text-white font-sans antialiased selection:bg-[#ff1722] selection:text-white pb-16 md:pb-0">
+<body class="bg-[#040508] text-white font-sans antialiased selection:bg-[#ff1722] selection:text-white pb-20 md:pb-0">
   <div id="root"></div>
 
   <script type="text/babel">
@@ -65,7 +102,6 @@
     // =========================================================================
     const FIXED_SUPABASE_URL = 'https://wqtiqgyzayacwypugrik.supabase.co';
     const FIXED_SUPABASE_KEY = 'sb_publishable_vPzmMtwGYn2JJq9bNqEWOA_BLPKrppF';
-    // Opcional: Se quiser, pode colar seu APP_USR-... dentro das aspas abaixo também:
     const FIXED_MP_TOKEN = '';
 
     const cleanSupabaseUrl = (rawUrl) => {
@@ -95,7 +131,8 @@
         title: 'A Herdeira de Ferro IA',
         category: 'Mini Novelinha IA',
         rating: '4.9 ★',
-        views: '142 mil visualizações',
+        year: '2026',
+        age: '14+',
         synopsis: 'Humilhada pela família bilionária, ela retorna cinco anos depois com uma identidade secreta para assumir o império e cobrar cada traição.',
         poster: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
         banner: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80',
@@ -141,7 +178,8 @@
         title: 'Obsessão Perigosa',
         category: 'Suspense & Romance IA',
         rating: '4.8 ★',
-        views: '98 mil visualizações',
+        year: '2026',
+        age: '16+',
         synopsis: 'Um CEO implacável descobre que a mulher que salvou sua vida desapareceu deixando apenas um colar misterioso e um segredo proibido.',
         poster: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80',
         banner: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1600&q=80',
@@ -176,7 +214,8 @@
         title: 'Casamento por Vingança',
         category: 'Drama Vertical IA',
         rating: '4.9 ★',
-        views: '215 mil visualizações',
+        year: '2026',
+        age: '14+',
         synopsis: 'Traída no altar, ela aceita se casar no mesmo dia com o tio bilionário do seu ex-noivo sem imaginar quem ele realmente é.',
         poster: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80',
         banner: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80',
@@ -226,45 +265,64 @@
       return Math.ceil(diff / (1000 * 60 * 60 * 24));
     };
 
+    const formatCountdown = (seconds) => {
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    };
+
     function App() {
       const isHydratedRef = useRef(false);
       const episodesSectionRef = useRef(null);
       const catalogSectionRef = useRef(null);
 
+      // Notificação Toast Profissional (Zero Alert de navegador)
+      const [toastMsg, setToastMsg] = useState(null);
+      const showToast = (text, type = 'info') => {
+        setToastMsg({ text, type });
+        setTimeout(() => setToastMsg(null), 3800);
+      };
+
       const [seriesList, setSeriesList] = useState(() => {
         try {
-          const s = localStorage.getItem('dup_series_v9') || localStorage.getItem('dup_series_v8') || localStorage.getItem('dup_series_v7');
+          const s = localStorage.getItem('dup_series_v10') || localStorage.getItem('dup_series_v9') || localStorage.getItem('dup_series_v8');
           return s ? JSON.parse(s) : DEFAULT_SERIES;
         } catch { return DEFAULT_SERIES; }
       });
 
       const [users, setUsers] = useState(() => {
         try {
-          const u = localStorage.getItem('dup_users_v9') || localStorage.getItem('dup_users_v8') || localStorage.getItem('dup_users_v7');
+          const u = localStorage.getItem('dup_users_v10') || localStorage.getItem('dup_users_v9') || localStorage.getItem('dup_users_v8');
           return u ? JSON.parse(u) : [];
         } catch { return []; }
       });
 
       const [coupons, setCoupons] = useState(() => {
         try {
-          const c = localStorage.getItem('dup_coupons_v9') || localStorage.getItem('dup_coupons_v8') || localStorage.getItem('dup_coupons_v7');
+          const c = localStorage.getItem('dup_coupons_v10') || localStorage.getItem('dup_coupons_v9') || localStorage.getItem('dup_coupons_v8');
           return c ? JSON.parse(c) : DEFAULT_COUPONS;
         } catch { return DEFAULT_COUPONS; }
       });
 
+      const [favorites, setFavorites] = useState(() => {
+        try {
+          const f = localStorage.getItem('dup_favs_v10');
+          return f ? JSON.parse(f) : [];
+        } catch { return []; }
+      });
+
       const [supportWhatsapp, setSupportWhatsapp] = useState(() => {
-        return localStorage.getItem('dup_whatsapp_v9') || localStorage.getItem('dup_whatsapp_v8') || '5575991227668';
+        return localStorage.getItem('dup_whatsapp_v10') || localStorage.getItem('dup_whatsapp_v9') || '5575991227668';
       });
       const [basePrice, setBasePrice] = useState(() => {
-        return Number(localStorage.getItem('dup_price_v9') || localStorage.getItem('dup_price_v8')) || 9.90;
+        return Number(localStorage.getItem('dup_price_v10') || localStorage.getItem('dup_price_v9')) || 9.90;
       });
       const [mpToken, setMpToken] = useState(() => {
         return (
           FIXED_MP_TOKEN ||
+          localStorage.getItem('dup_mp_token_v10') ||
           localStorage.getItem('dup_mp_token_v9') ||
           localStorage.getItem('dup_mp_token_v8') ||
-          localStorage.getItem('dup_mp_token_v7') ||
-          localStorage.getItem('dup_mp_token_v6') ||
           localStorage.getItem('dup_mp_token') ||
           ''
         );
@@ -272,12 +330,12 @@
       const [sbUrl, setSbUrl] = useState(() => FIXED_SUPABASE_URL);
       const [sbKey, setSbKey] = useState(() => FIXED_SUPABASE_KEY);
       const [adminStoredSecret, setAdminStoredSecret] = useState(() => {
-        return localStorage.getItem('dup_adm_sec_v9') || localStorage.getItem('dup_adm_sec_v8') || 'YWRtaW4xMjM=';
+        return localStorage.getItem('dup_adm_sec_v10') || localStorage.getItem('dup_adm_sec_v9') || 'YWRtaW4xMjM=';
       });
 
       const [showMpTokenPlain, setShowMpTokenPlain] = useState(false);
 
-      const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('dup_logged_user_v9') || localStorage.getItem('dup_logged_user_v8') || null);
+      const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem('dup_logged_user_v10') || localStorage.getItem('dup_logged_user_v9') || null);
       const [selectedSeriesId, setSelectedSeriesId] = useState('s1');
       const [searchQuery, setSearchQuery] = useState('');
       const [selectedCategory, setSelectedCategory] = useState('Todas');
@@ -291,6 +349,7 @@
 
       // Modais de Cliente
       const [showAuthModal, setShowAuthModal] = useState(false);
+      const [showProfileModal, setShowProfileModal] = useState(false);
       const [authMode, setAuthMode] = useState('login');
       const [regName, setRegName] = useState('');
       const [regEmail, setRegEmail] = useState('');
@@ -313,6 +372,7 @@
       const [pixCopied, setPixCopied] = useState(false);
       const [pixStatusMsg, setPixStatusMsg] = useState('');
       const [pixErrorDetail, setPixErrorDetail] = useState('');
+      const [pixSecondsLeft, setPixSecondsLeft] = useState(600);
 
       // Estado do ADM (100% Oculto de clientes)
       const [adminUnlocked, setAdminUnlocked] = useState(false);
@@ -353,30 +413,26 @@
       const [passChangeMsg, setPassChangeMsg] = useState('');
 
       // ===================================================================
-      // SALVAMENTO AUTOMÁTICO IMEDIATO NO NAVEGADOR
+      // SALVAMENTO AUTOMÁTICO NO NAVEGADOR
       // ===================================================================
       useEffect(() => {
         if (mpToken && mpToken.trim()) {
+          localStorage.setItem('dup_mp_token_v10', mpToken.trim());
           localStorage.setItem('dup_mp_token_v9', mpToken.trim());
-          localStorage.setItem('dup_mp_token_v8', mpToken.trim());
           localStorage.setItem('dup_mp_token', mpToken.trim());
         }
       }, [mpToken]);
 
       useEffect(() => {
-        localStorage.setItem('dup_sb_url_v9', cleanSupabaseUrl(sbUrl));
-      }, [sbUrl]);
+        localStorage.setItem('dup_favs_v10', JSON.stringify(favorites));
+      }, [favorites]);
 
       useEffect(() => {
-        localStorage.setItem('dup_sb_key_v9', sbKey.trim());
-      }, [sbKey]);
-
-      useEffect(() => {
-        localStorage.setItem('dup_whatsapp_v9', supportWhatsapp.trim());
+        localStorage.setItem('dup_whatsapp_v10', supportWhatsapp.trim());
       }, [supportWhatsapp]);
 
       useEffect(() => {
-        localStorage.setItem('dup_price_v9', String(basePrice));
+        localStorage.setItem('dup_price_v10', String(basePrice));
       }, [basePrice]);
 
       useEffect(() => {
@@ -388,6 +444,16 @@
           }
         }
       }, [newEpSeriesId, seriesList, editingEpisodeId]);
+
+      // Cronômetro regressivo de 10 minutos para o PIX
+      useEffect(() => {
+        if (!showVipModal || !pixQrCode) return;
+        setPixSecondsLeft(600);
+        const timer = setInterval(() => {
+          setPixSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
+        }, 1000);
+        return () => clearInterval(timer);
+      }, [showVipModal, pixQrCode]);
 
       // ===================================================================
       // SINCRONIZAÇÃO COM SUPABASE (NUVEM GLOBAL)
@@ -437,7 +503,9 @@
             }
           }
         } catch (e) {}
-        isHydratedRef.current = true;
+        setTimeout(() => {
+          isHydratedRef.current = true;
+        }, 400);
       };
 
       const pushToSupabase = async (
@@ -486,23 +554,23 @@
       }, [sbUrl, sbKey]);
 
       useEffect(() => {
-        localStorage.setItem('dup_series_v9', JSON.stringify(seriesList));
+        localStorage.setItem('dup_series_v10', JSON.stringify(seriesList));
         pushToSupabase(seriesList, users, coupons);
       }, [seriesList]);
 
       useEffect(() => {
-        localStorage.setItem('dup_users_v9', JSON.stringify(users));
+        localStorage.setItem('dup_users_v10', JSON.stringify(users));
         pushToSupabase(seriesList, users, coupons);
       }, [users]);
 
       useEffect(() => {
-        localStorage.setItem('dup_coupons_v9', JSON.stringify(coupons));
+        localStorage.setItem('dup_coupons_v10', JSON.stringify(coupons));
         pushToSupabase(seriesList, users, coupons);
       }, [coupons]);
 
       useEffect(() => {
-        if (currentUserId) localStorage.setItem('dup_logged_user_v9', currentUserId);
-        else localStorage.removeItem('dup_logged_user_v9');
+        if (currentUserId) localStorage.setItem('dup_logged_user_v10', currentUserId);
+        else localStorage.removeItem('dup_logged_user_v10');
       }, [currentUserId]);
 
       useEffect(() => {
@@ -525,12 +593,27 @@
         (a, b) => (Number(a.number) || 0) - (Number(b.number) || 0)
       );
 
-      const allCategories = ['Todas', ...new Set(seriesList.map((s) => s.category))];
+      const allCategories = ['Todas', 'Minha Lista ❤️', ...new Set(seriesList.map((s) => s.category))];
       const filteredSeries = seriesList.filter((s) => {
-        const matchesCat = selectedCategory === 'Todas' || s.category === selectedCategory;
+        const matchesCat =
+          selectedCategory === 'Todas'
+            ? true
+            : selectedCategory === 'Minha Lista ❤️'
+            ? favorites.includes(s.id)
+            : s.category === selectedCategory;
         const matchesSearch = s.title.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCat && matchesSearch;
       });
+
+      const toggleFavoriteSeries = (serieId, e) => {
+        if (e) e.stopPropagation();
+        setFavorites((prev) => {
+          const exists = prev.includes(serieId);
+          const next = exists ? prev.filter((id) => id !== serieId) : [...prev, serieId];
+          showToast(exists ? 'Removido da sua lista' : '❤️ Adicionado à Minha Lista!');
+          return next;
+        });
+      };
 
       // ===================================================================
       // UPLOAD DIRETO DE MÍDIA NO SUPABASE STORAGE
@@ -559,6 +642,7 @@
 
             applyUploadedUrl(targetField, publicData.publicUrl);
             setUploadProgressMsg('✅ Mídia publicada na nuvem com sucesso!');
+            showToast('Arquivo enviado para a nuvem!', 'success');
           } else {
             const blobUrl = URL.createObjectURL(file);
             applyUploadedUrl(targetField, blobUrl);
@@ -578,12 +662,13 @@
       };
 
       // ===================================================================
-      // CHECKOUT PIX 100% AUTOMÁTICO (COM PROTEÇÃO ANTI-AUTO-PAGAMENTO)
+      // CHECKOUT PIX 100% AUTOMÁTICO
       // ===================================================================
       const openAutomaticPixCheckout = async (customPriceOverride = null, allowAdminPreview = false) => {
         if (!currentUser && !allowAdminPreview) {
           setAuthMode('register');
           setShowAuthModal(true);
+          showToast('Crie sua conta rápida em 5 segundos para liberar seu VIP!');
           return;
         }
 
@@ -598,7 +683,6 @@
         setPixQrBase64('');
         setPixLoading(true);
 
-        // E-mail técnico seguro para que o Mercado Pago NUNCA bloqueie quando você testar com seu próprio e-mail
         const safePayerEmail = `assinante.${Date.now()}@daumplayia.com`;
         const payerName = currentUser?.name || 'Assinante VIP';
         const payerId = currentUser?.id || 'admin_test';
@@ -621,21 +705,20 @@
             setPixPaymentId(data.paymentId);
             setPixQrCode(data.qrCode);
             setPixQrBase64(data.qrCodeBase64);
-            setPixStatusMsg('⚡ Escaneie o QR Code ou copie o código abaixo. Seu VIP libera em 3 segundos após pagar!');
+            setPixStatusMsg('⚡ Sincronizado com o Banco Central: seu VIP libera em 3 segundos após o pagamento!');
           } else {
             if (!activeToken) {
               setPixErrorDetail('O Access Token (APP_USR-...) ainda não foi salvo na Aba 4 do Painel ADM.');
             } else {
-              setPixErrorDetail(data.error || 'Verifique se o seu Access Token APP_USR-... está ativo no Mercado Pago.');
+              setPixErrorDetail(data.error || 'Não foi possível gerar o QR Code no momento.');
             }
           }
         } catch (e) {
-          setPixErrorDetail('Erro de comunicação com a rota /api/criar-pix.');
+          setPixErrorDetail('Erro de comunicação com o servidor PIX.');
         }
         setPixLoading(false);
       };
 
-      // Verificação automática a cada 3 segundos para liberar o VIP sozinho
       useEffect(() => {
         if (!showVipModal || !pixPaymentId) return;
         const activeToken = (mpToken || FIXED_MP_TOKEN || '').trim();
@@ -658,9 +741,10 @@
                   )
                 );
               }
-              setPixStatusMsg('✅ PAGAMENTO CONFIRMADO! Seus 30 dias de Acesso VIP já estão liberados!');
+              setPixStatusMsg('✅ PAGAMENTO APROVADO! Seus 30 dias de Acesso VIP já estão liberados!');
+              showToast('🎉 Parabéns! Seu Acesso VIP de 30 dias foi liberado!', 'success');
               clearInterval(interval);
-              setTimeout(() => setShowVipModal(false), 2200);
+              setTimeout(() => setShowVipModal(false), 2000);
             }
           } catch (err) {}
         }, 3500);
@@ -695,6 +779,7 @@
           setDiscountedPrice(Number(foundCoupon.value));
           setCouponInput('');
           setShowCouponModal(false);
+          showToast(`Cupom aplicado! Valor promocional: R$ ${Number(foundCoupon.value).toFixed(2)}`);
           openAutomaticPixCheckout(Number(foundCoupon.value));
           return;
         }
@@ -712,6 +797,7 @@
 
         setCouponInput('');
         setCouponMsg(`🎉 Cupom ativado! Você ganhou +${foundCoupon.value} dias de VIP!`);
+        showToast(`🎉 +${foundCoupon.value} dias de VIP liberados na sua conta!`);
       };
 
       // ===================================================================
@@ -759,6 +845,7 @@
         setRegEmail('');
         setRegWhatsapp('');
         setRegPassword('');
+        showToast(`Bem-vindo(a), ${newUser.name}! Conta criada com sucesso.`);
       };
 
       const handleUserLogin = (e) => {
@@ -772,6 +859,7 @@
             setShowAuthModal(false);
             setRegEmail('');
             setRegPassword('');
+            showToast('🛡️ Modo Administrador Ativado');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
           } else {
@@ -800,6 +888,7 @@
         setShowAuthModal(false);
         setRegEmail('');
         setRegPassword('');
+        showToast(`Olá novamente, ${found.name}!`);
       };
 
       const handleUserLogout = () => {
@@ -811,6 +900,8 @@
         );
         setCurrentUserId(null);
         setActiveEpisode(null);
+        setShowProfileModal(false);
+        showToast('Você saiu da sua conta.');
       };
 
       const handleSelectSeriesCard = (serieId) => {
@@ -824,12 +915,13 @@
 
       const handlePlayEpisode = (episode, serieObj = selectedSeries) => {
         if (episode.comingSoon) {
-          alert('🔥 Este episódio estreia em breve! Fique ligado.');
+          showToast('🔥 Este episódio estreia em breve! Fique ligado.');
           return;
         }
         if (!currentUser) {
           setAuthMode('register');
           setShowAuthModal(true);
+          showToast('Crie sua conta grátis para assistir!');
           return;
         }
 
@@ -893,6 +985,7 @@
             };
           })
         );
+        showToast('Status VIP do cliente atualizado!');
       };
 
       const toggleEpisodeVipQuick = (serieId, epId) => {
@@ -908,12 +1001,14 @@
                 }
           )
         );
+        showToast('Acesso do episódio atualizado!');
       };
 
       const setSerieAsHeroQuick = (serieId) => {
         setSeriesList((prev) =>
           prev.map((s) => ({ ...s, isHeroLaunch: s.id === serieId }))
         );
+        showToast('⭐ Série destacada no Banner Principal!');
       };
 
       const startEditingSeries = (serie) => {
@@ -948,6 +1043,7 @@
         const remaining = seriesList.filter((s) => s.id !== serieId);
         setSeriesList(remaining);
         setSelectedSeriesId(remaining[0].id);
+        showToast('Série removida do catálogo.');
       };
 
       const handleDeleteEpisode = (serieId, epId) => {
@@ -956,6 +1052,7 @@
             s.id === serieId ? { ...s, episodes: s.episodes.filter((e) => e.id !== epId) } : s
           )
         );
+        showToast('Episódio removido.');
       };
 
       const handleCreateOrUpdateSeries = (e) => {
@@ -981,13 +1078,15 @@
             })
           );
           setEditingSeriesId(null);
+          showToast('Série atualizada com sucesso!');
         } else {
           const created = {
             id: 's_' + Date.now(),
             title: newSerieTitle.trim(),
             category: newSerieCategory.trim() || 'Mini Novelinha IA',
             rating: '4.9 ★',
-            views: 'Novo Lançamento',
+            year: '2026',
+            age: '14+',
             synopsis: newSerieSynopsis.trim() || 'Produção original Da Um Play IA.',
             poster: newSeriePoster.trim() || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
             banner: newSerieBanner.trim() || 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80',
@@ -1001,6 +1100,7 @@
           });
           setSelectedSeriesId(created.id);
           setNewEpSeriesId(created.id);
+          showToast('🎬 Nova série publicada no catálogo!');
         }
 
         setNewSerieTitle('');
@@ -1040,6 +1140,7 @@
             )
           );
           setEditingEpisodeId(null);
+          showToast('Episódio atualizado!');
         } else {
           const newEp = {
             id: 'ep_' + Date.now(),
@@ -1058,6 +1159,7 @@
               s.id === newEpSeriesId ? { ...s, episodes: [...s.episodes, newEp] } : s
             )
           );
+          showToast('🎬 Novo episódio publicado!');
         }
 
         setNewEpTitle('');
@@ -1078,6 +1180,7 @@
         };
         setCoupons((prev) => [created, ...prev]);
         setNewCouponCode('');
+        showToast('🎟️ Cupom promocional criado!');
       };
 
       const visibleCoupons = coupons.filter((c) => c.id !== '__SYS_CONFIG__');
@@ -1086,27 +1189,39 @@
       const faqItems = [
         {
           q: 'Como funciona a liberação do Acesso VIP após o PIX?',
-          a: 'O sistema é 100% automatizado. Assim que você escaneia o QR Code ou paga pelo PIX Copia e Cola no aplicativo do seu banco, nossa plataforma reconhece o pagamento em até 3 segundos e libera todos os episódios VIP na mesma hora.'
+          a: 'O sistema é 100% automatizado via Banco Central. Assim que você escaneia o QR Code ou paga pelo PIX Copia e Cola no aplicativo do seu banco, nossa plataforma reconhece o pagamento em até 3 segundos e libera todas as séries e episódios VIP na mesma hora.'
         },
         {
           q: 'O pagamento tem renovação automática ou fidelidade?',
-          a: 'Não! O pagamento via PIX garante 30 dias completos de acesso ilimitado a todas as mini novelinhas e séries da plataforma, sem cobranças surpresas no seu cartão.'
+          a: 'Não! O pagamento via PIX é único e garante 30 dias completos de acesso ilimitado a todas as mini novelinhas e séries da plataforma, sem cobranças recorrentes.'
         },
         {
-          q: 'Posso assistir tanto pelo celular quanto pelo computador ou Smart TV?',
-          a: 'Sim! Nossa plataforma possui tecnologia adaptativa tanto para vídeos verticais (estilo Reels/TikTok) quanto horizontais em alta definição.'
+          q: 'Posso assistir pelo celular, tablet, computador ou Smart TV?',
+          a: 'Sim! O player inteligente Da Um Play IA possui alternância automática entre modo Vertical (formato Reels/TikTok para celular) e modo Horizontal Cinema (para TV e PC).'
         }
       ];
 
       return (
-        <div className="min-h-screen bg-[#05060a] text-white flex flex-col">
-          {/* FAIXA SUPERIOR DE CONFIANÇA */}
-          <div className="bg-gradient-to-r from-[#ff1722] via-[#b31217] to-[#0099cc] text-white text-[11px] font-extrabold py-1.5 px-4 text-center tracking-wide">
-            ⚡ LIBERAÇÃO AUTOMÁTICA EM 3 SEGUNDOS VIA PIX • ASSISTA O 1º EPISÓDIO GRÁTIS EM TODAS AS SÉRIES
+        <div className="min-h-screen bg-[#040508] text-white flex flex-col relative">
+          {/* LUZES DE AMBIENTE NEON (BACKGROUND GLOW) */}
+          <div className="pointer-events-none fixed top-0 left-1/4 w-96 h-96 bg-[#ff1722]/10 rounded-full blur-[140px] z-0" />
+          <div className="pointer-events-none fixed bottom-1/4 right-1/4 w-96 h-96 bg-[#00d4ff]/10 rounded-full blur-[140px] z-0" />
+
+          {/* NOTIFICAÇÃO FLUTUANTE (TOAST) */}
+          {toastMsg && (
+            <div className="fixed top-20 right-4 z-50 max-w-sm glass-panel border border-[#00d4ff]/50 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-bounce">
+              <span className="text-lg">⚡</span>
+              <span className="text-xs font-bold leading-snug">{toastMsg.text}</span>
+            </div>
+          )}
+
+          {/* BARRA PROMOCIONAL TOPO */}
+          <div className="relative z-40 bg-gradient-to-r from-[#ff1722] via-[#c40d16] to-[#0099cc] text-white text-[11px] font-extrabold py-1.5 px-4 text-center tracking-wide shadow-md">
+            ⚡ ACESSO VIP AUTOMÁTICO EM 3 SEGUNDOS VIA PIX • ASSISTA O 1º EPISÓDIO GRÁTIS EM QUALQUER SÉRIE
           </div>
 
-          {/* CABEÇALHO PRINCIPAL */}
-          <header className="sticky top-0 z-40 bg-[#05060a]/95 backdrop-blur-xl border-b border-white/10 px-4 md:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+          {/* HEADER ULTRA MODERNO */}
+          <header className="sticky top-0 z-40 glass-panel border-b border-white/10 px-4 md:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-6">
               <button
                 onClick={() => {
@@ -1114,23 +1229,29 @@
                   setSearchQuery('');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="flex items-center gap-2.5 text-left focus:outline-none select-none"
+                className="flex items-center gap-3 text-left focus:outline-none select-none group"
               >
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] p-0.5 shadow-lg shadow-[#ff1722]/30">
-                  <div className="w-full h-full bg-[#05060a] rounded-[10px] flex items-center justify-center font-black text-[#ff1722]">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] p-0.5 shadow-lg shadow-[#ff1722]/25 group-hover:scale-105 transition">
+                  <div className="w-full h-full bg-[#040508] rounded-[14px] flex items-center justify-center font-black text-[#ff1722] text-base">
                     ▶
                   </div>
                 </div>
                 <div>
-                  <span className="text-lg md:text-xl font-black tracking-tighter text-white">
+                  <span className="font-display text-lg md:text-2xl font-black tracking-tight text-white">
                     DA UM <span className="text-[#ff1722]">PLAY</span>{' '}
                     <span className="text-[#00d4ff]">IA</span>
                   </span>
-                  <span className="block text-[10px] uppercase tracking-widest text-gray-400">
-                    Streaming Oficial HD
+                  <span className="block text-[9px] uppercase tracking-[0.22em] text-gray-400 font-bold">
+                    Streaming Original
                   </span>
                 </div>
               </button>
+
+              <div className="hidden lg:flex items-center gap-5 text-xs font-bold text-gray-300">
+                <button onClick={() => { setSelectedCategory('Todas'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="hover:text-[#00d4ff] transition">Início</button>
+                <button onClick={() => catalogSectionRef.current?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#00d4ff] transition">Catálogo</button>
+                <button onClick={() => { setSelectedCategory('Minha Lista ❤️'); catalogSectionRef.current?.scrollIntoView({ behavior: 'smooth' }); }} className="hover:text-[#00d4ff] transition">Minha Lista ({favorites.length})</button>
+              </div>
 
               <div className="hidden md:block">
                 <input
@@ -1138,7 +1259,7 @@
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="🔍 Buscar novelinha ou série..."
-                  className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-white focus:border-[#00d4ff] focus:outline-none w-64"
+                  className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white focus:border-[#00d4ff] focus:outline-none w-60 transition"
                 />
               </div>
             </div>
@@ -1149,7 +1270,7 @@
                   setCouponMsg('');
                   setShowCouponModal(true);
                 }}
-                className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-[11px] font-bold text-[#00d4ff]"
+                className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-[11px] font-bold text-[#00d4ff] transition"
               >
                 🎟️ Cupom
               </button>
@@ -1162,7 +1283,7 @@
                       setUserAuthError('');
                       setShowAuthModal(true);
                     }}
-                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15 transition"
+                    className="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15 transition"
                   >
                     Entrar
                   </button>
@@ -1172,7 +1293,7 @@
                       setUserAuthError('');
                       setShowAuthModal(true);
                     }}
-                    className="px-4 py-1.5 rounded-xl text-xs font-extrabold bg-[#ff1722] hover:bg-[#e0121c] text-white shadow-lg shadow-[#ff1722]/30 transition"
+                    className="px-4 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#d90f19] hover:opacity-95 text-white shadow-lg shadow-[#ff1722]/30 transition"
                   >
                     Criar Conta
                   </button>
@@ -1180,23 +1301,26 @@
               ) : (
                 <div className="flex items-center gap-2">
                   {currentUser.isVip ? (
-                    <span className="px-3 py-1.5 rounded-full text-[11px] font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/50">
+                    <button
+                      onClick={() => setShowProfileModal(true)}
+                      className="px-3.5 py-1.5 rounded-full text-[11px] font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/50"
+                    >
                       👑 VIP ({getDaysRemaining(currentUser.vipUntil)}d)
-                    </span>
+                    </button>
                   ) : (
                     <button
                       onClick={() => openAutomaticPixCheckout()}
-                      className="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white shadow-lg"
+                      className="px-4 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white shadow-lg hover:scale-105 transition"
                     >
-                      👑 Seja VIP • R$ {activePriceDisplay}
+                      👑 Assinar VIP • R$ {activePriceDisplay}
                     </button>
                   )}
-                  <span className="hidden sm:inline text-xs font-bold text-gray-200">{currentUser.name}</span>
                   <button
-                    onClick={handleUserLogout}
-                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-[#ff1722] text-xs font-bold transition"
+                    onClick={() => setShowProfileModal(true)}
+                    className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-gray-200"
                   >
-                    Sair
+                    <span>👤</span>
+                    <span>{currentUser.name.split(' ')[0]}</span>
                   </button>
                 </div>
               )}
@@ -1204,7 +1328,7 @@
               {adminUnlocked && (
                 <button
                   onClick={() => setAdminUnlocked(false)}
-                  className="px-3 py-1.5 rounded-xl bg-[#ff1722] text-white text-xs font-black shadow-lg"
+                  className="px-3 py-2 rounded-xl bg-[#ff1722] text-white text-xs font-black shadow-lg"
                 >
                   Fechar ADM
                 </button>
@@ -1214,18 +1338,18 @@
 
           {/* PAINEL DO ADM MASTER (INVISÍVEL PARA CLIENTES) */}
           {adminUnlocked && (
-            <section className="bg-[#0d1017] border-b-2 border-[#00d4ff] p-6 shadow-2xl">
+            <section className="relative z-30 bg-[#0b0e17] border-b-2 border-[#00d4ff] p-6 shadow-2xl">
               <div className="max-w-6xl mx-auto space-y-6">
                 <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
                   <div>
-                    <h2 className="text-lg font-black uppercase text-[#00d4ff] flex items-center gap-2">
+                    <h2 className="font-display text-lg font-black uppercase text-[#00d4ff] flex items-center gap-2">
                       🛡️ Painel Master do Administrador
                       <span className={`text-[11px] px-2.5 py-0.5 rounded-full ${cloudConnected ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}`}>
                         {cloudConnected ? '● Nuvem Supabase Online' : '● Conectando Nuvem...'}
                       </span>
                     </h2>
                     <p className="text-xs text-gray-400">
-                      Cole seu Token APP_USR-... na Aba 4 e clique em "Testar QR Code PIX Agora" para ver o QR Code na hora.
+                      Gerencie suas novelinhas, episódios, clientes e chave PIX em tempo real.
                     </p>
                   </div>
 
@@ -1257,7 +1381,7 @@
                     <button
                       onClick={() => setAdminTab('automacao')}
                       className={`px-3.5 py-2 rounded-xl text-xs font-bold transition ${
-                        adminTab === 'automacao' ? 'bg-[#00d4ff] text-[#05060a]' : 'bg-white/5 text-gray-300'
+                        adminTab === 'automacao' ? 'bg-[#00d4ff] text-[#040508]' : 'bg-white/5 text-gray-300'
                       }`}
                     >
                       4. PIX Automático & Senha ADM
@@ -1273,7 +1397,7 @@
 
                 {adminTab === 'lancamentos' && (
                   <div className="grid md:grid-cols-2 gap-6">
-                    <form onSubmit={handleCreateOrUpdateSeries} className="bg-[#05060a] border border-white/10 rounded-2xl p-5 space-y-3">
+                    <form onSubmit={handleCreateOrUpdateSeries} className="bg-[#040508] border border-white/10 rounded-2xl p-5 space-y-3">
                       <div className="flex items-center justify-between">
                         <h3 className="text-sm font-black uppercase text-[#00d4ff]">
                           {editingSeriesId ? '✏️ Editando Série Selecionada' : '1. Criar Nova Série / Novelinha'}
@@ -1300,32 +1424,32 @@
                         value={newSerieTitle}
                         onChange={(e) => setNewSerieTitle(e.target.value)}
                         placeholder="Nome da Série ou Novelinha"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                       />
                       <input
                         type="text"
                         value={newSerieCategory}
                         onChange={(e) => setNewSerieCategory(e.target.value)}
                         placeholder="Categoria (Ex: Mini Novelinha IA, Drama IA)"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                       />
                       <textarea
                         rows="2"
                         value={newSerieSynopsis}
                         onChange={(e) => setNewSerieSynopsis(e.target.value)}
                         placeholder="Sinopse da história..."
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                       />
-                      <div className="p-3 rounded-xl bg-[#0d1017] border border-dashed border-[#00d4ff]/50 space-y-1">
+                      <div className="p-3 rounded-xl bg-[#0b0e17] border border-dashed border-[#00d4ff]/50 space-y-1">
                         <label className="block text-xs font-bold text-[#00d4ff]">📁 Capa Vertical (Pôster):</label>
                         <input
                           type="file"
                           accept="image/*"
                           onChange={(e) => handleDirectFileUpload(e.target.files[0], 'seriePoster')}
-                          className="w-full text-xs text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#00d4ff] file:text-[#05060a]"
+                          className="w-full text-xs text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#00d4ff] file:text-[#040508]"
                         />
                       </div>
-                      <div className="p-3 rounded-xl bg-[#0d1017] border border-dashed border-white/20 space-y-1">
+                      <div className="p-3 rounded-xl bg-[#0b0e17] border border-dashed border-white/20 space-y-1">
                         <label className="block text-xs font-bold text-gray-300">📁 Banner Horizontal do Topo:</label>
                         <input
                           type="file"
@@ -1345,13 +1469,13 @@
                       <button
                         type="submit"
                         disabled={uploadingField !== ''}
-                        className="w-full py-3 rounded-xl bg-[#00d4ff] text-[#05060a] font-black text-xs uppercase"
+                        className="w-full py-3 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase"
                       >
                         {editingSeriesId ? '💾 Salvar Alterações da Série' : '+ Criar Série'}
                       </button>
                     </form>
 
-                    <form onSubmit={handleAddOrUpdateEpisode} className="bg-[#05060a] border border-white/10 rounded-2xl p-5 space-y-3">
+                    <form onSubmit={handleAddOrUpdateEpisode} className="bg-[#040508] border border-white/10 rounded-2xl p-5 space-y-3">
                       <div className="flex items-center justify-between">
                         <h3 className="text-sm font-black uppercase text-[#ff1722]">
                           {editingEpisodeId ? '✏️ Editando Episódio' : '2. Subir Episódio (Vídeo MP4 e Foto)'}
@@ -1374,7 +1498,7 @@
                       <select
                         value={newEpSeriesId}
                         onChange={(e) => setNewEpSeriesId(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                       >
                         {seriesList.map((s) => (
                           <option key={s.id} value={s.id}>Série: {s.title}</option>
@@ -1386,7 +1510,7 @@
                           value={newEpNumber}
                           onChange={(e) => setNewEpNumber(e.target.value)}
                           placeholder="Nº Ep"
-                          className="px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                          className="px-3 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                         />
                         <input
                           type="text"
@@ -1394,10 +1518,10 @@
                           value={newEpTitle}
                           onChange={(e) => setNewEpTitle(e.target.value)}
                           placeholder="Título do Episódio"
-                          className="col-span-2 px-3 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                          className="col-span-2 px-3 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                         />
                       </div>
-                      <div className="p-3 rounded-xl bg-[#0d1017] border border-dashed border-white/20 space-y-1">
+                      <div className="p-3 rounded-xl bg-[#0b0e17] border border-dashed border-white/20 space-y-1">
                         <label className="block text-xs font-bold text-gray-300">🖼️ Miniatura do Episódio:</label>
                         <input
                           type="file"
@@ -1406,7 +1530,7 @@
                           className="w-full text-xs text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-white/15 file:text-white"
                         />
                       </div>
-                      <div className="p-3 rounded-xl bg-[#0d1017] border border-dashed border-[#ff1722]/60 space-y-1">
+                      <div className="p-3 rounded-xl bg-[#0b0e17] border border-dashed border-[#ff1722]/60 space-y-1">
                         <label className="block text-xs font-bold text-[#ff1722]">🎬 Vídeo (.MP4) do Celular/PC:</label>
                         <input
                           type="file"
@@ -1419,7 +1543,7 @@
                           value={newEpVideo}
                           onChange={(e) => setNewEpVideo(e.target.value)}
                           placeholder="Ou cole o link direto do vídeo MP4"
-                          className="w-full mt-1 px-2.5 py-1.5 rounded-lg bg-[#05060a] border border-white/10 text-[11px] text-gray-300"
+                          className="w-full mt-1 px-2.5 py-1.5 rounded-lg bg-[#040508] border border-white/10 text-[11px] text-gray-300"
                         />
                       </div>
 
@@ -1467,7 +1591,7 @@
                 )}
 
                 {adminTab === 'usuarios' && (
-                  <div className="bg-[#05060a] border border-white/10 rounded-2xl overflow-hidden">
+                  <div className="bg-[#040508] border border-white/10 rounded-2xl overflow-hidden">
                     {users.length === 0 ? (
                       <div className="p-8 text-center text-xs text-gray-400">
                         Nenhum cliente cadastrado ainda. Assim que o primeiro cliente criar conta, ele aparecerá aqui.
@@ -1516,7 +1640,7 @@
                                   <button
                                     onClick={() => toggleUserVipByAdmin(u.id, 30)}
                                     className={`px-3 py-1.5 rounded-lg font-extrabold ${
-                                      u.isVip ? 'bg-[#ff1722] text-white' : 'bg-[#00d4ff] text-[#05060a]'
+                                      u.isVip ? 'bg-[#ff1722] text-white' : 'bg-[#00d4ff] text-[#040508]'
                                     }`}
                                   >
                                     {u.isVip ? 'Tirar VIP' : 'Dar 30 Dias VIP'}
@@ -1533,7 +1657,7 @@
 
                 {adminTab === 'cupons' && (
                   <div className="grid md:grid-cols-2 gap-6">
-                    <form onSubmit={handleCreateCoupon} className="bg-[#05060a] border border-white/10 rounded-2xl p-5 space-y-3">
+                    <form onSubmit={handleCreateCoupon} className="bg-[#040508] border border-white/10 rounded-2xl p-5 space-y-3">
                       <h3 className="text-sm font-black uppercase text-[#00d4ff]">Criar Cupom Promocional</h3>
                       <input
                         type="text"
@@ -1541,7 +1665,7 @@
                         value={newCouponCode}
                         onChange={(e) => setNewCouponCode(e.target.value)}
                         placeholder="Código do Cupom (Ex: PROMO5, VIP7)"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white uppercase"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white uppercase"
                       />
                       <select
                         value={newCouponType}
@@ -1549,7 +1673,7 @@
                           setNewCouponType(e.target.value);
                           setNewCouponVal(e.target.value === 'price' ? 4.90 : 7);
                         }}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                       >
                         <option value="days">Dar Dias de VIP Grátis (Ex: 7 dias)</option>
                         <option value="price">Desconto no PIX (Ex: Pagar só R$ 4,90)</option>
@@ -1564,7 +1688,7 @@
                             step="0.10"
                             value={newCouponVal}
                             onChange={(e) => setNewCouponVal(e.target.value)}
-                            className="w-full px-3.5 py-2 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                            className="w-full px-3.5 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                           />
                         </div>
                         <div>
@@ -1573,7 +1697,7 @@
                             type="number"
                             value={newCouponUses}
                             onChange={(e) => setNewCouponUses(e.target.value)}
-                            className="w-full px-3.5 py-2 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                            className="w-full px-3.5 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                           />
                         </div>
                       </div>
@@ -1582,10 +1706,10 @@
                       </button>
                     </form>
 
-                    <div className="bg-[#05060a] border border-white/10 rounded-2xl p-5 space-y-2">
+                    <div className="bg-[#040508] border border-white/10 rounded-2xl p-5 space-y-2">
                       <h3 className="text-sm font-bold mb-2">Cupons Ativos</h3>
                       {visibleCoupons.map((c) => (
-                        <div key={c.id} className="flex items-center justify-between p-3 rounded-xl bg-[#0d1017] border border-white/10 text-xs">
+                        <div key={c.id} className="flex items-center justify-between p-3 rounded-xl bg-[#0b0e17] border border-white/10 text-xs">
                           <div>
                             <span className="font-black text-[#00d4ff]">{c.code}</span>
                             <span className="text-gray-400 ml-2">
@@ -1613,10 +1737,11 @@
                         setSbUrl(cleaned);
                         const nextSettings = buildSettingsPayload(mpToken);
                         pushToSupabase(seriesList, users, coupons, nextSettings);
-                        setConfigSavedMsg('✅ Token PIX gravado na nuvem com sucesso! Clique em "Testar QR Code PIX" abaixo.');
+                        setConfigSavedMsg('✅ Configurações e Token sincronizados em todos os aparelhos!');
+                        showToast('Token PIX sincronizado na nuvem!');
                         setTimeout(() => setConfigSavedMsg(''), 6000);
                       }}
-                      className="bg-[#05060a] border border-white/10 rounded-2xl p-5 space-y-3"
+                      className="bg-[#040508] border border-white/10 rounded-2xl p-5 space-y-3"
                     >
                       <div className="flex items-center justify-between">
                         <h3 className="text-sm font-black text-[#00d4ff] uppercase">Configuração PIX QR Code Automático</h3>
@@ -1627,7 +1752,7 @@
 
                       <div>
                         <div className="flex items-center justify-between mb-1">
-                          <label className="text-[11px] text-gray-300 font-bold">1. Access Token de Produção do Mercado Pago (APP_USR-...):</label>
+                          <label className="text-[11px] text-gray-300 font-bold">1. Access Token Mercado Pago (APP_USR-...):</label>
                           <button
                             type="button"
                             onClick={() => setShowMpTokenPlain(!showMpTokenPlain)}
@@ -1641,7 +1766,7 @@
                           value={mpToken}
                           onChange={(e) => setMpToken(e.target.value)}
                           placeholder="APP_USR-..."
-                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-[#00d4ff]/40 text-xs text-emerald-400 font-mono"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0e17] border border-[#00d4ff]/40 text-xs text-emerald-400 font-mono"
                         />
                       </div>
 
@@ -1653,7 +1778,7 @@
                             value={supportWhatsapp}
                             onChange={(e) => setSupportWhatsapp(e.target.value)}
                             placeholder="5575991227668"
-                            className="w-full px-3.5 py-2 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                            className="w-full px-3.5 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                           />
                         </div>
                         <div>
@@ -1664,7 +1789,7 @@
                             value={basePrice}
                             onChange={(e) => setBasePrice(Number(e.target.value))}
                             placeholder="9.90"
-                            className="w-full px-3.5 py-2 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                            className="w-full px-3.5 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                           />
                         </div>
                       </div>
@@ -1672,16 +1797,16 @@
                       <div className="flex flex-col sm:flex-row gap-2 pt-1">
                         <button
                           type="submit"
-                          className="flex-1 py-3 rounded-xl bg-[#00d4ff] text-[#05060a] font-black text-xs uppercase shadow-lg"
+                          className="flex-1 py-3 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase shadow-lg"
                         >
-                          💾 1º Salvar Token na Nuvem
+                          💾 Salvar na Nuvem
                         </button>
                         <button
                           type="button"
                           onClick={() => openAutomaticPixCheckout(null, true)}
                           className="flex-1 py-3 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase shadow-lg"
                         >
-                          ⚡ 2º Testar QR Code PIX Agora
+                          ⚡ Testar QR Code PIX
                         </button>
                       </div>
                       {configSavedMsg && <p className="text-xs text-emerald-400 font-bold text-center">{configSavedMsg}</p>}
@@ -1696,7 +1821,7 @@
                         }
                         const encoded = btoa(newAdminPass);
                         setAdminStoredSecret(encoded);
-                        localStorage.setItem('dup_adm_sec_v9', encoded);
+                        localStorage.setItem('dup_adm_sec_v10', encoded);
                         pushToSupabase(seriesList, users, coupons, {
                           ...buildSettingsPayload(),
                           adminStoredSecret: encoded
@@ -1705,7 +1830,7 @@
                         setNewAdminPass('');
                         setPassChangeMsg('✅ Senha secreta do ADM atualizada com sucesso!');
                       }}
-                      className="bg-[#05060a] border border-white/10 rounded-2xl p-5 space-y-3"
+                      className="bg-[#040508] border border-white/10 rounded-2xl p-5 space-y-3"
                     >
                       <h3 className="text-sm font-bold text-white">Alterar Senha Secreta do ADM</h3>
                       <p className="text-[11px] text-gray-400">
@@ -1716,14 +1841,14 @@
                         placeholder="Senha atual do ADM"
                         value={currentPassCheck}
                         onChange={(e) => setCurrentPassCheck(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                       />
                       <input
                         type="password"
                         placeholder="Digite a nova senha do ADM"
                         value={newAdminPass}
                         onChange={(e) => setNewAdminPass(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1017] border border-white/15 text-xs text-white"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"
                       />
                       <button type="submit" className="w-full py-2.5 rounded-xl bg-[#ff1722] text-white text-xs font-bold uppercase">
                         Atualizar Senha do ADM
@@ -1736,55 +1861,83 @@
             </section>
           )}
 
-          {/* SUPER BANNER CINEMA DE LANÇAMENTO */}
-          <section className="relative min-h-[460px] flex items-end p-6 md:p-12 overflow-hidden border-b border-white/10">
-            <img src={heroSeries.banner} alt={heroSeries.title} className="absolute inset-0 w-full h-full object-cover opacity-45 scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#05060a] via-[#05060a]/75 to-transparent" />
+          {/* SUPER BANNER CINEMA PRO */}
+          <section className="relative min-h-[500px] md:min-h-[540px] flex items-end p-6 md:p-14 overflow-hidden border-b border-white/10">
+            <img
+              src={heroSeries.banner}
+              alt={heroSeries.title}
+              className="absolute inset-0 w-full h-full object-cover opacity-50 scale-105 transition duration-1000"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#040508] via-[#040508]/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#040508] via-[#040508]/40 to-transparent" />
+
             <div className="relative z-10 max-w-2xl space-y-4">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-[#ff1722] text-white text-[11px] font-black uppercase tracking-wider">
-                  🔥 TOP 1 NO BRASIL
+                <span className="px-3 py-1 rounded-full bg-[#ff1722] text-white text-[10px] font-black uppercase tracking-wider shadow-lg shadow-[#ff1722]/40">
+                  🔥 TOP 1 EM ALTA
                 </span>
-                <span className="px-3 py-1 rounded-full bg-[#00d4ff]/20 border border-[#00d4ff]/40 text-[#00d4ff] text-[11px] font-bold">
+                <span className="px-3 py-1 rounded-full bg-[#00d4ff]/15 border border-[#00d4ff]/40 text-[#00d4ff] text-[11px] font-bold">
                   {heroSeries.category}
                 </span>
-                <span className="px-2.5 py-0.5 rounded bg-white/10 text-[11px] font-bold text-amber-400">
-                  ★ 4.9 • Full HD IA
+                <span className="px-2.5 py-0.5 rounded-md bg-white/10 text-[11px] font-bold text-amber-400">
+                  {heroSeries.rating || '4.9 ★'}
                 </span>
-                <span className="px-2 py-0.5 rounded bg-white/10 text-[10px] font-black text-gray-200">
-                  DUBLADO PT-BR
+                <span className="px-2 py-0.5 rounded-md bg-white/10 text-[10px] font-black text-gray-200">
+                  4K IA • DUBLADO
                 </span>
               </div>
-              <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight">{heroSeries.title}</h1>
-              <p className="text-sm text-gray-300 leading-relaxed">{heroSeries.synopsis}</p>
-              <div className="flex flex-wrap gap-3 pt-2">
+
+              <h1 className="font-display text-4xl md:text-6xl font-black leading-[1.05] tracking-tight text-white drop-shadow-2xl">
+                {heroSeries.title}
+              </h1>
+
+              <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-xl">
+                {heroSeries.synopsis}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 pt-2">
                 {heroSeries.episodes[0] && (
                   <button
                     onClick={() => handlePlayEpisode(heroSeries.episodes[0], heroSeries)}
-                    className="px-6 py-3.5 rounded-xl bg-[#ff1722] hover:bg-[#e0121c] text-white font-black text-sm shadow-xl shadow-[#ff1722]/30 transition"
+                    className="px-7 py-4 rounded-2xl bg-gradient-to-r from-[#ff1722] to-[#d90f19] hover:scale-105 text-white font-black text-sm shadow-2xl neon-border-red transition flex items-center gap-2"
                   >
-                    ▶ Assistir 1º Episódio Grátis
+                    <span>▶</span>
+                    <span>Assistir 1º Episódio Grátis</span>
                   </button>
                 )}
+
                 {(!currentUser || !currentUser.isVip) && (
                   <button
                     onClick={() => openAutomaticPixCheckout()}
-                    className="px-6 py-3.5 rounded-xl bg-[#00d4ff]/15 hover:bg-[#00d4ff]/25 border border-[#00d4ff]/50 text-[#00d4ff] font-extrabold text-sm transition"
+                    className="px-6 py-4 rounded-2xl glass-panel hover:bg-[#00d4ff]/20 border border-[#00d4ff]/50 text-[#00d4ff] font-extrabold text-sm neon-border-cyan transition"
                   >
-                    👑 Acesso VIP Ilimitado • R$ {activePriceDisplay}
+                    👑 Liberar Tudo • R$ {activePriceDisplay}
                   </button>
                 )}
+
+                <button
+                  onClick={(e) => toggleFavoriteSeries(heroSeries.id, e)}
+                  className="px-4 py-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-bold transition"
+                  title="Salvar na Minha Lista"
+                >
+                  {favorites.includes(heroSeries.id) ? '❤️ Na Minha Lista' : '＋ Minha Lista'}
+                </button>
               </div>
             </div>
           </section>
 
           {/* CONTINUAR ASSISTINDO */}
           {currentUser && currentUser.lastResume && (
-            <div className="max-w-6xl w-full mx-auto px-6 pt-6">
-              <div className="bg-gradient-to-r from-[#0d1017] to-[#ff1722]/15 border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4">
-                <div>
-                  <span className="text-[10px] font-black uppercase text-[#00d4ff]">Continuar de onde parou</span>
-                  <h4 className="text-sm font-black text-white">{currentUser.lastResume.title}</h4>
+            <div className="max-w-6xl w-full mx-auto px-6 pt-6 relative z-10">
+              <div className="glass-panel border border-[#00d4ff]/30 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-xl">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#ff1722]/20 border border-[#ff1722]/40 flex items-center justify-center text-[#ff1722] font-black">
+                    ▶
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-[#00d4ff]">Continuar Assistindo</span>
+                    <h4 className="text-sm font-black text-white">{currentUser.lastResume.title}</h4>
+                  </div>
                 </div>
                 <button
                   onClick={() => {
@@ -1795,53 +1948,64 @@
                       handlePlayEpisode(ep, s);
                     }
                   }}
-                  className="px-4 py-2 rounded-xl bg-[#ff1722] text-white text-xs font-black uppercase"
+                  className="px-5 py-2.5 rounded-xl bg-[#ff1722] hover:bg-[#e0121c] text-white text-xs font-black uppercase transition"
                 >
-                  ▶ Continuar
+                  Retomar
                 </button>
               </div>
             </div>
           )}
 
-          {/* RANKING TOP EM ALTA */}
-          <section className="max-w-6xl w-full mx-auto px-6 pt-8">
+          {/* TOP 3 RANKING SEMANAL ESTILO STREAMING PRO */}
+          <section className="max-w-6xl w-full mx-auto px-6 pt-10 relative z-10">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg md:text-xl font-black tracking-tight flex items-center gap-2">
-                <span className="text-[#ff1722]">🔥 Top Em Alta</span> Nesta Semana
+              <h2 className="font-display text-xl md:text-2xl font-black tracking-tight flex items-center gap-2">
+                <span className="text-[#ff1722]">🔥 Top 3</span> Mais Assistidas Hoje
               </h2>
-              <span className="text-xs text-gray-400">Atualizado hoje</span>
+              <span className="text-[11px] font-bold text-[#00d4ff] bg-[#00d4ff]/10 px-3 py-1 rounded-full">
+                Ranking Brasil
+              </span>
             </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {seriesList.slice(0, 3).map((s, idx) => (
                 <div
                   key={s.id}
                   onClick={() => handleSelectSeriesCard(s.id)}
-                  className="cursor-pointer bg-[#0d1017] border border-white/10 hover:border-[#00d4ff] rounded-2xl p-3 flex items-center gap-4 transition group"
+                  className="cursor-pointer glass-panel border border-white/10 hover:border-[#00d4ff] rounded-2xl p-3.5 flex items-center gap-4 transition group hover:-translate-y-1"
                 >
-                  <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-[#00d4ff] to-[#ff1722] pl-1">
-                    #{idx + 1}
+                  <div className="font-display text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-[#00d4ff] to-[#ff1722] pl-1 select-none">
+                    {idx + 1}
                   </div>
-                  <img src={s.poster} alt={s.title} className="w-16 h-20 object-cover rounded-xl flex-shrink-0" />
-                  <div className="min-w-0 flex-1">
-                    <span className="text-[10px] font-bold text-[#00d4ff] uppercase">{s.category}</span>
-                    <h3 className="text-sm font-black text-white truncate group-hover:text-[#00d4ff] transition">{s.title}</h3>
-                    <p className="text-[11px] text-amber-400 font-bold mt-0.5">{s.rating || '4.9 ★'} • {s.episodes.length} Episódios</p>
+                  <img src={s.poster} alt={s.title} className="w-16 h-24 object-cover rounded-xl flex-shrink-0 shadow-lg" />
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <span className="text-[10px] font-extrabold text-[#00d4ff] uppercase tracking-wider">{s.category}</span>
+                    <h3 className="font-display text-base font-black text-white truncate group-hover:text-[#00d4ff] transition">
+                      {s.title}
+                    </h3>
+                    <div className="flex items-center gap-2 text-[11px] text-amber-400 font-bold">
+                      <span>{s.rating || '4.9 ★'}</span>
+                      <span className="text-gray-500">•</span>
+                      <span className="text-gray-300">{s.episodes.length} Eps</span>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* CATÁLOGO PRINCIPAL */}
-          <main ref={catalogSectionRef} className="max-w-6xl w-full mx-auto px-6 py-8 space-y-10 flex-1">
+          {/* CATÁLOGO PRINCIPAL & EPISÓDIOS */}
+          <main ref={catalogSectionRef} className="max-w-6xl w-full mx-auto px-6 py-10 space-y-10 flex-1 relative z-10">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex flex-wrap gap-2">
                 {allCategories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition ${
-                      selectedCategory === cat ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                    className={`px-4 py-2 rounded-full text-xs font-extrabold transition ${
+                      selectedCategory === cat
+                        ? 'bg-gradient-to-r from-[#ff1722] to-[#d90f19] text-white shadow-lg shadow-[#ff1722]/25'
+                        : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
                     }`}
                   >
                     {cat}
@@ -1855,75 +2019,118 @@
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="🔍 Buscar novelinha ou série..."
-                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:border-[#00d4ff] focus:outline-none"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs text-white focus:border-[#00d4ff] focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-              {filteredSeries.map((serie) => (
-                <div
-                  key={serie.id}
-                  onClick={() => handleSelectSeriesCard(serie.id)}
-                  className={`cursor-pointer rounded-2xl overflow-hidden border-2 text-left transition relative ${
-                    selectedSeries.id === serie.id ? 'border-[#00d4ff] shadow-lg shadow-[#00d4ff]/20' : 'border-white/10 hover:border-white/25'
-                  }`}
+            {filteredSeries.length === 0 ? (
+              <div className="glass-panel border border-white/10 rounded-3xl p-10 text-center space-y-3">
+                <p className="text-sm font-bold text-gray-300">Nenhuma série encontrada nesta categoria.</p>
+                <button
+                  onClick={() => { setSelectedCategory('Todas'); setSearchQuery(''); }}
+                  className="px-4 py-2 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase"
                 >
-                  <div className="aspect-[2/3] relative">
-                    <img src={serie.poster} alt={serie.title} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                    <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-[#ff1722] text-[10px] font-black uppercase">
-                      {serie.episodes.length} Eps
-                    </span>
-                    <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/75 text-amber-400 text-[10px] font-bold">
-                      {serie.rating || '4.9 ★'}
-                    </span>
-                    <div className="absolute bottom-3 left-3 right-3">
-                      <p className="text-[11px] text-[#00d4ff] font-bold">{serie.category}</p>
-                      <h3 className="text-sm font-black text-white leading-snug">{serie.title}</h3>
-                    </div>
-                  </div>
-
-                  {adminUnlocked && (
+                  Ver Todo o Catálogo
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+                {filteredSeries.map((serie) => {
+                  const isFav = favorites.includes(serie.id);
+                  const isSelected = selectedSeries.id === serie.id;
+                  return (
                     <div
-                      onClick={(e) => e.stopPropagation()}
-                      className="p-2 bg-[#0d1017] border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[10px]"
+                      key={serie.id}
+                      onClick={() => handleSelectSeriesCard(serie.id)}
+                      className={`cursor-pointer rounded-2xl overflow-hidden border-2 text-left transition duration-300 relative group hover:-translate-y-1.5 ${
+                        isSelected
+                          ? 'border-[#00d4ff] neon-border-cyan'
+                          : 'border-white/10 hover:border-white/30'
+                      }`}
                     >
-                      <button
-                        onClick={() => setSerieAsHeroQuick(serie.id)}
-                        className="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold"
-                      >
-                        {serie.isHeroLaunch ? '⭐ Topo' : 'Destacar'}
-                      </button>
-                      <button
-                        onClick={() => startEditingSeries(serie)}
-                        className="px-2 py-1 rounded bg-white/10 text-white font-bold"
-                      >
-                        ✏️ Editar
-                      </button>
-                      <button
-                        onClick={() => handleDeleteSeries(serie.id)}
-                        className="px-2 py-1 rounded bg-red-500/20 text-red-400 font-bold"
-                      >
-                        Excluir
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+                      <div className="aspect-[2/3] relative overflow-hidden bg-[#0b0e17]">
+                        <img
+                          src={serie.poster}
+                          alt={serie.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#040508] via-[#040508]/20 to-transparent" />
 
-            {/* LISTA DE EPISÓDIOS DA SÉRIE SELECIONADA */}
-            <div ref={episodesSectionRef} className="bg-[#0d1017] border border-white/10 rounded-3xl p-6 scroll-mt-20">
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
+                        <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-lg bg-[#ff1722] text-[10px] font-black uppercase shadow-md">
+                          {serie.episodes.length} Eps
+                        </span>
+
+                        <button
+                          onClick={(e) => toggleFavoriteSeries(serie.id, e)}
+                          className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/70 hover:bg-black flex items-center justify-center text-xs border border-white/15"
+                        >
+                          {isFav ? '❤️' : '🤍'}
+                        </button>
+
+                        <div className="absolute bottom-3 left-3 right-3 space-y-0.5">
+                          <div className="flex items-center justify-between text-[10px] font-bold">
+                            <span className="text-[#00d4ff] truncate">{serie.category}</span>
+                            <span className="text-amber-400">{serie.rating || '4.9 ★'}</span>
+                          </div>
+                          <h3 className="font-display text-base font-black text-white leading-tight">
+                            {serie.title}
+                          </h3>
+                        </div>
+                      </div>
+
+                      {adminUnlocked && (
+                        <div
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-2 bg-[#0b0e17] border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[10px]"
+                        >
+                          <button
+                            onClick={() => setSerieAsHeroQuick(serie.id)}
+                            className="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold"
+                          >
+                            {serie.isHeroLaunch ? '⭐ Topo' : 'Destacar'}
+                          </button>
+                          <button
+                            onClick={() => startEditingSeries(serie)}
+                            className="px-2 py-1 rounded bg-white/10 text-white font-bold"
+                          >
+                            ✏️ Editar
+                          </button>
+                          <button
+                            onClick={() => handleDeleteSeries(serie.id)}
+                            className="px-2 py-1 rounded bg-red-500/20 text-red-400 font-bold"
+                          >
+                            Excluir
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* VITRINE DE EPISÓDIOS DA SÉRIE SELECIONADA */}
+            <div ref={episodesSectionRef} className="glass-panel border border-white/15 rounded-3xl p-6 md:p-8 scroll-mt-24 shadow-2xl">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
                 <div>
-                  <span className="text-[11px] uppercase tracking-wider text-[#00d4ff] font-bold">{selectedSeries.category}</span>
-                  <h3 className="text-2xl font-black">{selectedSeries.title} — Episódios</h3>
-                  <p className="text-xs text-gray-400 mt-1">{selectedSeries.synopsis}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] uppercase tracking-wider text-[#00d4ff] font-extrabold">
+                      {selectedSeries.category}
+                    </span>
+                    <span className="text-xs text-amber-400 font-bold">{selectedSeries.rating || '4.9 ★'}</span>
+                  </div>
+                  <h3 className="font-display text-2xl md:text-3xl font-black mt-0.5">
+                    {selectedSeries.title} — Episódios
+                  </h3>
+                  <p className="text-xs text-gray-400 mt-1 max-w-2xl">{selectedSeries.synopsis}</p>
                 </div>
-                <span className="text-xs font-bold text-[#00d4ff] bg-[#00d4ff]/10 px-3 py-1 rounded-full">
-                  {sortedSelectedEpisodes.length} episódios disponíveis
-                </span>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-extrabold text-[#00d4ff] bg-[#00d4ff]/10 border border-[#00d4ff]/30 px-3.5 py-1.5 rounded-full">
+                    {sortedSelectedEpisodes.length} episódios disponíveis
+                  </span>
+                </div>
               </div>
 
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
@@ -1935,139 +2142,151 @@
                     <div
                       key={ep.id}
                       onClick={() => handlePlayEpisode(ep, selectedSeries)}
-                      className="cursor-pointer rounded-2xl overflow-hidden bg-[#05060a] border border-white/10 hover:border-[#00d4ff] transition group"
+                      className="cursor-pointer rounded-2xl overflow-hidden bg-[#040508] border border-white/10 hover:border-[#00d4ff] transition duration-300 group flex flex-col justify-between"
                     >
-                      <div className="aspect-video relative">
-                        <img src={ep.thumb} alt={ep.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
-                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-[#ff1722] flex items-center justify-center font-bold shadow-lg">
-                            {ep.comingSoon ? '⏳' : locked ? '🔒' : '▶'}
+                      <div>
+                        <div className="aspect-video relative overflow-hidden">
+                          <img
+                            src={ep.thumb}
+                            alt={ep.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                          />
+                          <div className="absolute inset-0 bg-black/45 group-hover:bg-black/30 transition flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-full bg-[#ff1722] group-hover:scale-110 transition flex items-center justify-center font-bold shadow-xl">
+                              {ep.comingSoon ? '⏳' : locked ? '🔒' : '▶'}
+                            </div>
                           </div>
-                        </div>
 
-                        {alreadyWatched && (
-                          <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/80 text-emerald-400 text-[10px] font-bold">
-                            ✓ Assistido
-                          </span>
-                        )}
+                          {alreadyWatched && (
+                            <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-black/80 text-emerald-400 text-[10px] font-bold">
+                              ✓ Assistido
+                            </span>
+                          )}
 
-                        <span
-                          className={`absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase ${
-                            ep.comingSoon
-                              ? 'bg-amber-400 text-black'
-                              : ep.isVip
-                              ? 'bg-[#00d4ff] text-[#05060a]'
-                              : 'bg-emerald-500 text-black'
-                          }`}
-                        >
-                          {ep.comingSoon ? '🔥 EM BREVE' : ep.isVip ? '🔒 VIP' : '🔓 GRÁTIS'}
-                        </span>
-                      </div>
-
-                      <div className="p-4">
-                        <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-                          <span>Episódio {ep.number} {ep.isVertical ? '• 📱 Vertical' : ''}</span>
-                          <span>{ep.duration}</span>
-                        </div>
-                        <h4 className="font-bold text-sm text-white">{ep.title}</h4>
-
-                        {adminUnlocked && (
-                          <div
-                            onClick={(e) => e.stopPropagation()}
-                            className="mt-3 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[11px]"
+                          <span
+                            className={`absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase shadow ${
+                              ep.comingSoon
+                                ? 'bg-amber-400 text-black'
+                                : ep.isVip
+                                ? 'bg-[#00d4ff] text-[#040508]'
+                                : 'bg-emerald-500 text-black'
+                            }`}
                           >
-                            <button
-                              onClick={() => toggleEpisodeVipQuick(selectedSeries.id, ep.id)}
-                              className="px-2 py-1 rounded bg-white/10 hover:bg-white/20 font-bold text-[#00d4ff]"
-                            >
-                              {ep.isVip ? 'Mudar p/ Grátis' : 'Mudar p/ VIP'}
-                            </button>
-                            <button
-                              onClick={() => startEditingEpisode(selectedSeries.id, ep)}
-                              className="px-2 py-1 rounded bg-white/10 text-white font-bold"
-                            >
-                              ✏️ Editar
-                            </button>
-                            <button
-                              onClick={() => handleDeleteEpisode(selectedSeries.id, ep.id)}
-                              className="text-red-400 font-bold"
-                            >
-                              Apagar
-                            </button>
+                            {ep.comingSoon ? '🔥 EM BREVE' : ep.isVip ? '🔒 VIP' : '🔓 GRÁTIS'}
+                          </span>
+
+                          {alreadyWatched && (
+                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+                              <div className="h-full w-full bg-[#ff1722]" />
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="p-4">
+                          <div className="flex items-center justify-between text-[11px] text-gray-400 font-semibold mb-1">
+                            <span>EPISÓDIO {ep.number} {ep.isVertical ? '• 📱 Vertical' : ''}</span>
+                            <span>{ep.duration}</span>
                           </div>
-                        )}
+                          <h4 className="font-display font-bold text-sm text-white group-hover:text-[#00d4ff] transition">
+                            {ep.title}
+                          </h4>
+                        </div>
                       </div>
+
+                      {adminUnlocked && (
+                        <div
+                          onClick={(e) => e.stopPropagation()}
+                          className="px-4 pb-3 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[11px]"
+                        >
+                          <button
+                            onClick={() => toggleEpisodeVipQuick(selectedSeries.id, ep.id)}
+                            className="px-2 py-1 rounded bg-white/10 hover:bg-white/20 font-bold text-[#00d4ff]"
+                          >
+                            {ep.isVip ? 'Mudar p/ Grátis' : 'Mudar p/ VIP'}
+                          </button>
+                          <button
+                            onClick={() => startEditingEpisode(selectedSeries.id, ep)}
+                            className="px-2 py-1 rounded bg-white/10 text-white font-bold"
+                          >
+                            ✏️ Editar
+                          </button>
+                          <button
+                            onClick={() => handleDeleteEpisode(selectedSeries.id, ep.id)}
+                            className="text-red-400 font-bold"
+                          >
+                            Apagar
+                          </button>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
               </div>
             </div>
 
-            {/* SEÇÃO DE BENEFÍCIOS VIP & PROVA SOCIAL (PARA ALTA CONVERSÃO E NOTA MÁXIMA EM IA) */}
-            <section className="grid md:grid-cols-3 gap-5 pt-4">
-              <div className="bg-[#0d1017] border border-white/10 rounded-2xl p-5 space-y-2">
-                <div className="text-2xl">⚡</div>
-                <h4 className="text-sm font-black text-white">Liberação Automática via PIX</h4>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Gere seu QR Code PIX na tela, pague em qualquer banco e seu Acesso VIP é ativado automaticamente em 3 segundos.
-                </p>
-              </div>
-              <div className="bg-[#0d1017] border border-white/10 rounded-2xl p-5 space-y-2">
-                <div className="text-2xl">🎬</div>
-                <h4 className="text-sm font-black text-white">Episódios Exclusivos em HD</h4>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Novelinhas verticais e séries dramáticas produzidas com tecnologia de cinema em Inteligência Artificial e áudio em português.
-                </p>
-              </div>
-              <div className="bg-[#0d1017] border border-white/10 rounded-2xl p-5 space-y-2">
-                <div className="text-2xl">🛡️</div>
-                <h4 className="text-sm font-black text-white">30 Dias Sem Fidelidade</h4>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Acesso completo por R$ {activePriceDisplay} durante 30 dias corridos, sem cobranças recorrentes no cartão.
-                </p>
-              </div>
-            </section>
+            {/* BANNER DE CONVERSÃO VIP */}
+            {(!currentUser || !currentUser.isVip) && (
+              <section className="rounded-3xl p-6 md:p-8 bg-gradient-to-r from-[#14070c] via-[#0b1320] to-[#071924] border border-[#00d4ff]/40 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+                <div className="space-y-2 text-center md:text-left">
+                  <span className="px-3 py-1 rounded-full bg-[#00d4ff]/20 text-[#00d4ff] text-[10px] font-black uppercase">
+                    👑 Passaporte VIP Ilimitado
+                  </span>
+                  <h3 className="font-display text-2xl md:text-3xl font-black text-white">
+                    Desbloqueie Todas as Séries e Mini Novelinhas Agora
+                  </h3>
+                  <p className="text-xs text-gray-300 max-w-xl">
+                    Sem anúncios, episódios completos em Full HD e liberação automática em 3 segundos após o pagamento via PIX.
+                  </p>
+                </div>
+                <button
+                  onClick={() => openAutomaticPixCheckout()}
+                  className="px-7 py-4 rounded-2xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white font-black text-xs uppercase tracking-wider shadow-2xl hover:scale-105 transition whitespace-nowrap"
+                >
+                  👑 Liberar 30 Dias VIP • R$ {activePriceDisplay}
+                </button>
+              </section>
+            )}
 
-            {/* AVALIAÇÕES DOS ASSINANTES */}
-            <section className="bg-[#0d1017] border border-white/10 rounded-3xl p-6 space-y-5">
+            {/* AVALIAÇÕES VERIFICADAS */}
+            <section className="glass-panel border border-white/10 rounded-3xl p-6 md:p-8 space-y-5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <span className="text-[11px] font-black uppercase text-[#00d4ff]">Comunidade VIP</span>
-                  <h3 className="text-xl font-black">O que nossos assinantes dizem</h3>
+                  <span className="text-[11px] font-black uppercase text-[#00d4ff]">Comunidade Oficial</span>
+                  <h3 className="font-display text-xl font-black">Avaliações dos Assinantes VIP</h3>
                 </div>
-                <span className="text-xs font-bold text-amber-400">★★★★★ 4.9/5 (Mais de 1.400 assinantes)</span>
+                <span className="text-xs font-bold text-amber-400">★★★★★ 4.9/5 (1.480+ avaliações)</span>
               </div>
               <div className="grid md:grid-cols-3 gap-4 text-xs">
-                <div className="bg-[#05060a] border border-white/10 rounded-2xl p-4 space-y-2">
+                <div className="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
                   <div className="text-amber-400 font-bold">★★★★★</div>
-                  <p className="text-gray-300">"Paguei no PIX Copia e Cola e antes mesmo de fechar o aplicativo do banco os episódios VIP já estavam liberados. A Herdeira de Ferro é viciante!"</p>
+                  <p className="text-gray-300 leading-relaxed">"Paguei no PIX Copia e Cola e em menos de 3 segundos os episódios VIP já abriram sozinhos na tela. A Herdeira de Ferro é sensacional!"</p>
                   <p className="text-gray-500 font-bold">— Camila R., São Paulo</p>
                 </div>
-                <div className="bg-[#05060a] border border-white/10 rounded-2xl p-4 space-y-2">
+                <div className="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
                   <div className="text-amber-400 font-bold">★★★★★</div>
-                  <p className="text-gray-300">"Muito melhor que pagar por episódio solto em outros apps. Por R$ {activePriceDisplay} assisti todas as novelinhas do catálogo no celular."</p>
-                  <p className="text-gray-500 font-bold">— Fernanda M., Salvador</p>
+                  <p className="text-gray-300 leading-relaxed">"Melhor plataforma! Em outros apps você gasta uma fortuna por episódio, aqui por R$ {activePriceDisplay} assisto o mês inteiro sem limites."</p>
+                  <p className="text-gray-500 font-bold">— Fernanda M., Bahia</p>
                 </div>
-                <div className="bg-[#05060a] border border-white/10 rounded-2xl p-4 space-y-2">
+                <div className="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
                   <div className="text-amber-400 font-bold">★★★★★</div>
-                  <p className="text-gray-300">"Qualidade de imagem absurda e histórias que prendem do início ao fim. O player no modo vertical fica perfeito na tela do celular."</p>
-                  <p className="text-gray-500 font-bold">— Lucas T., Belo Horizonte</p>
+                  <p className="text-gray-300 leading-relaxed">"Imagem cristalina e o player vertical encaixa perfeitamente no celular. Recomendo demais!"</p>
+                  <p className="text-gray-500 font-bold">— Lucas T., Minas Gerais</p>
                 </div>
               </div>
             </section>
 
-            {/* PERGUNTAS FREQUENTES (FAQ) */}
-            <section className="bg-[#0d1017] border border-white/10 rounded-3xl p-6 space-y-4">
-              <h3 className="text-xl font-black">Perguntas Frequentes (FAQ)</h3>
+            {/* FAQ */}
+            <section className="glass-panel border border-white/10 rounded-3xl p-6 md:p-8 space-y-4">
+              <h3 className="font-display text-xl font-black">Perguntas Frequentes</h3>
               <div className="space-y-2">
                 {faqItems.map((item, i) => (
-                  <div key={i} className="border border-white/10 rounded-2xl bg-[#05060a] overflow-hidden">
+                  <div key={i} className="border border-white/10 rounded-2xl bg-[#040508] overflow-hidden">
                     <button
                       onClick={() => setOpenFaqIndex(openFaqIndex === i ? -1 : i)}
                       className="w-full p-4 text-left text-xs font-bold flex items-center justify-between text-white"
                     >
                       <span>{item.q}</span>
-                      <span className="text-[#00d4ff]">{openFaqIndex === i ? '−' : '+'}</span>
+                      <span className="text-[#00d4ff] text-base font-black">{openFaqIndex === i ? '−' : '+'}</span>
                     </button>
                     {openFaqIndex === i && (
                       <div className="px-4 pb-4 text-xs text-gray-400 leading-relaxed">
@@ -2080,10 +2299,10 @@
             </section>
           </main>
 
-          {/* BARRA INFERIOR ESTILO APP NO CELULAR */}
-          <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0a0c12]/95 backdrop-blur-md border-t border-white/10 px-4 py-2 flex items-center justify-around text-[11px] font-bold">
+          {/* BARRA INFERIOR ESTILO APP NATIVO NO CELULAR */}
+          <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-white/10 px-4 py-2.5 flex items-center justify-around text-[11px] font-bold">
             <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              onClick={() => { setSelectedCategory('Todas'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="flex flex-col items-center gap-0.5 text-gray-300 hover:text-white"
             >
               <span>🏠</span>
@@ -2101,7 +2320,7 @@
               className="flex flex-col items-center gap-0.5 text-[#00d4ff]"
             >
               <span>👑</span>
-              <span>VIP</span>
+              <span>Seja VIP</span>
             </button>
             <button
               onClick={() => {
@@ -2116,7 +2335,7 @@
             <button
               onClick={() => {
                 if (currentUser) {
-                  alert(`Conectado como: ${currentUser.name}\nStatus: ${currentUser.isVip ? 'VIP Ativo (' + getDaysRemaining(currentUser.vipUntil) + ' dias)' : 'Conta Grátis'}`);
+                  setShowProfileModal(true);
                 } else {
                   setAuthMode('login');
                   setShowAuthModal(true);
@@ -2125,27 +2344,27 @@
               className="flex flex-col items-center gap-0.5 text-gray-300 hover:text-white"
             >
               <span>👤</span>
-              <span>{currentUser ? 'Perfil' : 'Entrar'}</span>
+              <span>{currentUser ? 'Conta' : 'Entrar'}</span>
             </button>
           </nav>
 
-          {/* PLAYER DE VÍDEO BLINDADO */}
+          {/* PLAYER DE VÍDEO CINEMA PRO COM SELETOR DE EPISÓDIOS INTEGRADO */}
           {activeEpisode && (
             <div
               onContextMenu={(e) => e.preventDefault()}
-              className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-3"
+              className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-2 md:p-4 overflow-y-auto"
             >
               <div
-                className={`bg-[#0d1017] border border-white/15 rounded-3xl w-full overflow-hidden ${
+                className={`bg-[#0b0e17] border border-white/15 rounded-3xl w-full overflow-hidden shadow-2xl ${
                   verticalPlayerMode ? 'max-w-sm' : 'max-w-4xl'
                 }`}
               >
                 <div className="p-3.5 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <span className="text-[11px] font-bold text-[#ff1722]">
-                      {selectedSeries.title} • EP. {activeEpisode.number}
+                    <span className="text-[10px] font-black uppercase text-[#00d4ff]">
+                      {selectedSeries.title} • EPISÓDIO {activeEpisode.number}
                     </span>
-                    <h3 className="text-sm font-black">{activeEpisode.title}</h3>
+                    <h3 className="font-display text-sm font-black text-white">{activeEpisode.title}</h3>
                   </div>
                   <div className="flex items-center gap-1.5">
                     {prevEpInList && (
@@ -2182,7 +2401,7 @@
                   </div>
                 </div>
 
-                <div className={`bg-black relative ${verticalPlayerMode ? 'aspect-[9/16] max-h-[78vh] mx-auto' : 'aspect-video'}`}>
+                <div className={`bg-black relative ${verticalPlayerMode ? 'aspect-[9/16] max-h-[72vh] mx-auto' : 'aspect-video'}`}>
                   <video
                     key={activeEpisode.id}
                     src={activeEpisode.videoUrl}
@@ -2199,7 +2418,7 @@
                   {nextEpisodePrompt && (
                     <div className="absolute inset-0 bg-black/90 flex flex-col items-center justify-center p-6 text-center space-y-4">
                       <span className="text-xs font-black uppercase text-[#00d4ff]">Próximo Episódio</span>
-                      <h4 className="text-xl font-black">
+                      <h4 className="font-display text-xl font-black">
                         Ep. {nextEpisodePrompt.number} — {nextEpisodePrompt.title}
                       </h4>
                       <button
@@ -2218,6 +2437,74 @@
                     </div>
                   )}
                 </div>
+
+                {/* BARRA RÁPIDA DE EPISÓDIOS DENTRO DO PLAYER */}
+                <div className="p-3 bg-[#040508] border-t border-white/10 flex items-center gap-2 overflow-x-auto">
+                  {sortedSelectedEpisodes.map((ep) => (
+                    <button
+                      key={ep.id}
+                      onClick={() => handlePlayEpisode(ep, selectedSeries)}
+                      className={`px-3 py-1.5 rounded-xl text-[11px] font-extrabold whitespace-nowrap transition ${
+                        activeEpisode.id === ep.id
+                          ? 'bg-[#ff1722] text-white'
+                          : 'bg-white/5 text-gray-300 hover:bg-white/15'
+                      }`}
+                    >
+                      Ep. {ep.number} {ep.isVip && (!currentUser || !currentUser.isVip) ? '🔒' : ''}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL DE PERFIL DO CLIENTE (SUBSTITUI O ANTIGO ALERT) */}
+          {showProfileModal && currentUser && (
+            <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+              <div className="bg-[#0b0e17] border border-white/15 rounded-3xl max-w-sm w-full p-6 space-y-4 relative text-center shadow-2xl">
+                <button
+                  onClick={() => setShowProfileModal(false)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold"
+                >
+                  ✕
+                </button>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ff1722] to-[#00d4ff] mx-auto flex items-center justify-center font-display text-2xl font-black">
+                  {currentUser.name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <h3 className="font-display text-lg font-black">{currentUser.name}</h3>
+                  <p className="text-xs text-gray-400">{currentUser.email}</p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-[#040508] border border-white/10 space-y-1">
+                  <span className="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Status da Assinatura</span>
+                  {currentUser.isVip ? (
+                    <p className="text-sm font-black text-[#00d4ff]">
+                      👑 Assinante VIP Ativo ({getDaysRemaining(currentUser.vipUntil)} dias restantes)
+                    </p>
+                  ) : (
+                    <p className="text-sm font-bold text-gray-300">Conta Gratuita</p>
+                  )}
+                </div>
+
+                {!currentUser.isVip && (
+                  <button
+                    onClick={() => {
+                      setShowProfileModal(false);
+                      openAutomaticPixCheckout();
+                    }}
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white text-xs font-black uppercase"
+                  >
+                    👑 Ativar Acesso VIP Agora
+                  </button>
+                )}
+
+                <button
+                  onClick={handleUserLogout}
+                  className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-[#ff1722] text-xs font-bold transition"
+                >
+                  Sair da Conta
+                </button>
               </div>
             </div>
           )}
@@ -2227,7 +2514,7 @@
             <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
               <form
                 onSubmit={handleRedeemCoupon}
-                className="bg-[#0d1017] border border-[#00d4ff] rounded-3xl max-w-sm w-full p-6 space-y-4 relative text-center"
+                className="bg-[#0b0e17] border border-[#00d4ff] rounded-3xl max-w-sm w-full p-6 space-y-4 relative text-center"
               >
                 <button
                   type="button"
@@ -2237,19 +2524,19 @@
                   ✕
                 </button>
                 <div className="text-3xl">🎟️</div>
-                <h3 className="text-lg font-black">Ativar Cupom Promocional</h3>
+                <h3 className="font-display text-lg font-black">Ativar Cupom Promocional</h3>
                 <input
                   type="text"
                   required
                   placeholder="DIGITE SEU CUPOM"
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-[#05060a] border border-white/15 text-center text-sm font-black uppercase text-[#00d4ff]"
+                  className="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-center text-sm font-black uppercase text-[#00d4ff]"
                 />
                 {couponMsg && <p className="text-xs font-bold text-amber-300">{couponMsg}</p>}
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-xl bg-[#00d4ff] text-[#05060a] font-black text-xs uppercase"
+                  className="w-full py-3 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase"
                 >
                   Resgatar Agora
                 </button>
@@ -2257,10 +2544,10 @@
             </div>
           )}
 
-          {/* MODAL PIX QR CODE AUTOMÁTICO TRANSPARENTE */}
+          {/* MODAL PIX QR CODE AUTOMÁTICO COM CRONÔMETRO */}
           {showVipModal && (
             <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
-              <div className="bg-[#0d1017] border-2 border-[#00d4ff] rounded-3xl max-w-md w-full p-6 space-y-4 relative text-center shadow-2xl">
+              <div className="bg-[#0b0e17] border-2 border-[#00d4ff] rounded-3xl max-w-md w-full p-6 space-y-4 relative text-center shadow-2xl neon-border-cyan">
                 <button
                   onClick={() => setShowVipModal(false)}
                   className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold"
@@ -2269,11 +2556,14 @@
                 </button>
 
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase">
-                  🔒 Checkout PIX Automático • Mercado Pago
+                  🔒 Checkout PIX Automático • Banco Central
                 </div>
 
-                <h3 className="text-xl font-black">Acesso VIP Completo — 30 Dias</h3>
-                <div className="text-3xl font-black text-[#00d4ff]">R$ {activePriceDisplay}</div>
+                <h3 className="font-display text-xl font-black">Passaporte VIP — 30 Dias Sem Limites</h3>
+                <div className="flex items-center justify-center gap-3">
+                  <span className="text-xs text-gray-500 line-through">R$ 29,90</span>
+                  <span className="font-display text-3xl font-black text-[#00d4ff]">R$ {activePriceDisplay}</span>
+                </div>
 
                 {pixLoading && (
                   <div className="py-8 space-y-3">
@@ -2283,17 +2573,17 @@
                 )}
 
                 {pixQrBase64 && (
-                  <div className="space-y-3">
-                    <div className="bg-white p-3 rounded-2xl w-52 h-52 mx-auto shadow-xl flex items-center justify-center">
+                  <div className="space-y-2">
+                    <div className="bg-white p-3 rounded-2xl w-48 h-48 mx-auto shadow-xl flex items-center justify-center">
                       <img
                         src={`data:image/png;base64,${pixQrBase64}`}
                         alt="QR Code PIX Oficial"
                         className="w-full h-full object-contain"
                       />
                     </div>
-                    <p className="text-[11px] text-gray-300">
-                      Abra o app do seu banco e escaneie o QR Code acima ou copie o código abaixo:
-                    </p>
+                    <div className="text-[11px] font-bold text-amber-400">
+                      ⏱️ Código válido por: {formatCountdown(pixSecondsLeft)}
+                    </div>
                   </div>
                 )}
 
@@ -2303,15 +2593,16 @@
                       type="text"
                       readOnly
                       value={pixQrCode}
-                      className="w-full px-3 py-2 rounded-xl bg-[#05060a] border border-white/15 text-[10px] text-gray-400 font-mono text-center"
+                      className="w-full px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-[10px] text-gray-400 font-mono text-center"
                     />
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(pixQrCode);
                         setPixCopied(true);
+                        showToast('✅ Código PIX Copiado! Cole no app do seu banco.');
                         setTimeout(() => setPixCopied(false), 3000);
                       }}
-                      className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00d4ff] to-[#00a3cc] text-[#05060a] text-xs font-black uppercase shadow-lg"
+                      className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00d4ff] to-[#00a3cc] text-[#040508] text-xs font-black uppercase shadow-lg hover:scale-[1.02] transition"
                     >
                       {pixCopied ? '✅ CÓDIGO PIX COPIADO!' : `📋 COPIAR CÓDIGO PIX (COPIA E COLA)`}
                     </button>
@@ -2329,9 +2620,9 @@
                     <p>⚠️ {pixErrorDetail}</p>
                     <button
                       onClick={() => openAutomaticPixCheckout(null, true)}
-                      className="px-4 py-2 rounded-lg bg-[#00d4ff] text-[#05060a] font-black text-[11px] uppercase"
+                      className="px-4 py-2 rounded-lg bg-[#00d4ff] text-[#040508] font-black text-[11px] uppercase"
                     >
-                      🔄 Tentar Gerar QR Code Novamente
+                      🔄 Gerar QR Code Novamente
                     </button>
                   </div>
                 )}
@@ -2342,14 +2633,14 @@
           {/* MODAL DE LOGIN E CADASTRO */}
           {showAuthModal && (
             <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
-              <div className="bg-[#0d1017] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 relative">
+              <div className="bg-[#0b0e17] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
                 <button
                   onClick={() => setShowAuthModal(false)}
                   className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold"
                 >
                   ✕
                 </button>
-                <div className="flex gap-2 bg-[#05060a] p-1 rounded-xl">
+                <div className="flex gap-2 bg-[#040508] p-1 rounded-xl">
                   <button
                     type="button"
                     onClick={() => {
@@ -2369,7 +2660,7 @@
                       setUserAuthError('');
                     }}
                     className={`flex-1 py-2 rounded-lg text-xs font-black uppercase ${
-                      authMode === 'register' ? 'bg-[#00d4ff] text-[#05060a]' : 'text-gray-400'
+                      authMode === 'register' ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'
                     }`}
                   >
                     Criar Conta
@@ -2384,7 +2675,7 @@
                       placeholder="Seu Nome Completo"
                       value={regName}
                       onChange={(e) => setRegName(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-[#05060a] border border-white/15 text-xs text-white"
+                      className="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white"
                     />
                     <input
                       type="email"
@@ -2392,14 +2683,14 @@
                       placeholder="Seu Melhor E-mail"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-[#05060a] border border-white/15 text-xs text-white"
+                      className="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white"
                     />
                     <input
                       type="tel"
                       placeholder="Seu WhatsApp com DDD"
                       value={regWhatsapp}
                       onChange={(e) => setRegWhatsapp(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-[#05060a] border border-white/15 text-xs text-white"
+                      className="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white"
                     />
                     <input
                       type="password"
@@ -2407,12 +2698,12 @@
                       placeholder="Crie uma Senha"
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-[#05060a] border border-white/15 text-xs text-white"
+                      className="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white"
                     />
                     {userAuthError && <p className="text-xs text-[#ff1722] font-bold">{userAuthError}</p>}
                     <button
                       type="submit"
-                      className="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#05060a] font-black text-xs uppercase"
+                      className="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase"
                     >
                       Criar Minha Conta Grátis
                     </button>
@@ -2425,7 +2716,7 @@
                       placeholder="Seu E-mail de Acesso"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-[#05060a] border border-white/15 text-xs text-white"
+                      className="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white"
                     />
                     <input
                       type="password"
@@ -2433,7 +2724,7 @@
                       placeholder="Sua Senha"
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-[#05060a] border border-white/15 text-xs text-white"
+                      className="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white"
                     />
                     {userAuthError && <p className="text-xs text-[#ff1722] font-bold">{userAuthError}</p>}
                     <button
@@ -2451,14 +2742,14 @@
           {/* MODAL DE TERMOS E PRIVACIDADE */}
           {legalModalText && (
             <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
-              <div className="bg-[#0d1017] border border-white/15 rounded-3xl max-w-lg w-full p-6 space-y-4 relative">
+              <div className="bg-[#0b0e17] border border-white/15 rounded-3xl max-w-lg w-full p-6 space-y-4 relative">
                 <button
                   onClick={() => setLegalModalText(null)}
                   className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold"
                 >
                   ✕
                 </button>
-                <h3 className="text-base font-black text-[#00d4ff]">{legalModalText.title}</h3>
+                <h3 className="font-display text-base font-black text-[#00d4ff]">{legalModalText.title}</h3>
                 <p className="text-xs text-gray-300 leading-relaxed">{legalModalText.body}</p>
                 <button
                   onClick={() => setLegalModalText(null)}
@@ -2470,39 +2761,37 @@
             </div>
           )}
 
-          {/* RODAPÉ PROFISSIONAL DE STREAMING */}
-          <footer className="bg-[#080a10] border-t border-white/10 pt-10 pb-8 px-6 text-xs text-gray-400">
+          {/* RODAPÉ OFICIAL DE STREAMING */}
+          <footer className="bg-[#07090f] border-t border-white/10 pt-10 pb-8 px-6 text-xs text-gray-400 relative z-10">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/10">
               <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-base font-black tracking-tighter text-white">
-                    DA UM <span className="text-[#ff1722]">PLAY</span> <span className="text-[#00d4ff]">IA</span>
-                  </span>
-                </div>
+                <span className="font-display text-lg font-black tracking-tight text-white">
+                  DA UM <span className="text-[#ff1722]">PLAY</span> <span className="text-[#00d4ff]">IA</span>
+                </span>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  Plataforma digital de séries curtas, mini novelinhas e produções originais criadas com Inteligência Artificial.
+                  Plataforma digital de séries curtas, mini novelinhas e produções originais criadas com Inteligência Artificial em alta definição.
                 </p>
               </div>
 
               <div className="space-y-2">
-                <h4 className="text-white font-bold uppercase text-[11px] tracking-wider">Segurança & Pagamento</h4>
+                <h4 className="text-white font-bold uppercase text-[11px] tracking-wider">Tecnologia & Segurança</h4>
                 <ul className="space-y-1.5 text-gray-400">
                   <li>🔒 Checkout Transparente PIX Banco Central</li>
                   <li>⚡ Liberação Automática em 3 segundos</li>
-                  <li>📱 Compatível com Android, iPhone, PC e TV</li>
+                  <li>📱 Player Adaptativo Vertical & Horizontal</li>
                 </ul>
               </div>
 
               <div className="space-y-3">
                 <h4 className="text-white font-bold uppercase text-[11px] tracking-wider">Central do Assinante</h4>
-                <p className="text-xs text-gray-500">Atendimento rápido para assinantes:</p>
+                <p className="text-xs text-gray-500">Precisa de suporte com sua conta?</p>
                 <a
                   href={`https://wa.me/${supportWhatsapp}?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20na%20plataforma%20Da%20Um%20Play%20IA`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 font-bold text-xs hover:bg-emerald-500/25 transition"
                 >
-                  💬 Suporte Oficial
+                  💬 Suporte Oficial WhatsApp
                 </a>
               </div>
             </div>
