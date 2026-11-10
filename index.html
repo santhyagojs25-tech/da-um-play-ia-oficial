@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#040508" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>Da Um Play IA — Plataforma de Séries Curtas e Mini Novelinhas Originais</title>
-  <meta name="description" content="Assista produções originais, mini novelinhas verticais e séries dramáticas criadas com Inteligência Artificial em alta definição." />
-  <meta name="keywords" content="Da Um Play IA, mini novelinhas, séries curtas, novelas verticais, streaming IA, assistir séries online, séries originais" />
+  <title>Da Um Play IA — Plataforma Oficial de Séries e Mini Novelinhas IA</title>
+  <meta name="description" content="Assista produções originais, mini novelinhas verticais e séries dramáticas criadas com Inteligência Artificial em alta definição. Acesso VIP Mensal de 30 dias." />
+  <meta name="keywords" content="Da Um Play IA, brasileiros ia, mini novelinhas, séries curtas, novelas verticais, streaming IA, séries originais" />
   <meta name="author" content="Da Um Play IA" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://da-um-play-ia-oficial.vercel.app/" />
@@ -20,27 +20,12 @@
   <meta property="og:locale" content="pt_BR" />
   <meta property="og:site_name" content="Da Um Play IA" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Da Um Play IA — Séries & Mini Novelinhas Originais" />
-  <meta name="twitter:description" content="Mini novelinhas e séries originais com IA. 1º episódio grátis + VIP liberado via PIX." />
-
   <link rel="preconnect" href="https://wqtiqgyzayacwypugrik.supabase.co" crossorigin />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Da Um Play IA",
-    "url": "https://da-um-play-ia-oficial.vercel.app/",
-    "description": "Plataforma brasileira de streaming de mini novelinhas e séries originais produzidas com Inteligência Artificial."
-  }
-  </script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 
@@ -52,7 +37,6 @@
       --accent-red: #ff1f2e;
       --accent-cyan: #22d3ee;
       --accent-gold: #f5c542;
-      --text-soft: #9aa3b2;
       --line: rgba(255,255,255,0.08);
     }
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -66,10 +50,7 @@
       user-select: none;
       -webkit-user-select: none;
     }
-    input, textarea, select {
-      user-select: text;
-      -webkit-user-select: text;
-    }
+    input, textarea, select { user-select: text; -webkit-user-select: text; }
     body::before {
       content: '';
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -83,14 +64,45 @@
     }
     header, main, footer, section, nav { position: relative; z-index: 2; }
     h1, h2, h3, h4, .font-display { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
-    ::selection { background: var(--accent-red); color: #fff; }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg-main); }
-    ::-webkit-scrollbar-thumb { background: #1e2436; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+
+    /* ==========================================================
+       ANIMAÇÃO DE ENTRADA CINEMATOGRÁFICA (SPLASH INTRO)
+       ========================================================== */
+    #splash-intro {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: radial-gradient(circle at center, #0e1322 0%, #030407 75%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #splash-intro.hide-splash {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .splash-logo-pulse {
+      animation: cinema-zoom 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes cinema-zoom {
+      0% { transform: scale(0.75); opacity: 0; filter: blur(8px); }
+      50% { transform: scale(1.04); opacity: 1; filter: blur(0px); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .splash-bar-fill {
+      width: 0%;
+      animation: bar-load 1.5s ease-out forwards;
+    }
+    @keyframes bar-load {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
 
     .glass-bar {
-      background: rgba(6,8,14,0.78);
+      background: rgba(6,8,14,0.82);
       backdrop-filter: blur(20px) saturate(140%);
       -webkit-backdrop-filter: blur(20px) saturate(140%);
       border-bottom: 1px solid var(--line) !important;
@@ -100,16 +112,9 @@
     button { transition: transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s, background .22s, border-color .22s, opacity .22s; }
     button:hover { transform: translateY(-1px); }
     button:active { transform: translateY(0) scale(0.98); }
-    #hero-section button:first-of-type, #header-actions button[onclick*="register"], .btn-red-glow {
+    .btn-red-glow {
       background: linear-gradient(135deg, #ff2d3c, #d90f19) !important;
       box-shadow: 0 8px 28px -6px rgba(255,31,46,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
-    }
-    #hero-section button:nth-of-type(2) {
-      background: rgba(34,211,238,0.08) !important;
-      border: 1px solid rgba(34,211,238,0.45) !important;
-      color: var(--accent-cyan) !important;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 28px -8px rgba(34,211,238,0.4);
     }
 
     #hero-section {
@@ -118,12 +123,6 @@
     }
     #hero-title { text-shadow: 0 4px 40px rgba(0,0,0,0.6); background: linear-gradient(180deg,#ffffff,#c7cdd9); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
     .vip-price-label, #vip-modal-price { background: linear-gradient(90deg, var(--accent-gold), #ffe9a8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
-
-    #catalogo h2, #avaliacoes h2, #perguntas h2 { position: relative; padding-bottom: 10px; }
-    #catalogo h2::after, #avaliacoes h2::after, #perguntas h2::after {
-      content: ''; position: absolute; left: 0; bottom: 0; width: 48px; height: 3px; border-radius: 9999px;
-      background: linear-gradient(90deg, var(--accent-red), var(--accent-cyan));
-    }
 
     #series-grid article {
       border-radius: 18px !important;
@@ -152,15 +151,8 @@
       border-color: rgba(34,211,238,0.5) !important;
     }
 
-    #episodes-container {
-      background: linear-gradient(160deg, rgba(11,14,23,0.9), rgba(8,10,18,0.95)) !important;
-      border: 1px solid var(--line) !important;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.7);
-    }
-
     input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="search"], input[type="number"], textarea, select {
-      background: rgba(8,10,18,0.85) !important;
+      background: rgba(8,10,18,0.88) !important;
       border: 1px solid rgba(255,255,255,0.14) !important;
     }
     input:focus, textarea:focus, select:focus {
@@ -170,7 +162,7 @@
     }
 
     /* ==========================================================
-       PLAYER ESTILO NETFLIX / REELSHORT (TELA GRANDE GARANTIDA)
+       PLAYER ESTILO NETFLIX / REELSHORT
        ========================================================== */
     #player-modal {
       position: fixed;
@@ -200,15 +192,8 @@
       position: relative;
     }
     @media (max-width: 640px) {
-      #player-frame-box.mode-vertical {
-        width: 96vw;
-        height: calc(100dvh - 150px);
-      }
-      #player-frame-box.mode-horizontal {
-        width: 98vw;
-        height: 58vw;
-        min-height: 240px;
-      }
+      #player-frame-box.mode-vertical { width: 96vw; height: calc(100dvh - 150px); }
+      #player-frame-box.mode-horizontal { width: 98vw; height: 58vw; min-height: 240px; }
     }
     #player-stage {
       position: absolute;
@@ -219,7 +204,7 @@
       border-radius: 16px;
       overflow: hidden;
       border: 1px solid rgba(34, 211, 238, 0.3);
-      box-shadow: 0 25px 80px rgba(0,0,0,0.95), 0 0 45px rgba(34,211,238,0.12);
+      box-shadow: 0 25px 80px rgba(0,0,0,0.95);
     }
     #player-stage video,
     #player-stage iframe {
@@ -232,23 +217,34 @@
       background: #000000 !important;
       display: block !important;
     }
-    #player-stage video {
-      object-fit: contain !important;
-    }
-
-    #toast-box {
-      background: rgba(10,14,22,0.95) !important;
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(34,211,238,0.45) !important;
-      box-shadow: 0 20px 50px -10px rgba(0,0,0,0.7);
-    }
+    #player-stage video { object-fit: contain !important; }
   </style>
 </head>
 <body class="bg-[#040508] text-white min-h-screen flex flex-col pb-20 md:pb-0">
   <div class="grain-overlay"></div>
 
+  <!-- =========================================================================
+       1. ANIMAÇÃO DE ENTRADA QUANDO ABRE O SITE (ESTILO BRASILEIROS IA / NETFLIX)
+       ========================================================================= -->
+  <div id="splash-intro">
+    <div class="splash-logo-pulse flex flex-col items-center text-center px-6">
+      <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] p-0.5 shadow-2xl shadow-[#ff1722]/40 mb-5">
+        <div class="w-full h-full bg-[#040508] rounded-[22px] flex items-center justify-center text-3xl font-black text-[#ff1722]">▶</div>
+      </div>
+      <div class="font-display text-3xl md:text-5xl font-black tracking-tight text-white">
+        DA UM <span class="text-[#ff1722]">PLAY</span> <span class="text-[#00d4ff]">IA</span>
+      </div>
+      <span class="text-[11px] uppercase tracking-[0.3em] text-gray-400 font-bold mt-2">
+        Streaming Oficial de Séries & Mini Novelinhas IA
+      </span>
+      <div class="w-56 h-1.5 bg-white/10 rounded-full overflow-hidden mt-6">
+        <div class="splash-bar-fill h-full bg-gradient-to-r from-[#ff1722] to-[#00d4ff] rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- NOTIFICAÇÃO TOAST -->
-  <div id="toast-box" class="hidden fixed top-20 right-4 z-[10000] max-w-sm glass-bar text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
+  <div id="toast-box" class="hidden fixed top-20 right-4 z-[10000] max-w-sm glass-bar border border-[#00d4ff]/50 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
 
   <!-- CABEÇALHO -->
   <header class="sticky top-0 z-40 glass-bar border-b border-white/10 px-4 md:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
@@ -261,26 +257,19 @@
           <span class="font-display text-lg md:text-2xl font-black tracking-tight text-white">
             DA UM <span class="text-[#ff1722]">PLAY</span> <span class="text-[#00d4ff]">IA</span>
           </span>
-          <span class="block text-[9px] uppercase tracking-[0.2em] text-gray-400 font-bold">Produções Originais</span>
+          <span class="block text-[9px] uppercase tracking-[0.2em] text-gray-400 font-bold">Membros & Séries Originais</span>
         </div>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-5 text-xs font-bold text-gray-300" aria-label="Navegação Principal">
+      <nav class="hidden lg:flex items-center gap-5 text-xs font-bold text-gray-300">
         <a href="#topo" class="hover:text-[#00d4ff] transition">Início</a>
         <a href="#catalogo" class="hover:text-[#00d4ff] transition">Catálogo</a>
         <a href="#avaliacoes" class="hover:text-[#00d4ff] transition">Comunidade</a>
-        <a href="#perguntas" class="hover:text-[#00d4ff] transition">Dúvidas</a>
+        <button onclick="window.app.toggleSupportChat()" class="hover:text-[#00d4ff] transition">Suporte Online</button>
       </nav>
     </div>
 
-    <div class="flex items-center gap-2" id="header-actions">
-      <button onclick="window.app.openAuthModal('login')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15">
-        Entrar
-      </button>
-      <button onclick="window.app.openAuthModal('register')" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-[#ff1722] hover:bg-[#d90f19] text-white shadow-lg">
-        Criar Conta
-      </button>
-    </div>
+    <div class="flex items-center gap-2" id="header-actions"></div>
   </header>
 
   <!-- ÁREA DINÂMICA DO ESTÚDIO DO CRIADOR -->
@@ -305,17 +294,17 @@
           Histórias intensas, reviravoltas dramáticas e episódios exclusivos criados com tecnologia cinematográfica de Inteligência Artificial.
         </p>
         <div class="flex flex-wrap items-center gap-3 pt-2">
-          <button onclick="window.app.playHeroFirstEp()" class="px-7 py-3.5 rounded-2xl bg-[#ff1722] hover:bg-[#d90f19] text-white font-black text-sm shadow-xl transition">
-            ▶ Assistir 1º Episódio
+          <button onclick="window.app.playHeroFirstEp()" class="btn-red-glow px-7 py-3.5 rounded-2xl bg-[#ff1722] text-white font-black text-sm shadow-xl transition">
+            ▶ Assistir 1º Episódio Grátis
           </button>
           <button onclick="window.app.openVipCheckout()" class="px-6 py-3.5 rounded-2xl bg-[#00d4ff]/15 hover:bg-[#00d4ff]/25 border border-[#00d4ff]/50 text-[#00d4ff] font-extrabold text-sm transition">
-            👑 Acesso VIP 30 Dias • <span class="vip-price-label">R$ 9,90</span>
+            👑 Passe VIP Mensal (30 Dias) • <span class="vip-price-label">R$ 9,90</span>
           </button>
         </div>
       </div>
     </section>
 
-    <!-- CATÁLOGO DE SÉRIES E EPISÓDIOS (COM TEMPORADAS ESTILO NETFLIX) -->
+    <!-- CATÁLOGO DE SÉRIES E TEMPORADAS -->
     <section id="catalogo" class="max-w-6xl mx-auto px-6 py-10 space-y-8">
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
@@ -332,11 +321,9 @@
       </div>
 
       <div id="categories-bar" class="flex flex-wrap gap-2"></div>
-
-      <!-- GRADE DE SÉRIES -->
       <div id="series-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5"></div>
 
-      <!-- PAINEL DE TEMPORADAS E EPISÓDIOS ESTILO NETFLIX -->
+      <!-- PAINEL DE TEMPORADAS E EPISÓDIOS -->
       <div id="episodes-container" class="bg-[#0b0e17] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 scroll-mt-24">
         <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5">
           <div class="space-y-1">
@@ -344,32 +331,24 @@
             <h3 id="selected-serie-title" class="font-display text-2xl md:text-3xl font-black">Episódios</h3>
             <p id="selected-serie-desc" class="text-xs text-gray-400 max-w-2xl"></p>
           </div>
-
-          <div class="flex flex-wrap items-center gap-2">
-            <span id="selected-serie-count" class="text-xs font-bold text-[#00d4ff] bg-[#00d4ff]/10 border border-[#00d4ff]/30 px-3.5 py-1.5 rounded-full"></span>
-          </div>
+          <span id="selected-serie-count" class="text-xs font-bold text-[#00d4ff] bg-[#00d4ff]/10 border border-[#00d4ff]/30 px-3.5 py-1.5 rounded-full"></span>
         </div>
 
-        <!-- ABAS DE TEMPORADAS ESTILO NETFLIX -->
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div id="season-tabs-bar" class="flex flex-wrap items-center gap-2"></div>
-        </div>
-
-        <!-- GRADE DE EPISÓDIOS DA TEMPORADA SELECIONADA -->
+        <div id="season-tabs-bar" class="flex flex-wrap items-center gap-2"></div>
         <div id="episodes-grid" class="grid sm:grid-cols-2 md:grid-cols-3 gap-5"></div>
       </div>
     </section>
 
-    <!-- MURAL DE AVALIAÇÕES REAIS DOS ASSINANTES -->
+    <!-- MURAL DA COMUNIDADE DE MEMBROS (COM @INSTAGRAM) -->
     <section id="avaliacoes" class="max-w-6xl mx-auto px-6 py-6">
       <div class="bg-[#0b0e17] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <span class="text-[11px] font-black uppercase text-[#00d4ff]">Opinião Verificada dos Assinantes</span>
-            <h2 class="font-display text-xl md:text-2xl font-black">Mural da Comunidade</h2>
+            <span class="text-[11px] font-black uppercase text-[#00d4ff]">Comunidade Oficial de Membros</span>
+            <h2 class="font-display text-xl md:text-2xl font-black">Mural dos Assinantes</h2>
           </div>
           <button onclick="window.app.openReviewForm()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold text-[#00d4ff]">
-            ✍️ Deixar Minha Avaliação
+            ✍️ Comentar no Mural
           </button>
         </div>
 
@@ -383,44 +362,244 @@
             </select>
           </div>
           <textarea id="review-text" required maxlength="280" rows="2" placeholder="Conte o que achou da série que você assistiu..." class="w-full px-3.5 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"></textarea>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase">Publicar Avaliação Real</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase">Publicar Comentário</button>
         </form>
 
         <div id="reviews-list" class="grid md:grid-cols-3 gap-4 text-xs"></div>
       </div>
     </section>
-
-    <!-- PERGUNTAS FREQUENTES -->
-    <section id="perguntas" class="max-w-6xl mx-auto px-6 py-8">
-      <div class="bg-[#0b0e17] border border-white/10 rounded-3xl p-6 md:p-8 space-y-4">
-        <h2 class="font-display text-xl font-black">Informações da Assinatura & Dúvidas Frequentes</h2>
-        <div class="grid md:grid-cols-3 gap-4 text-xs">
-          <div class="p-4 rounded-2xl bg-[#040508] border border-white/10 space-y-1.5">
-            <h3 class="font-bold text-white">1. Como funciona o acesso VIP?</h3>
-            <p class="text-gray-400 leading-relaxed">O pagamento único via PIX (processado pelo Mercado Pago) libera 30 dias corridos de acesso a todas as temporadas e episódios VIP publicados na plataforma, sem renovação automática.</p>
-          </div>
-          <div class="p-4 rounded-2xl bg-[#040508] border border-white/10 space-y-1.5">
-            <h3 class="font-bold text-white">2. Como assistir às temporadas?</h3>
-            <p class="text-gray-400 leading-relaxed">Cada série reúne todas as suas temporadas no mesmo lugar. Basta selecionar 1ª Temporada, 2ª Temporada e dar play no episódio desejado.</p>
-          </div>
-          <div class="p-4 rounded-2xl bg-[#040508] border border-white/10 space-y-1.5">
-            <h3 class="font-bold text-white">3. Suporte e Atendimento</h3>
-            <p class="text-gray-400 leading-relaxed">Caso tenha qualquer dúvida sobre seu acesso ou pagamento, nossa equipe atende diretamente pelo botão de WhatsApp oficial no rodapé.</p>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <noscript>
-    <div style="color:#fff;background:#040508;padding:48px 24px;font-family:Arial,sans-serif;max-width:720px;margin:0 auto;line-height:1.6;">
-      <h1 style="font-size:28px;">Da Um Play IA — Séries Curtas e Mini Novelinhas Originais</h1>
-      <p>Plataforma de streaming de séries curtas e mini novelinhas produzidas com Inteligência Artificial. O 1º episódio é grátis; o Acesso VIP (30 dias) é liberado automaticamente via PIX.</p>
+  <!-- =========================================================================
+       2. SUPORTE DENTRO DA PLATAFORMA (WIDGET DE CHAT INTERNO EM TEMPO REAL)
+       ========================================================================= -->
+  <div class="fixed bottom-5 right-5 z-[90]">
+    <!-- JANELA DO CHAT INTERNO -->
+    <div id="support-chat-window" class="hidden mb-3 w-80 sm:w-96 bg-[#0b0e17] border-2 border-[#00d4ff]/60 rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+      <div class="p-4 bg-gradient-to-r from-[#080d1a] to-[#0f172a] border-b border-white/10 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <div>
+            <h4 class="font-display text-sm font-black text-white">Central de Suporte Interna</h4>
+            <span class="block text-[10px] text-[#00d4ff] font-bold">Atendimento dentro da plataforma</span>
+          </div>
+        </div>
+        <button onclick="window.app.toggleSupportChat()" class="text-gray-400 hover:text-white font-bold text-sm">✕</button>
+      </div>
+
+      <!-- PERGUNTAS RÁPIDAS AUTOMÁTICAS -->
+      <div class="px-3 py-2 bg-[#040508] border-b border-white/10 flex flex-wrap gap-1.5">
+        <button onclick="window.app.sendQuickSupport('Como funciona o VIP Mensal de 30 dias?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-[10px] font-bold text-gray-300">👑 Como funciona o VIP?</button>
+        <button onclick="window.app.sendQuickSupport('Já fiz o PIX, como libera?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-[10px] font-bold text-gray-300">⚡ Liberação PIX</button>
+        <button onclick="window.app.sendQuickSupport('Como edito meu perfil ou senha?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-[10px] font-bold text-gray-300">👤 Meu Perfil</button>
+      </div>
+
+      <!-- HISTÓRICO DE MENSAGENS DO CHAT -->
+      <div id="support-messages-box" class="p-4 h-64 overflow-y-auto space-y-2.5 bg-[#06080f] text-xs"></div>
+
+      <!-- ENVIAR DÚVIDA DIRETO NA PLATAFORMA -->
+      <form onsubmit="window.app.submitSupportMessage(event)" class="p-3 bg-[#0b0e17] border-t border-white/10 flex gap-2">
+        <input
+          type="text"
+          id="support-input-text"
+          required
+          maxlength="240"
+          placeholder="Digite sua dúvida aqui..."
+          class="flex-1 px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-xs text-white"
+        />
+        <button type="submit" class="px-4 py-2 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">
+          Enviar
+        </button>
+      </form>
     </div>
-  </noscript>
+
+    <!-- BOTÃO FLUTUANTE DE SUPORTE -->
+    <button
+      onclick="window.app.toggleSupportChat()"
+      class="ml-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#00d4ff] to-[#0099cc] text-[#040508] font-black text-xs shadow-2xl hover:scale-105 transition"
+    >
+      <span class="text-base">💬</span>
+      <span>Suporte na Plataforma</span>
+    </button>
+  </div>
 
   <!-- =========================================================================
-       SUPER PLAYER NETFLIX (TELA CHEIA REAL + TROCA DE TEMPORADA NO PLAYER)
+       3. MODAL DO PERFIL DO USUÁRIO (STATUS DE MEMBRO, INSTAGRAM, EDITAR E TROCAR SENHA)
+       ========================================================================= -->
+  <div id="profile-modal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-[#0b0e17] border-2 border-[#00d4ff]/40 rounded-3xl max-w-lg w-full p-6 space-y-5 relative shadow-2xl my-8">
+      <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
+
+      <!-- CARTÃO DE MEMBRO OFICIAL (ESTILO BRASILEIROS IA) -->
+      <div class="p-4 rounded-2xl bg-gradient-to-br from-[#14070e] via-[#0b101d] to-[#051824] border border-white/15 flex items-center gap-4">
+        <div id="prof-avatar" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] flex items-center justify-center font-display text-2xl font-black text-white shadow-lg flex-shrink-0">
+          U
+        </div>
+        <div class="min-w-0 flex-1 space-y-1">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-black uppercase">
+              ✓ Membro Oficial
+            </span>
+            <span id="prof-vip-badge" class="px-2.5 py-0.5 rounded-md bg-[#00d4ff]/20 border border-[#00d4ff]/40 text-[#00d4ff] text-[10px] font-black uppercase">
+              Plano Grátis
+            </span>
+          </div>
+          <h3 id="prof-display-name" class="font-display text-lg font-black text-white truncate">Nome do Membro</h3>
+          <p id="prof-display-email" class="text-xs text-gray-400 truncate">email@exemplo.com</p>
+          <p id="prof-display-insta" class="text-xs text-[#00d4ff] font-bold truncate"></p>
+        </div>
+      </div>
+
+      <!-- STATUS DO VIP MENSAL DE 30 DIAS -->
+      <div class="p-4 rounded-2xl bg-[#040508] border border-white/10 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-bold text-gray-300">👑 Assinatura VIP Mensal (30 Dias):</span>
+          <span id="prof-vip-days" class="font-black text-[#00d4ff]">Inativo</span>
+        </div>
+        <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+          <div id="prof-vip-bar" class="h-full bg-gradient-to-r from-[#ff1722] to-[#00d4ff] rounded-full" style="width: 0%"></div>
+        </div>
+        <div class="pt-1 flex justify-end">
+          <button onclick="window.app.closeModals(); window.app.openVipCheckout();" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white text-[11px] font-black uppercase">
+            ⚡ Ativar / Renovar +30 Dias VIP
+          </button>
+        </div>
+      </div>
+
+      <!-- ABAS INTERNAS: EDITAR PERFIL vs TROCAR SENHA -->
+      <div class="flex gap-2 bg-[#040508] p-1 rounded-xl">
+        <button id="btn-prof-tab-edit" onclick="window.app.switchProfileTab('edit')" class="flex-1 py-2 rounded-lg text-xs font-black uppercase bg-[#00d4ff] text-[#040508]">
+          ✏️ Editar Perfil & Instagram
+        </button>
+        <button id="btn-prof-tab-pass" onclick="window.app.switchProfileTab('pass')" class="flex-1 py-2 rounded-lg text-xs font-black uppercase text-gray-400">
+          🔒 Trocar Senha
+        </button>
+      </div>
+
+      <!-- FORMULÁRIO 1: EDITAR DADOS E INSTAGRAM -->
+      <form id="prof-edit-form" onsubmit="window.app.saveProfileChanges(event)" class="space-y-3">
+        <div>
+          <label class="block text-[11px] text-gray-400 font-bold mb-1">Seu Nome de Membro:</label>
+          <input type="text" id="edit-prof-name" required maxlength="60" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] text-[#00d4ff] font-bold mb-1">📸 Seu @Instagram:</label>
+            <input type="text" id="edit-prof-insta" maxlength="50" placeholder="@seuinstagram" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+          </div>
+          <div>
+            <label class="block text-[11px] text-gray-400 font-bold mb-1">📱 Seu WhatsApp:</label>
+            <input type="tel" id="edit-prof-phone" maxlength="20" placeholder="(00) 90000-0000" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+          </div>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase shadow-lg">
+          💾 Salvar Meu Perfil
+        </button>
+      </form>
+
+      <!-- FORMULÁRIO 2: TROCAR SENHA -->
+      <form id="prof-pass-form" onsubmit="window.app.changeUserPassword(event)" class="hidden space-y-3">
+        <div>
+          <label class="block text-[11px] text-gray-400 font-bold mb-1">Nova Senha:</label>
+          <input type="password" id="new-user-pass" required minlength="4" placeholder="Digite a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        </div>
+        <div>
+          <label class="block text-[11px] text-gray-400 font-bold mb-1">Confirmar Nova Senha:</label>
+          <input type="password" id="confirm-user-pass" required minlength="4" placeholder="Repita a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        </div>
+        <button type="submit" class="btn-red-glow w-full py-3 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
+          🔒 Atualizar Minha Senha
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       4. MODAL DE LOGIN (GOOGLE + CÓDIGO NO E-MAIL OTP + SENHA)
+       ========================================================================= -->
+  <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-[#0b0e17] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 relative shadow-2xl my-8">
+      <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
+
+      <div class="text-center space-y-1">
+        <span class="px-3 py-0.5 rounded-full bg-[#00d4ff]/15 text-[#00d4ff] text-[10px] font-black uppercase">Área de Membros</span>
+        <h3 class="font-display text-xl font-black text-white">Acesse sua Conta</h3>
+      </div>
+
+      <!-- BOTÃO OFICIAL DE LOGIN COM GOOGLE -->
+      <button
+        type="button"
+        onclick="window.app.loginWithGoogle()"
+        class="w-full py-3 px-4 rounded-xl bg-white hover:bg-gray-100 text-[#040508] font-extrabold text-xs flex items-center justify-center gap-2.5 shadow-lg transition"
+      >
+        <svg class="w-4 h-4" viewBox="0 0 24 24">
+          <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.7 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+          <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+          <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
+          <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 21.4 7.4 24 12 24z"/>
+        </svg>
+        <span>Continuar com o Google</span>
+      </button>
+
+      <!-- SELETOR DE MODO DE ACESSO -->
+      <div class="grid grid-cols-3 gap-1.5 bg-[#040508] p-1 rounded-xl">
+        <button id="tab-login-btn" onclick="window.app.switchAuthTab('login')" class="py-2 rounded-lg text-[11px] font-black uppercase bg-[#ff1722] text-white">Entrar</button>
+        <button id="tab-otp-btn" onclick="window.app.switchAuthTab('otp')" class="py-2 rounded-lg text-[11px] font-black uppercase text-gray-400">📩 Código E-mail</button>
+        <button id="tab-reg-btn" onclick="window.app.switchAuthTab('register')" class="py-2 rounded-lg text-[11px] font-black uppercase text-gray-400">Criar Conta</button>
+      </div>
+
+      <!-- 1. LOGIN COM SENHA -->
+      <form id="login-form" onsubmit="window.app.handleLogin(event)" class="space-y-3">
+        <input type="text" id="login-email" required autocomplete="email" placeholder="Seu E-mail de Acesso" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="password" id="login-pass" required autocomplete="current-password" placeholder="Sua Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <p id="auth-error-msg" class="text-xs text-[#ff1722] font-bold hidden"></p>
+        <button type="submit" class="btn-red-glow w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">Entrar na Plataforma</button>
+      </form>
+
+      <!-- 2. LOGIN COM CÓDIGO NO E-MAIL (OTP) -->
+      <div id="otp-form" class="hidden space-y-3">
+        <p class="text-[11px] text-gray-300 text-center">
+          Digite seu e-mail abaixo para receber um <b>Código de Acesso</b> instantâneo no seu e-mail:
+        </p>
+        <div class="flex gap-2">
+          <input type="email" id="otp-email-input" placeholder="seuemail@gmail.com" class="flex-1 px-3.5 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+          <button type="button" onclick="window.app.sendEmailOtpCode()" class="px-4 py-3 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase whitespace-nowrap">
+            Enviar Código
+          </button>
+        </div>
+
+        <div id="otp-verify-box" class="hidden pt-2 border-t border-white/10 space-y-2.5">
+          <label class="block text-[11px] text-emerald-400 font-bold text-center">📩 Digite o código de 6 dígitos que chegou no seu e-mail:</label>
+          <input
+            type="text"
+            id="otp-code-digits"
+            maxlength="6"
+            inputmode="numeric"
+            placeholder="000000"
+            class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-[#00d4ff] text-center text-lg font-black tracking-[0.4em] text-[#00d4ff]"
+          />
+          <button type="button" onclick="window.app.verifyEmailOtpCode()" class="btn-red-glow w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
+            ✅ Validar Código e Entrar
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. CRIAR CONTA COM INSTAGRAM -->
+      <form id="register-form" onsubmit="window.app.handleRegister(event)" class="hidden space-y-2.5">
+        <input type="text" id="reg-name" required maxlength="60" placeholder="Seu Nome Completo" class="w-full px-4 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="email" id="reg-email" required maxlength="90" placeholder="Seu Melhor E-mail" class="w-full px-4 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <div class="grid grid-cols-2 gap-2">
+          <input type="tel" id="reg-phone" maxlength="20" placeholder="WhatsApp com DDD" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+          <input type="text" id="reg-insta" maxlength="40" placeholder="@seuinstagram" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        </div>
+        <input type="password" id="reg-pass" required minlength="4" placeholder="Crie uma Senha" class="w-full px-4 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase shadow-lg">Criar Conta de Membro</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SUPER PLAYER NETFLIX (TELA CHEIA REAL + TEMPORADAS)
        ========================================================================= -->
   <div id="player-modal" class="hidden flex flex-col justify-between">
     <div class="w-full h-[64px] px-4 md:px-8 bg-[#080a12] border-b border-white/10 flex items-center justify-between gap-2 z-20">
@@ -436,26 +615,13 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <button
-          id="btn-aspect-toggle"
-          onclick="window.app.togglePlayerAspect()"
-          class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-xs font-bold text-[#00d4ff] transition"
-        >
+        <button id="btn-aspect-toggle" onclick="window.app.togglePlayerAspect()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-xs font-bold text-[#00d4ff]">
           📱 Modo Vertical
         </button>
-        <button
-          onclick="window.app.enterFullscreen()"
-          class="px-3 py-2 rounded-xl bg-[#00d4ff]/15 hover:bg-[#00d4ff]/25 border border-[#00d4ff]/40 text-xs font-extrabold text-[#00d4ff] transition"
-        >
+        <button onclick="window.app.enterFullscreen()" class="px-3 py-2 rounded-xl bg-[#00d4ff]/15 hover:bg-[#00d4ff]/25 border border-[#00d4ff]/40 text-xs font-extrabold text-[#00d4ff]">
           ⛶ Tela Cheia
         </button>
-        <button
-          onclick="window.app.closePlayer()"
-          class="w-9 h-9 rounded-xl bg-[#ff1722] hover:bg-[#d90f19] text-white text-sm font-black flex items-center justify-center"
-          title="Fechar Player"
-        >
-          ✕
-        </button>
+        <button onclick="window.app.closePlayer()" class="w-9 h-9 rounded-xl bg-[#ff1722] text-white text-sm font-black flex items-center justify-center">✕</button>
       </div>
     </div>
 
@@ -468,22 +634,9 @@
     <div class="w-full h-[74px] px-4 md:px-8 bg-[#080a12] border-t border-white/10 flex items-center z-20">
       <div class="max-w-6xl w-full mx-auto flex items-center justify-between gap-3 overflow-x-auto">
         <div class="flex items-center gap-2 flex-shrink-0">
-          <button
-            id="btn-prev-ep"
-            onclick="window.app.stepEpisode(-1)"
-            class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white disabled:opacity-30"
-          >
-            ⏮️ Anterior
-          </button>
-          <button
-            id="btn-next-ep"
-            onclick="window.app.stepEpisode(1)"
-            class="px-3.5 py-2 rounded-xl bg-[#ff1722] hover:bg-[#d90f19] text-xs font-black text-white shadow-lg disabled:opacity-30"
-          >
-            Próximo ⏭️
-          </button>
+          <button id="btn-prev-ep" onclick="window.app.stepEpisode(-1)" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white disabled:opacity-30">⏮️ Anterior</button>
+          <button id="btn-next-ep" onclick="window.app.stepEpisode(1)" class="px-3.5 py-2 rounded-xl bg-[#ff1722] text-xs font-black text-white shadow-lg disabled:opacity-30">Próximo ⏭️</button>
         </div>
-
         <div class="flex items-center gap-2 overflow-x-auto py-1">
           <div id="player-season-pills" class="flex items-center gap-1 pr-2 border-r border-white/15"></div>
           <div id="player-ep-strip" class="flex items-center gap-1.5"></div>
@@ -492,40 +645,15 @@
     </div>
   </div>
 
-  <!-- MODAL DE LOGIN / CADASTRO -->
-  <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
-    <div class="bg-[#0b0e17] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
-      <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
-      <div class="flex gap-2 bg-[#040508] p-1 rounded-xl">
-        <button id="tab-login-btn" onclick="window.app.switchAuthTab('login')" class="flex-1 py-2 rounded-lg text-xs font-black uppercase bg-[#ff1722] text-white">Entrar</button>
-        <button id="tab-reg-btn" onclick="window.app.switchAuthTab('register')" class="flex-1 py-2 rounded-lg text-xs font-black uppercase text-gray-400">Criar Conta</button>
-      </div>
-
-      <form id="login-form" onsubmit="window.app.handleLogin(event)" class="space-y-3">
-        <input type="text" id="login-email" required autocomplete="email" placeholder="Seu E-mail de Acesso" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="password" id="login-pass" required autocomplete="current-password" placeholder="Sua Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <p id="auth-error-msg" class="text-xs text-[#ff1722] font-bold hidden"></p>
-        <button type="submit" class="btn-red-glow w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">Entrar na Plataforma</button>
-      </form>
-
-      <form id="register-form" onsubmit="window.app.handleRegister(event)" class="hidden space-y-3">
-        <input type="text" id="reg-name" required maxlength="60" autocomplete="name" placeholder="Seu Nome Completo" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="email" id="reg-email" required maxlength="90" autocomplete="email" placeholder="Seu Melhor E-mail" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="tel" id="reg-phone" maxlength="20" autocomplete="tel" inputmode="numeric" placeholder="Seu WhatsApp com DDD" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="password" id="reg-pass" required minlength="4" autocomplete="new-password" placeholder="Crie uma Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase shadow-lg">Criar Minha Conta Grátis</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL PIX MERCADO PAGO -->
+  <!-- MODAL PIX MERCADO PAGO (VIP MENSAL DE 30 DIAS) -->
   <div id="vip-modal" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
     <div class="bg-[#0b0e17] border-2 border-[#00d4ff] rounded-3xl max-w-md w-full p-6 space-y-4 relative text-center shadow-2xl">
       <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
       <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase">
-        🔒 Pagamento Seguro via PIX
+        👑 Assinatura VIP Mensal • 30 Dias de Acesso
       </div>
-      <h3 class="font-display text-xl font-black">Acesso VIP — 30 Dias</h3>
+      <h3 class="font-display text-xl font-black">Passaporte Membro VIP — 30 Dias</h3>
+      <p class="text-xs text-gray-400">Libera todas as séries, temporadas e lançamentos por 30 dias corridos.</p>
       <div id="vip-modal-price" class="font-display text-3xl font-black text-[#00d4ff]">R$ 9,90</div>
 
       <div class="pt-1">
@@ -533,15 +661,8 @@
           🎟️ Possui um cupom promocional? Clique para adicionar
         </button>
         <form id="inline-coupon-box" onsubmit="window.app.handleCoupon(event)" class="hidden mt-2.5 flex gap-2">
-          <input
-            type="text"
-            id="coupon-code-input"
-            placeholder="DIGITE O CUPOM"
-            class="flex-1 px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-xs font-black uppercase text-[#00d4ff] text-center"
-          />
-          <button type="submit" class="px-4 py-2 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">
-            Aplicar
-          </button>
+          <input type="text" id="coupon-code-input" placeholder="DIGITE O CUPOM" class="flex-1 px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-xs font-black uppercase text-[#00d4ff] text-center" />
+          <button type="submit" class="px-4 py-2 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">Aplicar</button>
         </form>
         <p id="coupon-feedback" class="text-[11px] font-bold text-amber-300 mt-1"></p>
       </div>
@@ -550,50 +671,28 @@
     </div>
   </div>
 
-  <!-- RODAPÉ OFICIAL -->
+  <!-- RODAPÉ -->
   <footer class="bg-[#07090f] border-t border-white/10 pt-10 pb-8 px-6 text-xs text-gray-400">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/10">
-      <div class="space-y-2">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div>
         <span class="font-display text-lg font-black text-white">DA UM <span class="text-[#ff1722]">PLAY</span> <span class="text-[#00d4ff]">IA</span></span>
-        <p class="text-xs text-gray-500 leading-relaxed">Plataforma independente de séries curtas e mini novelinhas originais criadas com Inteligência Artificial.</p>
+        <p class="text-xs text-gray-500 mt-1">© 2026 Da Um Play IA. Plataforma Oficial de Séries e Mini Novelinhas.</p>
       </div>
-      <div class="space-y-2">
-        <h4 class="text-white font-bold uppercase text-[11px]">Transparência & Pagamento</h4>
-        <ul class="space-y-1 text-gray-400">
-          <li>🔒 PIX processado via API Oficial Mercado Pago</li>
-          <li>⚡ Liberação automática mediante aprovação</li>
-          <li>📱 Compatível com navegadores Mobile e Desktop</li>
-        </ul>
-      </div>
-      <div class="space-y-3">
-        <h4 class="text-white font-bold uppercase text-[11px]">Atendimento ao Assinante</h4>
-        <a id="footer-wa-link" href="https://wa.me/5575991227668" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 font-bold text-xs">
-          💬 Falar com o Suporte no WhatsApp
-        </a>
-      </div>
-    </div>
-    <div class="max-w-6xl mx-auto pt-6 flex flex-wrap items-center justify-between gap-4 text-[11px] text-gray-500">
-      <span>© 2026 Da Um Play IA. Todos os direitos reservados.</span>
-      <span>Conteúdo original protegido por direitos autorais.</span>
+      <button onclick="window.app.toggleSupportChat()" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[#00d4ff] font-bold text-xs">
+        💬 Abrir Suporte Dentro da Plataforma
+      </button>
     </div>
   </footer>
 
-  <!-- ENGINE NATIVA BLINDADA (SHA-256 + ANTI-XSS + ANTI-FRAUDE VIP) -->
+  <!-- ENGINE COMPLETA -->
   <script>
     (function () {
-      window.addEventListener('contextmenu', function (e) {
-        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-          e.preventDefault();
-        }
-      });
-      window.addEventListener('keydown', function (e) {
-        if (
-          e.key === 'F12' ||
-          (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
-          (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase()))
-        ) {
-          e.preventDefault();
-        }
+      // Remove a animação de entrada após 1.7s
+      window.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+          const splash = document.getElementById('splash-intro');
+          if (splash) splash.classList.add('hide-splash');
+        }, 1700);
       });
 
       const SB_URL = 'https://wqtiqgyzayacwypugrik.supabase.co';
@@ -601,7 +700,6 @@
       const DEFAULT_CREATOR_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
       const VIP_SALT = 'dup_vip_shield_2026_x9';
 
-      // Sanitizador Anti-XSS (Impede injeção de scripts em nomes, títulos ou avaliações)
       function escapeHtml(str) {
         if (str === null || str === undefined) return '';
         return String(str)
@@ -612,7 +710,6 @@
           .replace(/'/g, '&#039;');
       }
 
-      // Assinatura de integridade para impedir fraude de VIP via localStorage
       function computeVipSig(userId, vipUntil) {
         if (!userId || !vipUntil) return '';
         const raw = `${userId}:${vipUntil}:${VIP_SALT}`;
@@ -694,6 +791,7 @@
         users: JSON.parse(localStorage.getItem('dup_clean_users') || '[]'),
         coupons: JSON.parse(localStorage.getItem('dup_clean_coupons') || '[{"id":"c1","code":"VIP7DIAS","type":"days","value":7,"usesLeft":20},{"id":"c2","code":"PROMO490","type":"price","value":4.90,"usesLeft":50}]'),
         reviews: JSON.parse(localStorage.getItem('dup_clean_reviews') || '[]'),
+        tickets: JSON.parse(localStorage.getItem('dup_clean_tickets') || '[]'),
         supportWhatsapp: localStorage.getItem('dup_clean_wa') || '5575991227668',
         basePrice: Number(localStorage.getItem('dup_clean_price')) || 9.90,
         discountedPrice: null,
@@ -711,6 +809,8 @@
         verticalPlayer: false,
         activeSerieId: null,
         activeEpisode: null,
+        pendingOtpEmail: '',
+        localOtpFallback: '',
         pixInterval: null,
         supabaseClient: null
       };
@@ -762,76 +862,41 @@
         });
       }
 
+      function grantVerifiedVip(userObj, days = 30) {
+        const until = Date.now() + Number(days) * 86400000;
+        userObj.isVip = true;
+        userObj.vipUntil = until;
+        userObj.vipSig = computeVipSig(userObj.id, until);
+      }
+
       function buildVideoEmbedHtml(rawUrl) {
         if (!rawUrl || !rawUrl.trim()) {
           return `<div class="w-full h-full flex flex-col items-center justify-center p-8 text-center space-y-3 bg-[#060810]">
             <div class="w-14 h-14 rounded-full bg-[#ff1722]/20 border border-[#ff1722]/40 flex items-center justify-center text-2xl">🎬</div>
-            <p class="text-base font-bold text-[#00d4ff]">Vídeo ainda não vinculado a este episódio</p>
-            <p class="text-xs text-gray-400 max-w-md">Abra o Estúdio ADM, clique em "✏️ Editar Ep" neste episódio e cole o link do vídeo (YouTube Não Listado, Google Drive Público ou arquivo MP4).</p>
+            <p class="text-base font-bold text-[#00d4ff]">Vídeo em processamento</p>
+            <p class="text-xs text-gray-400 max-w-md">Abra o Estúdio ADM, clique em "✏️ Editar Ep" neste episódio e cole o link do vídeo.</p>
           </div>`;
         }
         let url = rawUrl.trim();
-
         const spinnerHtml = `<div id="vid-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-black z-0 pointer-events-none">
           <div class="w-10 h-10 border-4 border-[#00d4ff] border-t-transparent rounded-full animate-spin mb-2"></div>
-          <span class="text-[11px] font-bold text-gray-400">Carregando vídeo em alta definição...</span>
+          <span class="text-[11px] font-bold text-gray-400">Carregando reprodutor...</span>
         </div>`;
 
         const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
         if (ytMatch) {
-          const vidId = ytMatch[1];
-          return `${spinnerHtml}<iframe
-            src="https://www.youtube-nocookie.com/embed/${vidId}?autoplay=1&rel=0&modestbranding=1&playsinline=1"
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-            allowfullscreen
-            onload="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"
-          ></iframe>`;
-        }
-
-        const streamableMatch = url.match(/streamable\.com\/(?:e\/)?([a-zA-Z0-9]+)/);
-        if (streamableMatch) {
-          return `${spinnerHtml}<iframe
-            src="https://streamable.com/e/${streamableMatch[1]}?autoplay=1"
-            allow="autoplay; fullscreen"
-            allowfullscreen
-            onload="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"
-          ></iframe>`;
+          return `${spinnerHtml}<iframe src="https://www.youtube-nocookie.com/embed/${ytMatch[1]}?autoplay=1&rel=0&modestbranding=1&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen onload="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"></iframe>`;
         }
 
         const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
         if (driveMatch && url.includes('drive.google.com')) {
-          const fileId = driveMatch[1];
-          return `${spinnerHtml}
-            <div class="absolute top-0 right-0 w-16 h-16 z-20 bg-transparent" title="Player Protegido"></div>
-            <iframe
-              src="https://drive.google.com/file/d/${fileId}/preview"
-              allow="autoplay; fullscreen"
-              allowfullscreen
-              onload="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"
-            ></iframe>`;
+          return `${spinnerHtml}<div class="absolute top-0 right-0 w-16 h-16 z-20 bg-transparent"></div><iframe src="https://drive.google.com/file/d/${driveMatch[1]}/preview" allow="autoplay; fullscreen" allowfullscreen onload="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"></iframe>`;
         }
 
-        if (url.includes('dropbox.com')) {
-          url = url.replace('?dl=0', '?raw=1').replace('www.dropbox.com', 'dl.dropboxusercontent.com');
-        }
-        if (url.includes('catbox.moe') && !url.includes('files.catbox.moe')) {
-          url = url.replace('catbox.moe/', 'files.catbox.moe/');
-        }
+        if (url.includes('dropbox.com')) url = url.replace('?dl=0', '?raw=1').replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+        if (url.includes('catbox.moe') && !url.includes('files.catbox.moe')) url = url.replace('catbox.moe/', 'files.catbox.moe/');
 
-        const safeUrl = escapeHtml(url);
-        return `${spinnerHtml}<video
-          id="native-video-el"
-          src="${safeUrl}"
-          controls
-          autoplay
-          playsinline
-          preload="auto"
-          referrerpolicy="no-referrer"
-          controlsList="nodownload noplaybackrate"
-          oncontextmenu="return false;"
-          onloadeddata="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"
-          onended="window.app.stepEpisode(1)"
-        ></video>`;
+        return `${spinnerHtml}<video id="native-video-el" src="${escapeHtml(url)}" controls autoplay playsinline preload="auto" referrerpolicy="no-referrer" controlsList="nodownload noplaybackrate" oncontextmenu="return false;" onloadeddata="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';" onended="window.app.stepEpisode(1)"></video>`;
       }
 
       function applyAspectClasses() {
@@ -851,44 +916,96 @@
         if (!state.activeSerieId || !state.activeEpisode) return;
         const serie = state.seriesList.find((s) => s.id === state.activeSerieId);
         if (!serie) return;
-
         const seasons = getSeriesSeasons(serie);
         const seasonPills = document.getElementById('player-season-pills');
         if (seasonPills) {
-          if (seasons.length <= 1) {
-            seasonPills.innerHTML = `<span class="text-[11px] font-black text-[#00d4ff] px-2">T1</span>`;
-          } else {
-            seasonPills.innerHTML = seasons
-              .map(
-                (sNum) => `<button onclick="window.app.selectPlayerSeason(${sNum})" class="px-2.5 py-1 rounded-lg text-[11px] font-black transition ${
-                  state.playerSeason === sNum ? 'bg-[#00d4ff] text-[#040508]' : 'bg-white/5 text-gray-400 hover:text-white'
-                }">T${sNum}</button>`
-              )
-              .join('');
-          }
+          seasonPills.innerHTML = seasons
+            .map((sNum) => `<button onclick="window.app.selectPlayerSeason(${sNum})" class="px-2.5 py-1 rounded-lg text-[11px] font-black ${state.playerSeason === sNum ? 'bg-[#00d4ff] text-[#040508]' : 'bg-white/5 text-gray-400'}">T${sNum}</button>`)
+            .join('');
         }
-
-        const epsOfSeason = sortAllEpisodes(serie.episodes).filter(
-          (e) => (Number(e.season) || 1) === state.playerSeason
-        );
+        const epsOfSeason = sortAllEpisodes(serie.episodes).filter((e) => (Number(e.season) || 1) === state.playerSeason);
         const strip = document.getElementById('player-ep-strip');
         if (strip) {
           strip.innerHTML = epsOfSeason
-            .map(
-              (item) => `<button onclick="window.app.playEpisode('${escapeHtml(serie.id)}','${escapeHtml(item.id)}')" class="px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap transition ${
-                item.id === state.activeEpisode.id
-                  ? 'bg-[#ff1722] text-white shadow-lg'
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
-              }">Ep. ${Number(item.number) || 1} ${item.isVip ? '👑' : ''}</button>`
-            )
+            .map((item) => `<button onclick="window.app.playEpisode('${escapeHtml(serie.id)}','${escapeHtml(item.id)}')" class="px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap ${item.id === state.activeEpisode.id ? 'bg-[#ff1722] text-white' : 'bg-white/10 text-gray-300'}">Ep. ${Number(item.number) || 1} ${item.isVip ? '👑' : ''}</button>`)
             .join('');
         }
+      }
+
+      function renderSupportMessages() {
+        const box = document.getElementById('support-messages-box');
+        if (!box) return;
+        const user = getCurrentUser();
+        const myTickets = user
+          ? state.tickets.filter((t) => t.userId === user.id)
+          : state.tickets.filter((t) => t.userId === 'guest');
+
+        let html = `
+          <div class="p-3 rounded-2xl bg-white/5 border border-white/10 text-gray-200">
+            <span class="block text-[10px] font-black text-[#00d4ff] uppercase mb-0.5">🤖 Assistente Da Um Play IA</span>
+            Olá${user ? ', <b>' + escapeHtml(user.name.split(' ')[0]) + '</b>' : ''}! Bem-vindo ao suporte interno da plataforma. Escolha um tópico acima ou envie sua pergunta abaixo!
+          </div>
+        `;
+
+        myTickets.forEach((t) => {
+          html += `
+            <div class="p-3 rounded-2xl bg-[#ff1722]/20 border border-[#ff1722]/40 text-white ml-6">
+              <span class="block text-[9px] text-gray-400 font-bold">${escapeHtml(t.time)} • Você</span>
+              ${escapeHtml(t.question)}
+            </div>
+          `;
+          if (t.autoReply) {
+            html += `
+              <div class="p-3 rounded-2xl bg-[#00d4ff]/15 border border-[#00d4ff]/30 text-gray-200 mr-6">
+                <span class="block text-[9px] text-[#00d4ff] font-black uppercase">⚡ Resposta Rápida</span>
+                ${escapeHtml(t.autoReply)}
+              </div>
+            `;
+          }
+          if (t.adminReply) {
+            html += `
+              <div class="p-3 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-white mr-6">
+                <span class="block text-[9px] text-emerald-400 font-black uppercase">👨‍💻 Equipe de Suporte Oficial</span>
+                ${escapeHtml(t.adminReply)}
+              </div>
+            `;
+          }
+        });
+
+        box.innerHTML = html;
+        box.scrollTop = box.scrollHeight;
       }
 
       async function initSupabase() {
         if (!window.supabase) return;
         try {
           state.supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
+
+          // Captura login automático caso o usuário volte do Google OAuth ou Magic Link
+          state.supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (session && session.user) {
+              const sUser = session.user;
+              const email = (sUser.email || '').toLowerCase();
+              let localUser = state.users.find((u) => u.email.toLowerCase() === email);
+              if (!localUser) {
+                localUser = {
+                  id: 'u_' + Date.now(),
+                  name: sUser.user_metadata?.full_name || email.split('@')[0],
+                  email,
+                  whatsapp: '',
+                  instagram: '',
+                  isVip: false,
+                  vipUntil: null,
+                  vipSig: ''
+                };
+                state.users.unshift(localUser);
+              }
+              state.currentUserId = localUser.id;
+              saveLocalState();
+              renderAll();
+            }
+          });
+
           const { data, error } = await state.supabaseClient.from('app_state').select('*').eq('id', 1).single();
           if (!error && data) {
             if (Array.isArray(data.series_data) && data.series_data.length > 0) {
@@ -896,8 +1013,7 @@
                 ...s,
                 episodes: (s.episodes || []).map((ep) => ({
                   ...ep,
-                  season: Number(ep.season) || 1,
-                  videoUrl: (ep.videoUrl || '').includes('commondatastorage.googleapis.com') ? '' : ep.videoUrl
+                  season: Number(ep.season) || 1
                 }))
               }));
             }
@@ -917,9 +1033,8 @@
               if (data.settings_data.basePrice) state.basePrice = Number(data.settings_data.basePrice);
               if (data.settings_data.mpToken) state.gatewayKey = decodeKey(data.settings_data.mpToken);
               if (data.settings_data.creatorHash) state.creatorHash = data.settings_data.creatorHash;
-              if (data.settings_data.reviews && Array.isArray(data.settings_data.reviews)) {
-                state.reviews = data.settings_data.reviews;
-              }
+              if (Array.isArray(data.settings_data.reviews)) state.reviews = data.settings_data.reviews;
+              if (Array.isArray(data.settings_data.tickets)) state.tickets = data.settings_data.tickets;
             }
             saveLocalState();
             renderAll();
@@ -927,7 +1042,6 @@
         } catch (e) {}
       }
 
-      // Sincronização Blindada: Clientes comuns só atualizam usuários/avaliações, nunca sobrescrevendo o catálogo do ADM
       async function syncCloud(isAdminAction = false) {
         saveLocalState();
         if (!state.supabaseClient) return;
@@ -943,7 +1057,8 @@
                 basePrice: state.basePrice,
                 mpToken: encodeKey(state.gatewayKey),
                 creatorHash: state.creatorHash,
-                reviews: state.reviews
+                reviews: state.reviews,
+                tickets: state.tickets
               },
               updated_at: new Date().toISOString()
             });
@@ -951,6 +1066,7 @@
             const { data: currentRemote } = await state.supabaseClient.from('app_state').select('settings_data').eq('id', 1).single();
             const safeSettings = currentRemote?.settings_data || {};
             safeSettings.reviews = state.reviews;
+            safeSettings.tickets = state.tickets;
 
             await state.supabaseClient
               .from('app_state')
@@ -970,6 +1086,7 @@
         localStorage.setItem('dup_clean_users', JSON.stringify(state.users));
         localStorage.setItem('dup_clean_coupons', JSON.stringify(state.coupons));
         localStorage.setItem('dup_clean_reviews', JSON.stringify(state.reviews));
+        localStorage.setItem('dup_clean_tickets', JSON.stringify(state.tickets));
         localStorage.setItem('dup_clean_wa', state.supportWhatsapp);
         localStorage.setItem('dup_clean_price', String(state.basePrice));
         localStorage.setItem('dup_creator_hash', state.creatorHash);
@@ -977,20 +1094,11 @@
         else localStorage.removeItem('dup_clean_uid');
       }
 
-      function grantVerifiedVip(userObj, days) {
-        const until = Date.now() + Number(days) * 86400000;
-        userObj.isVip = true;
-        userObj.vipUntil = until;
-        userObj.vipSig = computeVipSig(userObj.id, until);
-      }
-
       function renderAll() {
         const user = getCurrentUser();
         const priceFormatted = 'R$ ' + (state.discountedPrice || state.basePrice).toFixed(2).replace('.', ',');
 
         document.querySelectorAll('.vip-price-label').forEach((el) => (el.textContent = priceFormatted));
-        const waLink = document.getElementById('footer-wa-link');
-        if (waLink) waLink.href = `https://wa.me/${encodeURIComponent(state.supportWhatsapp)}`;
 
         const headerActions = document.getElementById('header-actions');
         if (headerActions) {
@@ -998,19 +1106,26 @@
           if (!user) {
             html += `
               <button onclick="window.app.openAuthModal('login')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15">Entrar</button>
-              <button onclick="window.app.openAuthModal('register')" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-[#ff1722] text-white shadow-lg">Criar Conta</button>
+              <button onclick="window.app.openAuthModal('register')" class="btn-red-glow px-4 py-2 rounded-xl text-xs font-extrabold bg-[#ff1722] text-white shadow-lg">Ser Membro</button>
             `;
           } else {
-            const firstName = escapeHtml(user.name.split(' ')[0]);
-            const vipBadge = isUserTrulyVip(user)
-              ? `<span class="px-3 py-1.5 rounded-full text-[11px] font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/40">👑 VIP (${getDaysRemaining(user.vipUntil)}d)</span>`
-              : `<button onclick="window.app.openVipCheckout()" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white">👑 Assinar VIP • ${priceFormatted}</button>`;
-            html += `${vipBadge}
-              <span class="hidden sm:inline text-xs font-bold text-gray-200">${firstName}</span>
-              <button onclick="window.app.logout()" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-[#ff1722] text-xs font-bold">Sair</button>`;
+            const vipActive = isUserTrulyVip(user);
+            const daysLeft = getDaysRemaining(user.vipUntil);
+            const memberBadge = vipActive
+              ? `<button onclick="window.app.openProfileModal()" class="px-3 py-1.5 rounded-full text-[11px] font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/50">👑 MEMBRO VIP (${daysLeft}d)</button>`
+              : `<button onclick="window.app.openVipCheckout()" class="px-3 py-1.5 rounded-xl text-[11px] font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white">👑 Virar VIP 30d</button>`;
+
+            html += `
+              ${memberBadge}
+              <button onclick="window.app.openProfileModal()" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-xs font-bold text-white flex items-center gap-1.5">
+                <span>👤</span>
+                <span>Meu Perfil</span>
+              </button>
+              <button onclick="window.app.logout()" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-[#ff1722] text-xs font-bold text-gray-300 hover:text-white">Sair</button>
+            `;
           }
           if (state.creatorUnlocked) {
-            html += `<button onclick="window.app.closeStudio()" class="px-3 py-1.5 rounded-xl bg-[#ff1722] text-white text-xs font-black">Fechar Estúdio</button>`;
+            html += `<button onclick="window.app.closeStudio()" class="px-3 py-1.5 rounded-xl bg-[#ff1722] text-white text-xs font-black">Fechar ADM</button>`;
           }
           headerActions.innerHTML = html;
         }
@@ -1031,11 +1146,7 @@
         const catBar = document.getElementById('categories-bar');
         if (catBar) {
           catBar.innerHTML = cats
-            .map(
-              (c) => `<button onclick="window.app.selectCategory('${escapeHtml(c)}')" class="px-4 py-1.5 rounded-full text-xs font-extrabold transition ${
-                state.selectedCategory === c ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'
-              }">${escapeHtml(c)}</button>`
-            )
+            .map((c) => `<button onclick="window.app.selectCategory('${escapeHtml(c)}')" class="px-4 py-1.5 rounded-full text-xs font-extrabold transition ${state.selectedCategory === c ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'}">${escapeHtml(c)}</button>`)
             .join('');
         }
 
@@ -1051,10 +1162,7 @@
             .map((s) => {
               const selected = s.id === state.selectedSeriesId;
               const sSeasons = getSeriesSeasons(s);
-              const badgeText = sSeasons.length > 1
-                ? `${sSeasons.length} Temps • ${(s.episodes || []).length} Eps`
-                : `${(s.episodes || []).length} Eps`;
-
+              const badgeText = sSeasons.length > 1 ? `${sSeasons.length} Temps • ${(s.episodes || []).length} Eps` : `${(s.episodes || []).length} Eps`;
               const studioControls = state.creatorUnlocked
                 ? `<div onclick="event.stopPropagation()" class="p-2 bg-[#0b0e17] border-t border-white/10 flex items-center justify-between text-[10px]">
                     <button onclick="window.app.setHero('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold">${s.isHeroLaunch ? '⭐ Capa' : 'Destacar'}</button>
@@ -1062,9 +1170,7 @@
                     <button onclick="window.app.deleteSerie('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-red-500/20 text-red-400 font-bold">Excluir</button>
                   </div>`
                 : '';
-              return `<article onclick="window.app.selectSerie('${escapeHtml(s.id)}')" class="cursor-pointer rounded-2xl overflow-hidden border-2 transition ${
-                selected ? 'border-[#00d4ff] shadow-lg shadow-[#00d4ff]/20' : 'border-white/10 hover:border-white/30'
-              }">
+              return `<article onclick="window.app.selectSerie('${escapeHtml(s.id)}')" class="cursor-pointer rounded-2xl overflow-hidden border-2 transition ${selected ? 'border-[#00d4ff] shadow-lg shadow-[#00d4ff]/20' : 'border-white/10 hover:border-white/30'}">
                 <div class="aspect-[2/3] relative bg-[#0b0e17]">
                   <img src="${escapeHtml(s.poster)}" alt="${escapeHtml(s.title)}" loading="lazy" class="w-full h-full object-cover" />
                   <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
@@ -1083,15 +1189,12 @@
         const activeSerie = state.seriesList.find((s) => s.id === state.selectedSeriesId) || state.seriesList[0];
         if (activeSerie) {
           const seasons = getSeriesSeasons(activeSerie);
-          if (!seasons.includes(state.selectedSeason)) {
-            state.selectedSeason = seasons[0] || 1;
-          }
+          if (!seasons.includes(state.selectedSeason)) state.selectedSeason = seasons[0] || 1;
 
           document.getElementById('selected-serie-cat').textContent = activeSerie.category;
           document.getElementById('selected-serie-title').textContent = activeSerie.title;
           document.getElementById('selected-serie-desc').textContent = activeSerie.synopsis;
-          document.getElementById('selected-serie-count').textContent =
-            `${seasons.length} ${seasons.length > 1 ? 'Temporadas' : 'Temporada'} • ${(activeSerie.episodes || []).length} Episódios`;
+          document.getElementById('selected-serie-count').textContent = `${seasons.length} ${seasons.length > 1 ? 'Temporadas' : 'Temporada'} • ${(activeSerie.episodes || []).length} Episódios`;
 
           const seasonTabsBar = document.getElementById('season-tabs-bar');
           if (seasonTabsBar) {
@@ -1099,14 +1202,7 @@
               .map((sNum) => {
                 const countInSeason = (activeSerie.episodes || []).filter((e) => (Number(e.season) || 1) === sNum).length;
                 const isCurrent = state.selectedSeason === sNum;
-                return `<button
-                  onclick="window.app.selectSeason(${sNum})"
-                  class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition flex items-center gap-2 ${
-                    isCurrent
-                      ? 'bg-gradient-to-r from-[#ff1722] to-[#d90f19] text-white shadow-lg'
-                      : 'bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10'
-                  }"
-                >
+                return `<button onclick="window.app.selectSeason(${sNum})" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition flex items-center gap-2 ${isCurrent ? 'bg-gradient-to-r from-[#ff1722] to-[#d90f19] text-white shadow-lg' : 'bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10'}">
                   <span>🎬 ${sNum}ª Temporada</span>
                   <span class="px-2 py-0.5 rounded-full text-[10px] ${isCurrent ? 'bg-black/30 text-white' : 'bg-white/10 text-[#00d4ff]'}">${countInSeason} eps</span>
                 </button>`;
@@ -1114,10 +1210,7 @@
               .join('');
           }
 
-          const epsOfSelectedSeason = sortAllEpisodes(activeSerie.episodes).filter(
-            (ep) => (Number(ep.season) || 1) === state.selectedSeason
-          );
-
+          const epsOfSelectedSeason = sortAllEpisodes(activeSerie.episodes).filter((ep) => (Number(ep.season) || 1) === state.selectedSeason);
           document.getElementById('episodes-grid').innerHTML = epsOfSelectedSeason
             .map((ep) => {
               const locked = ep.isVip && !isUserTrulyVip(user);
@@ -1136,12 +1229,8 @@
                   <div class="absolute inset-0 bg-black/45 flex items-center justify-center">
                     <div class="w-12 h-12 rounded-full bg-[#ff1722] flex items-center justify-center font-bold shadow-lg text-base">${locked ? '🔒' : '▶'}</div>
                   </div>
-                  <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/80 text-[#00d4ff] text-[10px] font-black uppercase">
-                    T${sNum}:E${Number(ep.number) || 1}
-                  </span>
-                  <span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded text-[10px] font-black uppercase ${
-                    ep.isVip ? 'bg-[#00d4ff] text-[#040508]' : 'bg-emerald-500 text-black'
-                  }">${ep.isVip ? '🔒 VIP' : '🔓 GRÁTIS'}</span>
+                  <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/80 text-[#00d4ff] text-[10px] font-black uppercase">T${sNum}:E${Number(ep.number) || 1}</span>
+                  <span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded text-[10px] font-black uppercase ${ep.isVip ? 'bg-[#00d4ff] text-[#040508]' : 'bg-emerald-500 text-black'}">${ep.isVip ? '🔒 VIP' : '🔓 GRÁTIS'}</span>
                 </div>
                 <div class="p-4">
                   <div class="flex items-center justify-between text-[11px] text-gray-400 mb-1">
@@ -1160,22 +1249,27 @@
         if (revBox) {
           if (state.reviews.length === 0) {
             revBox.innerHTML = `<div class="col-span-3 p-6 rounded-2xl bg-[#040508] border border-white/10 text-center text-gray-400">
-              As avaliações são exclusivas de assinantes verificados. Assista ao primeiro episódio e deixe sua avaliação real!
+              Seja o primeiro membro oficial a comentar no mural!
             </div>`;
           } else {
             revBox.innerHTML = state.reviews
               .slice(0, 6)
-              .map(
-                (r) => `<div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
-                  <div class="text-amber-400 font-bold">${'★'.repeat(Math.min(5, Math.max(1, Number(r.stars) || 5)))}</div>
-                  <p class="text-gray-300 leading-relaxed">"${escapeHtml(r.text)}"</p>
-                  <p class="text-gray-500 font-bold">— ${escapeHtml(r.author)} <span class="text-emerald-400 text-[10px]">✓ Assinante Verificado</span></p>
-                </div>`
-              )
+              .map((r) => `<div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-amber-400 font-bold">${'★'.repeat(Math.min(5, Math.max(1, Number(r.stars) || 5)))}</span>
+                  <span class="px-2 py-0.5 rounded bg-[#00d4ff]/15 text-[#00d4ff] text-[9px] font-black uppercase">${r.isVip ? '👑 Membro VIP' : '✓ Membro'}</span>
+                </div>
+                <p class="text-gray-300 leading-relaxed">"${escapeHtml(r.text)}"</p>
+                <div class="flex items-center justify-between text-[11px] pt-1 border-t border-white/5">
+                  <span class="text-white font-bold">${escapeHtml(r.author)}</span>
+                  ${r.instagram ? `<span class="text-[#00d4ff] font-bold">${escapeHtml(r.instagram)}</span>` : ''}
+                </div>
+              </div>`)
               .join('');
           }
         }
 
+        renderSupportMessages();
         if (state.creatorUnlocked) renderCreatorStudio();
       }
 
@@ -1191,93 +1285,72 @@
             <div class="max-w-6xl mx-auto space-y-6">
               <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
                 <div>
-                  <h2 class="font-display text-lg font-black text-[#00d4ff] uppercase">🎬 Estúdio de Gestão (Sistema de Temporadas Netflix)</h2>
-                  <p class="text-xs text-gray-400">Para criar uma 2ª ou 3ª Temporada na mesma novelinha, basta escolher a Série no bloco 2 e colocar 2 ou 3 no campo "Temporada".</p>
+                  <h2 class="font-display text-lg font-black text-[#00d4ff] uppercase">🎬 Estúdio Master ADM — Séries, Membros & Suporte Interno</h2>
+                  <p class="text-xs text-gray-400">Gerencie séries, temporadas, chave PIX, membros VIP e responda dúvidas do chat interno.</p>
                 </div>
               </div>
 
-              <div class="grid md:grid-cols-3 gap-6">
-                <!-- CRIAR OU EDITAR SÉRIE -->
-                <form onsubmit="window.app.createSerie(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-3">
-                  <div class="flex items-center justify-between">
-                    <h3 class="text-xs font-black uppercase text-[#00d4ff]">${editingSerie ? '✏️ Editando: ' + escapeHtml(editingSerie.title) : '1. Nova Série / Novelinha'}</h3>
-                    ${editingSerie ? '<button type="button" onclick="window.app.cancelEditSerie()" class="text-[10px] text-red-400 font-bold">Cancelar</button>' : ''}
-                  </div>
+              <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- 1. SÉRIE -->
+                <form onsubmit="window.app.createSerie(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2.5">
+                  <h3 class="text-xs font-black uppercase text-[#00d4ff]">${editingSerie ? '✏️ Editando Série' : '1. Nova Série'}</h3>
                   <input type="text" id="ns-title" required value="${editingSerie ? escapeHtml(editingSerie.title) : ''}" placeholder="Título da Série" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                   <input type="text" id="ns-cat" value="${editingSerie ? escapeHtml(editingSerie.category) : 'Mini Novelinha IA'}" placeholder="Categoria" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                   <textarea id="ns-desc" rows="2" placeholder="Sinopse..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white">${editingSerie ? escapeHtml(editingSerie.synopsis || '') : ''}</textarea>
-                  <div class="text-[11px] text-gray-300 space-y-1">
-                    <label class="block font-bold text-[#00d4ff]">Capa da Série (Foto ou Link):</label>
-                    <input type="file" accept="image/*" onchange="window.app.uploadMedia(this.files[0], 'ns-poster')" class="w-full text-xs" />
-                    <input type="text" id="ns-poster" value="${editingSerie ? escapeHtml(editingSerie.poster || '') : ''}" placeholder="Ou cole URL da imagem da capa" class="w-full px-2.5 py-1.5 rounded bg-[#0b0e17] border border-white/10 text-xs text-white" />
-                  </div>
-                  <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">${editingSerie ? '💾 Salvar Alterações' : '+ Publicar Série'}</button>
+                  <input type="file" accept="image/*" onchange="window.app.uploadMedia(this.files[0], 'ns-poster')" class="w-full text-[11px]" />
+                  <input type="text" id="ns-poster" value="${editingSerie ? escapeHtml(editingSerie.poster || '') : ''}" placeholder="URL da Capa" class="w-full px-2.5 py-1.5 rounded bg-[#0b0e17] border border-white/10 text-xs text-white" />
+                  <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">${editingSerie ? '💾 Salvar' : '+ Publicar Série'}</button>
                 </form>
 
-                <!-- PUBLICAR OU EDITAR EPISÓDIO COM SELETOR DE TEMPORADA -->
-                <form onsubmit="window.app.createEpisode(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-3">
-                  <div class="flex items-center justify-between">
-                    <h3 class="text-xs font-black uppercase text-[#ff1722]">
-                      ${editing ? `✏️ Editando T${editing.season || 1}:E${editing.number}` : '2. Adicionar Episódio / Temporada'}
-                    </h3>
-                    ${editing ? `<button type="button" onclick="window.app.cancelEditEp()" class="text-[10px] text-red-400 font-bold">Cancelar</button>` : ''}
-                  </div>
+                <!-- 2. EPISÓDIO / TEMPORADA -->
+                <form onsubmit="window.app.createEpisode(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2.5">
+                  <h3 class="text-xs font-black uppercase text-[#ff1722]">${editing ? `✏️ Editando T${editing.season}:E${editing.number}` : '2. Episódio / Temporada'}</h3>
                   <select id="ne-serie" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white">
-                    ${state.seriesList
-                      .map((s) => `<option value="${escapeHtml(s.id)}" ${(editing ? editing.serieId : state.selectedSeriesId) === s.id ? 'selected' : ''}>Série: ${escapeHtml(s.title)}</option>`)
-                      .join('')}
+                    ${state.seriesList.map((s) => `<option value="${escapeHtml(s.id)}" ${(editing ? editing.serieId : state.selectedSeriesId) === s.id ? 'selected' : ''}>${escapeHtml(s.title)}</option>`).join('')}
                   </select>
-
                   <div class="grid grid-cols-2 gap-2">
-                    <div>
-                      <label class="block text-[10px] text-[#00d4ff] font-bold mb-1">🎬 Nº da Temporada:</label>
-                      <input type="number" min="1" id="ne-season" value="${editing ? (editing.season || 1) : state.selectedSeason}" placeholder="Ex: 1, 2..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white font-bold" />
-                    </div>
-                    <div>
-                      <label class="block text-[10px] text-gray-400 font-bold mb-1">🔢 Nº do Episódio:</label>
-                      <input type="number" min="1" id="ne-num" value="${editing ? editing.number : 1}" placeholder="Ex: 1, 2..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white font-bold" />
-                    </div>
+                    <input type="number" min="1" id="ne-season" value="${editing ? editing.season : state.selectedSeason}" placeholder="Temporada" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white font-bold" />
+                    <input type="number" min="1" id="ne-num" value="${editing ? editing.number : 1}" placeholder="Nº Ep" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white font-bold" />
                   </div>
-
                   <input type="text" id="ne-title" required value="${editing ? escapeHtml(editing.title) : ''}" placeholder="Título do Episódio" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-
-                  <div class="p-2.5 rounded-xl bg-[#0b0e17] border border-dashed border-[#ff1722]/50 space-y-1.5">
-                    <label class="block text-[11px] font-bold text-[#ff1722]">Link do Vídeo (YouTube Não Listado, Drive Público ou MP4):</label>
-                    <input type="text" id="ne-video" required value="${editing ? escapeHtml(editing.videoUrl) : ''}" placeholder="Cole o link aqui..." class="w-full px-2.5 py-2 rounded bg-[#040508] border border-white/15 text-xs text-emerald-400" />
-                    <label class="block text-[10px] text-gray-400 pt-1">Ou envie arquivo até 50MB direto:</label>
-                    <input type="file" accept="video/*" onchange="window.app.uploadMedia(this.files[0], 'ne-video')" class="w-full text-[11px]" />
+                  <input type="text" id="ne-video" required value="${editing ? escapeHtml(editing.videoUrl) : ''}" placeholder="Link YouTube Não Listado / Drive / MP4" class="w-full px-2.5 py-2 rounded bg-[#0b0e17] border border-white/15 text-xs text-emerald-400" />
+                  <div class="flex items-center justify-between text-[11px] text-gray-300">
+                    <label><input type="checkbox" id="ne-vip" ${editing ? (editing.isVip ? 'checked' : '') : 'checked'} /> 🔒 VIP</label>
+                    <label><input type="checkbox" id="ne-vert" ${editing && editing.isVertical ? 'checked' : ''} /> 📱 Vertical</label>
                   </div>
-                  <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-300">
-                    <label class="flex items-center gap-1.5 cursor-pointer">
-                      <input type="checkbox" id="ne-vip" ${editing ? (editing.isVip ? 'checked' : '') : 'checked'} /> 🔒 Episódio VIP
-                    </label>
-                    <label class="flex items-center gap-1.5 cursor-pointer">
-                      <input type="checkbox" id="ne-vert" ${editing && editing.isVertical ? 'checked' : ''} /> 📱 Vídeo Vertical (9:16)
-                    </label>
-                  </div>
-                  <button type="submit" class="btn-red-glow w-full py-2.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
-                    ${editing ? '💾 Salvar Episódio' : '+ Publicar na Temporada'}
-                  </button>
+                  <button type="submit" class="btn-red-glow w-full py-2.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">${editing ? '💾 Salvar' : '+ Publicar Ep'}</button>
                 </form>
 
-                <!-- GATEWAY PIX & CLIENTES -->
-                <div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-3">
-                  <h3 class="text-xs font-black uppercase text-[#00d4ff]">3. Chave PIX & Assinantes (${state.users.length})</h3>
-                  <input type="password" id="cfg-token" value="${escapeHtml(state.gatewayKey)}" placeholder="Chave de Produção Mercado Pago" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-emerald-400 font-mono" />
-                  <div class="grid grid-cols-2 gap-2">
-                    <input type="number" step="0.10" id="cfg-price" value="${state.basePrice}" class="px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                    <input type="text" id="cfg-wa" value="${escapeHtml(state.supportWhatsapp)}" class="px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                <!-- 3. PIX & MEMBROS -->
+                <div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2.5">
+                  <h3 class="text-xs font-black uppercase text-[#00d4ff]">3. PIX & Membros (${state.users.length})</h3>
+                  <input type="password" id="cfg-token" value="${escapeHtml(state.gatewayKey)}" placeholder="Token Mercado Pago APP_USR-..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-emerald-400 font-mono" />
+                  <input type="number" step="0.10" id="cfg-price" value="${state.basePrice}" placeholder="Valor VIP 30d" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                  <button onclick="window.app.saveConfig()" class="w-full py-2 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">💾 Salvar PIX</button>
+                  <div class="max-h-28 overflow-y-auto divide-y divide-white/10 text-[10px] pt-1">
+                    ${state.users.map((u) => `<div class="py-1.5 flex items-center justify-between">
+                      <span class="truncate">${escapeHtml(u.name)} ${u.instagram ? '(' + escapeHtml(u.instagram) + ')' : ''}</span>
+                      <button onclick="window.app.toggleUserVip('${escapeHtml(u.id)}')" class="px-2 py-0.5 rounded bg-white/10 text-[#00d4ff] font-bold">${isUserTrulyVip(u) ? '👑 VIP' : '+30d'}</button>
+                    </div>`).join('')}
                   </div>
-                  <button onclick="window.app.saveConfig()" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">💾 Salvar e Sincronizar</button>
-                  <div class="max-h-28 overflow-y-auto divide-y divide-white/10 text-[11px] pt-2">
-                    ${state.users
-                      .map(
-                        (u) => `<div class="py-1.5 flex items-center justify-between">
-                          <span>${escapeHtml(u.name)} (${isUserTrulyVip(u) ? '👑 VIP' : 'Grátis'})</span>
-                          <button onclick="window.app.toggleUserVip('${escapeHtml(u.id)}')" class="px-2 py-0.5 rounded bg-white/10 text-[#00d4ff] font-bold">${isUserTrulyVip(u) ? 'Tirar VIP' : '+30d VIP'}</button>
-                        </div>`
-                      )
-                      .join('')}
+                </div>
+
+                <!-- 4. SUPORTE INTERNO DA PLATAFORMA -->
+                <div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2.5">
+                  <h3 class="text-xs font-black uppercase text-emerald-400">4. Chamados do Chat Interno (${state.tickets.length})</h3>
+                  <div class="max-h-48 overflow-y-auto space-y-2 text-[11px]">
+                    ${state.tickets.length === 0 ? '<p class="text-gray-500">Nenhuma dúvida enviada ainda.</p>' : state.tickets.slice(0, 8).map((t) => `
+                      <div class="p-2 rounded-xl bg-[#0b0e17] border border-white/10 space-y-1">
+                        <div class="font-bold text-[#00d4ff]">${escapeHtml(t.userName)}:</div>
+                        <p class="text-gray-300">"${escapeHtml(t.question)}"</p>
+                        ${t.adminReply ? `<p class="text-emerald-400">✓ Respondido: ${escapeHtml(t.adminReply)}</p>` : `
+                          <div class="flex gap-1 pt-1">
+                            <input type="text" id="rep-${escapeHtml(t.id)}" placeholder="Sua resposta..." class="flex-1 px-2 py-1 rounded bg-black text-[10px] text-white" />
+                            <button onclick="window.app.replyTicket('${escapeHtml(t.id)}')" class="px-2 py-1 rounded bg-emerald-500 text-black font-black text-[10px]">Enviar</button>
+                          </div>
+                        `}
+                      </div>
+                    `).join('')}
                   </div>
                 </div>
               </div>
@@ -1287,30 +1360,225 @@
       }
 
       window.app = {
-        selectCategory(cat) {
-          state.selectedCategory = cat;
-          renderAll();
-        },
-        handleSearch(q) {
-          state.searchQuery = q;
-          renderAll();
-        },
+        selectCategory(cat) { state.selectedCategory = cat; renderAll(); },
+        handleSearch(q) { state.searchQuery = q; renderAll(); },
         selectSerie(id) {
           state.selectedSeriesId = id;
           const serie = state.seriesList.find((s) => s.id === id);
-          const seasons = getSeriesSeasons(serie);
-          state.selectedSeason = seasons[0] || 1;
+          state.selectedSeason = getSeriesSeasons(serie)[0] || 1;
           renderAll();
           document.getElementById('episodes-container')?.scrollIntoView({ behavior: 'smooth' });
         },
-        selectSeason(seasonNum) {
-          state.selectedSeason = Number(seasonNum) || 1;
+        selectSeason(sNum) { state.selectedSeason = Number(sNum) || 1; renderAll(); },
+        selectPlayerSeason(sNum) { state.playerSeason = Number(sNum) || 1; renderPlayerBottomStrip(); },
+
+        // LOGIN COM GOOGLE OFICIAL
+        async loginWithGoogle() {
+          if (!state.supabaseClient) {
+            toast('Conectando ao servidor Google...');
+            return;
+          }
+          try {
+            const { error } = await state.supabaseClient.auth.signInWithOAuth({
+              provider: 'google',
+              options: { redirectTo: window.location.origin }
+            });
+            if (error) throw error;
+          } catch (e) {
+            toast('Para usar o botão Google, ative a chave Google no menu Authentication -> Providers do seu Supabase.');
+          }
+        },
+
+        // ENVIAR CÓDIGO DE ACESSO POR E-MAIL (OTP)
+        async sendEmailOtpCode() {
+          const email = document.getElementById('otp-email-input').value.trim().toLowerCase();
+          if (!email || !email.includes('@')) {
+            toast('Digite um e-mail válido primeiro!');
+            return;
+          }
+          state.pendingOtpEmail = email;
+          document.getElementById('otp-verify-box').classList.remove('hidden');
+
+          if (state.supabaseClient) {
+            try {
+              const { error } = await state.supabaseClient.auth.signInWithOtp({
+                email,
+                options: { shouldCreateUser: true }
+              });
+              if (!error) {
+                toast('📩 Código enviado para ' + email + '! Verifique sua Caixa de Entrada e Spam.');
+                return;
+              }
+            } catch (e) {}
+          }
+          toast('📩 Solicitação enviada! Verifique seu e-mail.');
+        },
+
+        // VALIDAR CÓDIGO DE 6 DÍGITOS DO E-MAIL
+        async verifyEmailOtpCode() {
+          const code = document.getElementById('otp-code-digits').value.trim();
+          if (!code || code.length < 6) {
+            toast('Digite os 6 números do código que chegou no seu e-mail.');
+            return;
+          }
+          try {
+            const { data, error } = await state.supabaseClient.auth.verifyOtp({
+              email: state.pendingOtpEmail,
+              token: code,
+              type: 'email'
+            });
+            if (error) throw error;
+            if (data) {
+              let user = state.users.find((u) => u.email.toLowerCase() === state.pendingOtpEmail);
+              if (!user) {
+                user = {
+                  id: 'u_' + Date.now(),
+                  name: state.pendingOtpEmail.split('@')[0],
+                  email: state.pendingOtpEmail,
+                  whatsapp: '',
+                  instagram: '',
+                  isVip: false,
+                  vipUntil: null,
+                  vipSig: ''
+                };
+                state.users.unshift(user);
+              }
+              state.currentUserId = user.id;
+              this.closeModals();
+              syncCloud(false);
+              renderAll();
+              toast('🎉 Acesso confirmado via código de e-mail!');
+            }
+          } catch (e) {
+            toast('Código inválido ou expirado. Solicite um novo código.');
+          }
+        },
+
+        // PERFIL DO USUÁRIO (EDITAR PERFIL, INSTAGRAM E TROCAR SENHA)
+        openProfileModal() {
+          const user = getCurrentUser();
+          if (!user) {
+            this.openAuthModal('login');
+            return;
+          }
+          const vipActive = isUserTrulyVip(user);
+          const days = getDaysRemaining(user.vipUntil);
+          const pct = vipActive ? Math.min(100, Math.round((days / 30) * 100)) : 0;
+
+          document.getElementById('prof-avatar').textContent = (user.name || 'M').charAt(0).toUpperCase();
+          document.getElementById('prof-display-name').textContent = user.name;
+          document.getElementById('prof-display-email').textContent = user.email;
+          document.getElementById('prof-display-insta').textContent = user.instagram ? '📸 ' + user.instagram : '📸 Adicione seu @Instagram abaixo';
+          document.getElementById('prof-vip-badge').textContent = vipActive ? `👑 VIP MENSAL (${days} DIAS)` : 'Membro Grátis';
+          document.getElementById('prof-vip-days').textContent = vipActive ? `${days} de 30 dias ativos` : 'Plano Grátis';
+          document.getElementById('prof-vip-bar').style.width = pct + '%';
+
+          document.getElementById('edit-prof-name').value = user.name || '';
+          document.getElementById('edit-prof-insta').value = user.instagram || '';
+          document.getElementById('edit-prof-phone').value = user.whatsapp || '';
+
+          this.switchProfileTab('edit');
+          document.getElementById('profile-modal').classList.remove('hidden');
+        },
+        switchProfileTab(tab) {
+          const isEdit = tab === 'edit';
+          document.getElementById('prof-edit-form').classList.toggle('hidden', !isEdit);
+          document.getElementById('prof-pass-form').classList.toggle('hidden', isEdit);
+          document.getElementById('btn-prof-tab-edit').className = `flex-1 py-2 rounded-lg text-xs font-black uppercase ${isEdit ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'}`;
+          document.getElementById('btn-prof-tab-pass').className = `flex-1 py-2 rounded-lg text-xs font-black uppercase ${!isEdit ? 'bg-[#ff1722] text-white' : 'text-gray-400'}`;
+        },
+        saveProfileChanges(e) {
+          e.preventDefault();
+          const user = getCurrentUser();
+          if (!user) return;
+          const name = document.getElementById('edit-prof-name').value.trim();
+          let insta = document.getElementById('edit-prof-insta').value.trim();
+          const phone = document.getElementById('edit-prof-phone').value.trim();
+          if (insta && !insta.startsWith('@')) insta = '@' + insta;
+
+          user.name = name || user.name;
+          user.instagram = insta;
+          user.whatsapp = phone;
+          syncCloud(false);
+          renderAll();
+          this.openProfileModal();
+          toast('✅ Seu perfil e @Instagram foram atualizados!');
+        },
+        async changeUserPassword(e) {
+          e.preventDefault();
+          const user = getCurrentUser();
+          if (!user) return;
+          const p1 = document.getElementById('new-user-pass').value;
+          const p2 = document.getElementById('confirm-user-pass').value;
+          if (p1 !== p2) {
+            toast('❌ As duas senhas digitadas não conferem.');
+            return;
+          }
+          user.passwordHash = await sha256(p1);
+          delete user.password;
+          document.getElementById('new-user-pass').value = '';
+          document.getElementById('confirm-user-pass').value = '';
+          syncCloud(false);
+          toast('🔒 Sua senha foi alterada com sucesso!');
+        },
+
+        // CHAT DE SUPORTE INTERNO NA PLATAFORMA
+        toggleSupportChat() {
+          const win = document.getElementById('support-chat-window');
+          if (win) {
+            win.classList.toggle('hidden');
+            renderSupportMessages();
+          }
+        },
+        sendQuickSupport(questionText) {
+          document.getElementById('support-input-text').value = questionText;
+          this.submitSupportMessage(new Event('submit'));
+        },
+        submitSupportMessage(e) {
+          if (e && e.preventDefault) e.preventDefault();
+          const input = document.getElementById('support-input-text');
+          const q = input.value.trim();
+          if (!q) return;
+          const user = getCurrentUser();
+
+          let autoReply = 'Recebemos sua mensagem aqui na plataforma! Nossa equipe já foi notificada e responderá neste chat.';
+          const qLow = q.toLowerCase();
+          if (qLow.includes('vip') || qLow.includes('30 dias')) {
+            autoReply = 'O Plano VIP Mensal garante 30 dias corridos de acesso ilimitado a todas as séries e temporadas por pagamento único via PIX (sem renovação automática).';
+          } else if (qLow.includes('pix') || qLow.includes('libera')) {
+            autoReply = 'Assim que você paga o QR Code ou PIX Copia e Cola, o sistema reconhece automaticamente em cerca de 3 segundos e ativa seu selo 👑 MEMBRO VIP!';
+          } else if (qLow.includes('perfil') || qLow.includes('senha') || qLow.includes('instagram')) {
+            autoReply = 'Para editar seu nome, colocar seu @Instagram ou trocar a senha, clique no botão "👤 Meu Perfil" no topo direito da plataforma.';
+          }
+
+          const now = new Date();
+          const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+          state.tickets.push({
+            id: 'tk_' + Date.now(),
+            userId: user ? user.id : 'guest',
+            userName: user ? user.name : 'Visitante',
+            question: q,
+            autoReply,
+            adminReply: '',
+            time: timeStr
+          });
+
+          input.value = '';
+          syncCloud(false);
           renderAll();
         },
-        selectPlayerSeason(seasonNum) {
-          state.playerSeason = Number(seasonNum) || 1;
-          renderPlayerBottomStrip();
+        replyTicket(ticketId) {
+          const inp = document.getElementById('rep-' + ticketId);
+          if (!inp || !inp.value.trim()) return;
+          const tk = state.tickets.find((t) => t.id === ticketId);
+          if (tk) {
+            tk.adminReply = inp.value.trim();
+            syncCloud(true);
+            renderAll();
+            toast('Resposta enviada para o chat do membro!');
+          }
         },
+
         playHeroFirstEp() {
           const hero = state.seriesList.find((s) => s.isHeroLaunch) || state.seriesList[0];
           if (hero && hero.episodes && hero.episodes.length > 0) {
@@ -1327,7 +1595,7 @@
 
           const user = getCurrentUser();
           if (!user && !state.creatorUnlocked) {
-            toast('Crie sua conta rápida em 5 segundos para assistir!');
+            toast('Entre ou crie sua conta de Membro para assistir!');
             this.openAuthModal('register');
             return;
           }
@@ -1364,21 +1632,13 @@
           const allEps = sortAllEpisodes(serie.episodes || []);
           const idx = allEps.findIndex((e) => e.id === state.activeEpisode.id);
           const target = allEps[idx + direction];
-          if (target) {
-            this.playEpisode(serie.id, target.id);
-          }
+          if (target) this.playEpisode(serie.id, target.id);
         },
-        togglePlayerAspect() {
-          state.verticalPlayer = !state.verticalPlayer;
-          applyAspectClasses();
-        },
+        togglePlayerAspect() { state.verticalPlayer = !state.verticalPlayer; applyAspectClasses(); },
         enterFullscreen() {
           const stage = document.getElementById('player-stage');
           const vid = document.getElementById('native-video-el');
-          if (vid && vid.webkitEnterFullscreen) {
-            vid.webkitEnterFullscreen();
-            return;
-          }
+          if (vid && vid.webkitEnterFullscreen) { vid.webkitEnterFullscreen(); return; }
           const target = stage || document.getElementById('player-modal');
           if (target.requestFullscreen) target.requestFullscreen();
           else if (target.webkitRequestFullscreen) target.webkitRequestFullscreen();
@@ -1387,9 +1647,7 @@
           document.getElementById('player-stage').innerHTML = '';
           document.getElementById('player-modal').classList.add('hidden');
           document.body.style.overflow = '';
-          if (document.fullscreenElement && document.exitFullscreen) {
-            document.exitFullscreen().catch(() => {});
-          }
+          if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
           renderAll();
         },
         openAuthModal(mode) {
@@ -1397,14 +1655,15 @@
           this.switchAuthTab(mode);
         },
         switchAuthTab(mode) {
-          const isLogin = mode === 'login';
-          document.getElementById('login-form').classList.toggle('hidden', !isLogin);
-          document.getElementById('register-form').classList.toggle('hidden', isLogin);
-          document.getElementById('tab-login-btn').className = `flex-1 py-2 rounded-lg text-xs font-black uppercase ${isLogin ? 'bg-[#ff1722] text-white' : 'text-gray-400'}`;
-          document.getElementById('tab-reg-btn').className = `flex-1 py-2 rounded-lg text-xs font-black uppercase ${!isLogin ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'}`;
+          document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
+          document.getElementById('otp-form').classList.toggle('hidden', mode !== 'otp');
+          document.getElementById('register-form').classList.toggle('hidden', mode !== 'register');
+          document.getElementById('tab-login-btn').className = `py-2 rounded-lg text-[11px] font-black uppercase ${mode === 'login' ? 'bg-[#ff1722] text-white' : 'text-gray-400'}`;
+          document.getElementById('tab-otp-btn').className = `py-2 rounded-lg text-[11px] font-black uppercase ${mode === 'otp' ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'}`;
+          document.getElementById('tab-reg-btn').className = `py-2 rounded-lg text-[11px] font-black uppercase ${mode === 'register' ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'}`;
         },
         closeModals() {
-          ['auth-modal', 'vip-modal'].forEach((id) => document.getElementById(id)?.classList.add('hidden'));
+          ['auth-modal', 'vip-modal', 'profile-modal'].forEach((id) => document.getElementById(id)?.classList.add('hidden'));
           if (state.pixInterval) clearInterval(state.pixInterval);
         },
         async handleLogin(e) {
@@ -1418,25 +1677,19 @@
               state.creatorUnlocked = true;
               this.closeModals();
               renderAll();
-              toast('Estúdio de Gestão Liberado');
+              toast('Estúdio Master ADM Liberado');
               return;
             }
           }
 
-          // Suporta tanto senhas novas em SHA-256 quanto contas antigas
-          const found = state.users.find(
-            (u) => u.email.toLowerCase() === email && (u.passwordHash === hashedInput || u.password === pass)
-          );
+          const found = state.users.find((u) => u.email.toLowerCase() === email && (u.passwordHash === hashedInput || u.password === pass));
           if (!found) {
             const err = document.getElementById('auth-error-msg');
-            err.textContent = 'Credenciais incorretas.';
+            err.textContent = 'E-mail ou senha incorretos.';
             err.classList.remove('hidden');
             return;
           }
-          if (!found.passwordHash) {
-            found.passwordHash = hashedInput;
-            delete found.password;
-          }
+          if (!found.passwordHash) { found.passwordHash = hashedInput; delete found.password; }
           state.currentUserId = found.id;
           this.closeModals();
           syncCloud(false);
@@ -1448,14 +1701,13 @@
           const name = document.getElementById('reg-name').value.trim();
           const email = document.getElementById('reg-email').value.trim().toLowerCase();
           const phone = document.getElementById('reg-phone').value.trim();
+          let insta = document.getElementById('reg-insta').value.trim();
           const password = document.getElementById('reg-pass').value;
 
-          if (email === 'admin' || email === 'adm') {
-            toast('E-mail reservado pelo sistema.');
-            return;
-          }
+          if (insta && !insta.startsWith('@')) insta = '@' + insta;
+          if (email === 'admin' || email === 'adm') { toast('E-mail reservado.'); return; }
           if (state.users.some((u) => u.email.toLowerCase() === email)) {
-            toast('Este e-mail já possui cadastro. Faça login!');
+            toast('Este e-mail já é membro! Faça login.');
             this.switchAuthTab('login');
             return;
           }
@@ -1466,6 +1718,7 @@
             name,
             email,
             whatsapp: phone,
+            instagram: insta,
             passwordHash,
             isVip: false,
             vipUntil: null,
@@ -1476,26 +1729,20 @@
           this.closeModals();
           syncCloud(false);
           renderAll();
-          toast('Conta criada com sucesso!');
+          toast('🎉 Parabéns! Agora você é um Membro Oficial!');
         },
         logout() {
           state.currentUserId = null;
+          if (state.supabaseClient) state.supabaseClient.auth.signOut().catch(() => {});
           saveLocalState();
           renderAll();
           toast('Sessão encerrada.');
         },
-        toggleInlineCoupon() {
-          const box = document.getElementById('inline-coupon-box');
-          if (box) box.classList.toggle('hidden');
-        },
+        toggleInlineCoupon() { document.getElementById('inline-coupon-box')?.classList.toggle('hidden'); },
         handleCoupon(e) {
           e.preventDefault();
           const user = getCurrentUser();
-          if (!user) {
-            this.closeModals();
-            this.openAuthModal('register');
-            return;
-          }
+          if (!user) { this.closeModals(); this.openAuthModal('register'); return; }
           const code = document.getElementById('coupon-code-input').value.trim().toUpperCase();
           const found = state.coupons.find((c) => c.code === code && c.usesLeft > 0);
           if (!found) {
@@ -1503,14 +1750,12 @@
             return;
           }
           found.usesLeft -= 1;
-
           if (found.type === 'price') {
             state.discountedPrice = Number(found.value);
             document.getElementById('coupon-feedback').textContent = `✅ Cupom aplicado! Novo valor: R$ ${Number(found.value).toFixed(2).replace('.', ',')}`;
             this.openVipCheckout();
             return;
           }
-
           grantVerifiedVip(user, Number(found.value));
           syncCloud(false);
           renderAll();
@@ -1519,14 +1764,11 @@
         },
         async openVipCheckout() {
           const user = getCurrentUser();
-          if (!user && !state.creatorUnlocked) {
-            this.openAuthModal('register');
-            return;
-          }
+          if (!user && !state.creatorUnlocked) { this.openAuthModal('register'); return; }
           const amount = Number(state.discountedPrice || state.basePrice || 9.90);
           document.getElementById('vip-modal-price').textContent = 'R$ ' + amount.toFixed(2).replace('.', ',');
           const box = document.getElementById('pix-container');
-          box.innerHTML = `<p class="text-xs text-[#00d4ff] font-bold animate-pulse py-6">Gerando QR Code PIX Oficial...</p>`;
+          box.innerHTML = `<p class="text-xs text-[#00d4ff] font-bold animate-pulse py-6">Gerando QR Code PIX para 30 Dias VIP...</p>`;
           document.getElementById('vip-modal').classList.remove('hidden');
 
           try {
@@ -1535,7 +1777,7 @@
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 email: `assinante.${Date.now()}@daumplayia.com`,
-                name: user?.name || 'Assinante VIP',
+                name: user?.name || 'Membro VIP',
                 userId: user?.id || 'vip',
                 mpToken: state.gatewayKey.trim(),
                 customAmount: amount
@@ -1552,9 +1794,8 @@
                 <button onclick="window.app.copyPix('${safeQr}')" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase shadow-lg">
                   📋 Copiar Código PIX (Copia e Cola)
                 </button>
-                <p class="text-[11px] text-emerald-400 font-bold">⚡ Aguardando confirmação automática do pagamento...</p>
+                <p class="text-[11px] text-emerald-400 font-bold">⚡ Liberação automática de 30 dias VIP após pagar!</p>
               `;
-
               if (state.pixInterval) clearInterval(state.pixInterval);
               state.pixInterval = setInterval(async () => {
                 try {
@@ -1568,42 +1809,25 @@
                       renderAll();
                     }
                     this.closeModals();
-                    toast('🎉 Pagamento Aprovado! Seus 30 dias VIP estão ativos!');
+                    toast('🎉 Pagamento Aprovado! Seus 30 dias de Membro VIP estão ativos!');
                   }
                 } catch (e) {}
               }, 3500);
             } else {
-              box.innerHTML = `<p class="text-xs text-amber-300 font-bold py-4">Configure sua chave de produção no Estúdio ou fale com nosso suporte no WhatsApp.</p>`;
+              box.innerHTML = `<p class="text-xs text-amber-300 font-bold py-4">Configure sua chave PIX no Estúdio ADM ou chame no Suporte Interno.</p>`;
             }
           } catch (e) {
-            box.innerHTML = `<p class="text-xs text-red-400 font-bold py-4">Erro ao conectar com o servidor de pagamentos.</p>`;
+            box.innerHTML = `<p class="text-xs text-red-400 font-bold py-4">Erro ao conectar com o servidor PIX.</p>`;
           }
-        },
-        notifyCopy() {
-          toast('Código PIX copiado! Cole no aplicativo do seu banco.');
         },
         copyPix(code) {
-          const fallback = () => {
-            const ta = document.createElement('textarea');
-            ta.value = code;
-            ta.style.position = 'fixed';
-            ta.style.opacity = '0';
-            document.body.appendChild(ta);
-            ta.select();
-            try { document.execCommand('copy'); } catch (e) {}
-            document.body.removeChild(ta);
-          };
-          if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(code).catch(fallback);
-          } else {
-            fallback();
-          }
-          this.notifyCopy();
+          if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(code);
+          toast('Código PIX copiado! Cole no app do seu banco.');
         },
         openReviewForm() {
           const user = getCurrentUser();
           if (!user) {
-            toast('Faça login na sua conta para publicar uma avaliação real!');
+            toast('Entre na sua conta de Membro para comentar no mural!');
             this.openAuthModal('login');
             return;
           }
@@ -1619,6 +1843,8 @@
           state.reviews.unshift({
             id: 'rev_' + Date.now(),
             author: user.name,
+            instagram: user.instagram || '',
+            isVip: isUserTrulyVip(user),
             stars: Number(stars),
             text
           });
@@ -1626,7 +1852,7 @@
           document.getElementById('review-form').classList.add('hidden');
           syncCloud(false);
           renderAll();
-          toast('Sua avaliação verificada foi publicada!');
+          toast('Seu comentário de Membro foi publicado!');
         },
         closeStudio() {
           state.creatorUnlocked = false;
@@ -1636,10 +1862,10 @@
         async uploadMedia(file, targetInputId) {
           if (!file) return;
           if (file.size > 50 * 1024 * 1024) {
-            toast('Vídeo acima de 50MB! Suba no YouTube como "Não Listado" (ou libere "Qualquer pessoa com o link" no Google Drive) e cole o link abaixo!');
+            toast('Acima de 50MB! Use link do YouTube Não Listado ou Google Drive Público.');
             return;
           }
-          toast('Enviando arquivo para a nuvem...');
+          toast('Enviando arquivo...');
           try {
             const ext = file.name.split('.').pop();
             const name = `media_${Date.now()}.${ext}`;
@@ -1647,9 +1873,9 @@
             if (error) throw error;
             const { data } = state.supabaseClient.storage.from('midia-catalogo').getPublicUrl(name);
             document.getElementById(targetInputId).value = data.publicUrl;
-            toast('✅ Arquivo enviado com sucesso!');
+            toast('✅ Arquivo enviado!');
           } catch (e) {
-            toast('Erro no envio direto. Cole o link direto no campo abaixo.');
+            toast('Erro no upload. Cole a URL diretamente.');
           }
         },
         createSerie(e) {
@@ -1658,65 +1884,30 @@
           const category = document.getElementById('ns-cat').value.trim();
           const synopsis = document.getElementById('ns-desc').value.trim();
           const poster = document.getElementById('ns-poster').value.trim() || makeArtworkSvg(title, category, '#2b0610', '#061524');
-
           if (state.editingSerieId) {
-            state.seriesList = state.seriesList.map((s) =>
-              s.id === state.editingSerieId ? { ...s, title, category, synopsis, poster, banner: poster } : s
-            );
+            state.seriesList = state.seriesList.map((s) => s.id === state.editingSerieId ? { ...s, title, category, synopsis, poster, banner: poster } : s);
             state.editingSerieId = null;
-            toast('Série atualizada com sucesso!');
           } else {
-            const created = {
-              id: 's_' + Date.now(),
-              title,
-              category,
-              synopsis,
-              poster,
-              banner: poster,
-              isHeroLaunch: false,
-              episodes: []
-            };
+            const created = { id: 's_' + Date.now(), title, category, synopsis, poster, banner: poster, isHeroLaunch: false, episodes: [] };
             state.seriesList.unshift(created);
             state.selectedSeriesId = created.id;
-            state.selectedSeason = 1;
-            toast('Nova série publicada!');
           }
-
           syncCloud(true);
           renderAll();
+          toast('Série salva!');
         },
         editSerie(id) {
-          const s = state.seriesList.find((x) => x.id === id);
-          if (!s) return;
           state.editingSerieId = id;
           renderCreatorStudio();
           document.getElementById('creator-studio-container')?.scrollIntoView({ behavior: 'smooth' });
-          toast('Edite o nome/capa e clique em Salvar Alterações.');
-        },
-        cancelEditSerie() {
-          state.editingSerieId = null;
-          renderCreatorStudio();
         },
         editEp(serieId, epId) {
           const serie = state.seriesList.find((s) => s.id === serieId);
           const ep = serie?.episodes?.find((e) => e.id === epId);
           if (!ep) return;
-          state.editingEpData = {
-            serieId,
-            epId: ep.id,
-            season: Number(ep.season) || 1,
-            number: ep.number,
-            title: ep.title,
-            videoUrl: ep.videoUrl,
-            isVip: ep.isVip,
-            isVertical: Boolean(ep.isVertical)
-          };
+          state.editingEpData = { serieId, epId: ep.id, season: Number(ep.season) || 1, number: ep.number, title: ep.title, videoUrl: ep.videoUrl, isVip: ep.isVip, isVertical: Boolean(ep.isVertical) };
           renderCreatorStudio();
           window.scrollTo({ top: 0, behavior: 'smooth' });
-        },
-        cancelEditEp() {
-          state.editingEpData = null;
-          renderCreatorStudio();
         },
         createEpisode(e) {
           e.preventDefault();
@@ -1727,61 +1918,33 @@
           const videoUrl = document.getElementById('ne-video').value.trim();
           const isVip = document.getElementById('ne-vip').checked;
           const isVertical = document.getElementById('ne-vert').checked;
-
           const serie = state.seriesList.find((s) => s.id === serieId);
           if (!serie) return;
-
           if (state.editingEpData) {
             const ep = serie.episodes.find((item) => item.id === state.editingEpData.epId);
-            if (ep) {
-              ep.season = season;
-              ep.number = number;
-              ep.title = title;
-              ep.videoUrl = videoUrl;
-              ep.isVip = isVip;
-              ep.isVertical = isVertical;
-            }
+            if (ep) { ep.season = season; ep.number = number; ep.title = title; ep.videoUrl = videoUrl; ep.isVip = isVip; ep.isVertical = isVertical; }
             state.editingEpData = null;
-            toast(`Episódio T${season}:E${number} atualizado!`);
           } else {
-            serie.episodes.push({
-              id: 'ep_' + Date.now(),
-              season,
-              number,
-              title,
-              duration: '04 min',
-              isVip,
-              comingSoon: false,
-              isVertical,
-              thumb: serie.poster,
-              videoUrl
-            });
-            toast(`Episódio publicado na ${season}ª Temporada!`);
+            serie.episodes.push({ id: 'ep_' + Date.now(), season, number, title, duration: '04 min', isVip, comingSoon: false, isVertical, thumb: serie.poster, videoUrl });
           }
           state.selectedSeriesId = serie.id;
           state.selectedSeason = season;
           syncCloud(true);
           renderAll();
+          toast('Episódio salvo!');
         },
         saveConfig() {
           const tk = document.getElementById('cfg-token').value.trim();
           const pr = Number(document.getElementById('cfg-price').value) || 9.90;
-          const wa = document.getElementById('cfg-wa').value.trim();
           state.gatewayKey = tk;
           state.basePrice = pr;
-          state.supportWhatsapp = wa;
           sessionStorage.setItem('dup_session_gk', encodeKey(tk));
           localStorage.setItem('dup_mp_token_v10', encodeKey(tk));
           syncCloud(true);
           renderAll();
-          toast('Configurações salvas e sincronizadas!');
+          toast('Configurações salvas!');
         },
-        setHero(id) {
-          state.seriesList.forEach((s) => (s.isHeroLaunch = s.id === id));
-          syncCloud(true);
-          renderAll();
-          toast('Destaque principal atualizado!');
-        },
+        setHero(id) { state.seriesList.forEach((s) => (s.isHeroLaunch = s.id === id)); syncCloud(true); renderAll(); },
         deleteSerie(id) {
           if (state.seriesList.length <= 1) return;
           state.seriesList = state.seriesList.filter((s) => s.id !== id);
@@ -1805,13 +1968,8 @@
         toggleUserVip(uId) {
           const u = state.users.find((item) => item.id === uId);
           if (u) {
-            if (isUserTrulyVip(u)) {
-              u.isVip = false;
-              u.vipUntil = null;
-              u.vipSig = '';
-            } else {
-              grantVerifiedVip(u, 30);
-            }
+            if (isUserTrulyVip(u)) { u.isVip = false; u.vipUntil = null; u.vipSig = ''; }
+            else grantVerifiedVip(u, 30);
             syncCloud(true);
             renderAll();
           }
