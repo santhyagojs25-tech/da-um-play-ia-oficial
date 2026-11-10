@@ -6,13 +6,32 @@
   <meta name="theme-color" content="#040508" />
   <title>Da Um Play IA — Plataforma de Séries Curtas e Mini Novelinhas Originais</title>
   <meta name="description" content="Assista produções originais, mini novelinhas verticais e séries dramáticas criadas com Inteligência Artificial em alta definição." />
-  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="Da Um Play IA, mini novelinhas, séries curtas, novelas verticais, streaming IA, assistir séries online, séries originais" />
+  <meta name="author" content="Da Um Play IA" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://da-um-play-ia-oficial.vercel.app/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://da-um-play-ia-oficial.vercel.app/" />
   <meta property="og:title" content="Da Um Play IA — Séries & Mini Novelinhas Originais" />
   <meta property="og:description" content="Catálogo exclusivo de séries curtas e mini novelinhas produzidas com Inteligência Artificial." />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:site_name" content="Da Um Play IA" />
+  <!-- SUBSTITUA a imagem abaixo por uma arte oficial de 1200x630 da sua marca -->
+  <meta property="og:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Da Um Play IA — Séries & Mini Novelinhas Originais" />
+  <meta name="twitter:description" content="Mini novelinhas e séries originais com IA. 1º episódio grátis + VIP liberado via PIX." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80" />
+
+  <!-- Pré-conexão para acelerar carregamento -->
+  <link rel="preconnect" href="https://wqtiqgyzayacwypugrik.supabase.co" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
   <script type="application/ld+json">
   {
@@ -32,35 +51,189 @@
 
   <style>
     :root {
-      --bg-main: #040508;
+      --bg-main: #05060a;
       --bg-card: #0b0e17;
-      --accent-red: #ff1722;
-      --accent-cyan: #00d4ff;
+      --bg-elev: #10141f;
+      --accent-red: #ff1f2e;
+      --accent-cyan: #22d3ee;
+      --accent-gold: #f5c542;
+      --text-soft: #9aa3b2;
+      --line: rgba(255,255,255,0.08);
     }
+    * { -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
     body {
       background-color: var(--bg-main);
       color: #ffffff;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      scroll-behavior: smooth;
       overflow-x: hidden;
-      user-select: none;
-      -webkit-user-select: none;
+      position: relative;
     }
-    h1, h2, h3, h4, .font-display {
-      font-family: 'Outfit', sans-serif;
+    /* Luzes de ambiente premium (glow radial sutil) */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 45% at 12% -5%, rgba(255,31,46,0.14), transparent 60%),
+        radial-gradient(ellipse 55% 45% at 95% 110%, rgba(34,211,238,0.12), transparent 60%);
     }
-    input, textarea, select {
-      user-select: text;
-      -webkit-user-select: text;
+    /* Grão de filme cinematográfico */
+    .grain-overlay {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
+    header, main, footer, section, nav { position: relative; z-index: 2; }
+    h1, h2, h3, h4, .font-display { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
+    ::selection { background: var(--accent-red); color: #fff; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: #1e2436; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+
+    /* Header premium glass */
     .glass-bar {
-      background: rgba(8, 10, 16, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(6,8,14,0.72);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      border-bottom: 1px solid var(--line) !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
     }
+    header a[href="#topo"] span.font-display { background: linear-gradient(90deg,#fff,#cbd5e1); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+    /* Botões premium */
+    button { transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s, background .25s, border-color .25s, opacity .25s; }
+    button:hover { transform: translateY(-2px); }
+    button:active { transform: translateY(0) scale(0.98); }
+    #hero-section button, #header-actions button, .vip-cta { position: relative; overflow: hidden; }
+    #hero-section button:first-of-type, #header-actions button[onclick*="register"], button[type="submit"] {
+      background: linear-gradient(135deg, #ff2d3c, #d90f19) !important;
+      box-shadow: 0 8px 28px -6px rgba(255,31,46,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+    #hero-section button:first-of-type:hover, #header-actions button[onclick*="register"]:hover {
+      box-shadow: 0 14px 38px -6px rgba(255,31,46,0.75), inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+    #hero-section button:nth-of-type(2) {
+      background: rgba(34,211,238,0.08) !important;
+      border: 1px solid rgba(34,211,238,0.45) !important;
+      color: var(--accent-cyan) !important;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 28px -8px rgba(34,211,238,0.4);
+    }
+    #hero-section button:nth-of-type(2):hover { box-shadow: 0 14px 38px -8px rgba(34,211,238,0.6); border-color: var(--accent-cyan) !important; }
+
+    /* Hero premium */
+    #hero-section {
+      background: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(34,211,238,0.08), transparent 60%), linear-gradient(135deg, #12060c, #070b14 55%, #04121a) !important;
+      border-bottom: 1px solid var(--line);
+    }
+    #hero-title { text-shadow: 0 4px 40px rgba(0,0,0,0.6); background: linear-gradient(180deg,#ffffff,#c7cdd9); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    #hero-section span.px-3.py-1.rounded-full:first-of-type { box-shadow: 0 6px 20px -4px rgba(255,31,46,0.6); }
+    .vip-price-label, #vip-modal-price { background: linear-gradient(90deg, var(--accent-gold), #ffe9a8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+
+    /* Títulos de seção premium */
+    #catalogo h2, #avaliacoes h2, #perguntas h2 { position: relative; padding-bottom: 10px; }
+    #catalogo h2::after, #avaliacoes h2::after, #perguntas h2::after {
+      content: ''; position: absolute; left: 0; bottom: 0; width: 48px; height: 3px; border-radius: 9999px;
+      background: linear-gradient(90deg, var(--accent-red), var(--accent-cyan));
+    }
+
+    /* Cards de série premium */
+    #series-grid article {
+      border-radius: 18px !important;
+      border: 1px solid var(--line) !important;
+      background: var(--bg-card);
+      box-shadow: 0 10px 30px -12px rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+    #series-grid article:hover {
+      transform: translateY(-8px) !important;
+      border-color: rgba(34,211,238,0.55) !important;
+      box-shadow: 0 24px 50px -12px rgba(34,211,238,0.25), 0 0 0 1px rgba(34,211,238,0.2);
+    }
+    #series-grid article img { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+    #series-grid article:hover img { transform: scale(1.08); }
+    #series-grid article h3 { transition: color .25s; }
+    #series-grid article:hover h3 { color: var(--accent-cyan); }
+
+    /* Cards de episódio premium */
+    #episodes-grid > div {
+      border-radius: 18px !important;
+      border: 1px solid var(--line) !important;
+      background: var(--bg-elev);
+      overflow: hidden;
+      transition: transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s, box-shadow .3s;
+    }
+    #episodes-grid > div:hover {
+      transform: translateY(-5px);
+      border-color: rgba(34,211,238,0.5) !important;
+      box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6);
+    }
+    #episodes-grid > div .w-11.h-11 { transition: transform .3s, box-shadow .3s; box-shadow: 0 6px 18px -4px rgba(255,31,46,0.6); }
+    #episodes-grid > div:hover .w-11.h-11 { transform: scale(1.15); box-shadow: 0 10px 26px -4px rgba(255,31,46,0.8); }
+
+    /* Painel de episódios (glass premium) */
+    #episodes-container {
+      background: linear-gradient(160deg, rgba(11,14,23,0.9), rgba(8,10,18,0.95)) !important;
+      border: 1px solid var(--line) !important;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.7);
+    }
+
+    /* Inputs premium */
+    input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="search"], input[type="number"], textarea, select {
+      background: rgba(8,10,18,0.8) !important;
+      border: 1px solid rgba(255,255,255,0.12) !important;
+      transition: border-color .25s, box-shadow .25s;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent-cyan) !important;
+      box-shadow: 0 0 0 3px rgba(34,211,238,0.15) !important;
+      outline: none;
+    }
+
+    /* Filtros de categoria */
+    #categories-bar button { border-radius: 9999px !important; border: 1px solid transparent; }
+    #categories-bar button:not(.bg-\[\#ff1722\]) { background: rgba(255,255,255,0.05) !important; border-color: var(--line); }
+    #categories-bar button:not(.bg-\[\#ff1722\]):hover { border-color: rgba(34,211,238,0.4); color: var(--accent-cyan) !important; }
+
+    /* Avaliações */
+    #reviews-list > div { border-radius: 18px !important; border: 1px solid var(--line) !important; background: var(--bg-elev) !important; transition: transform .3s, border-color .3s; }
+    #reviews-list > div:hover { transform: translateY(-4px); border-color: rgba(245,197,66,0.4) !important; }
+
+    /* FAQ */
+    #perguntas .grid > div { border-radius: 18px !important; border: 1px solid var(--line) !important; transition: border-color .3s, transform .3s; }
+    #perguntas .grid > div:hover { border-color: rgba(34,211,238,0.35) !important; transform: translateY(-3px); }
+
+    /* Modais premium */
+    #auth-modal > div, #vip-modal > div, #player-wrapper {
+      background: linear-gradient(160deg, #0d101a, #080a12) !important;
+      border: 1px solid rgba(34,211,238,0.25) !important;
+      box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8), 0 0 60px -20px rgba(34,211,238,0.15);
+    }
+    #vip-modal > div { border-color: rgba(34,211,238,0.5) !important; }
+
+    /* Toast premium */
+    #toast-box {
+      background: rgba(10,14,22,0.92) !important;
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(34,211,238,0.4) !important;
+      box-shadow: 0 20px 50px -10px rgba(0,0,0,0.7);
+      animation: toast-slide-in .35s cubic-bezier(.2,.7,.2,1);
+    }
+    @keyframes toast-slide-in { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+
+    /* Animação de entrada ao rolar */
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* Footer premium */
+    footer { background: linear-gradient(180deg, #07090f, #040508) !important; border-top: 1px solid var(--line) !important; }
+    footer a[href*="wa.me"] { transition: transform .25s, box-shadow .25s; }
+    footer a[href*="wa.me"]:hover { transform: translateY(-2px); box-shadow: 0 10px 26px -8px rgba(16,185,129,0.5); }
   </style>
 </head>
 <body class="bg-[#040508] text-white min-h-screen flex flex-col pb-20 md:pb-0">
+  <div class="grain-overlay"></div>
 
   <!-- NOTIFICAÇÃO TOAST -->
   <div id="toast-box" class="hidden fixed top-20 right-4 z-50 max-w-sm glass-bar border border-[#00d4ff]/50 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
@@ -218,6 +391,18 @@
     </section>
   </main>
 
+  <noscript>
+    <div style="color:#fff;background:#040508;padding:48px 24px;font-family:Arial,sans-serif;max-width:720px;margin:0 auto;line-height:1.6;">
+      <h1 style="font-size:28px;">Da Um Play IA — Séries Curtas e Mini Novelinhas Originais</h1>
+      <p>Plataforma de streaming de séries curtas e mini novelinhas produzidas com Inteligência Artificial. O 1º episódio é grátis; o Acesso VIP (30 dias) é liberado automaticamente via PIX.</p>
+      <h2 style="font-size:20px;margin-top:24px;">Catálogo</h2>
+      <ul>
+        <li><strong>A Herdeira de Ferro IA</strong> — Mini Novelinha — 1º episódio grátis</li>
+      </ul>
+      <p style="margin-top:24px;color:#9ca3af;">Ative o JavaScript no seu navegador para assistir. Suporte via WhatsApp.</p>
+    </div>
+  </noscript>
+
   <!-- MODAL DO PLAYER DE VÍDEO HÍBRIDO -->
   <div id="player-modal" class="hidden fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-2 md:p-4">
     <div id="player-wrapper" class="bg-[#0b0e17] border border-white/15 rounded-3xl w-full max-w-4xl overflow-hidden shadow-2xl">
@@ -248,17 +433,17 @@
       </div>
 
       <form id="login-form" onsubmit="window.app.handleLogin(event)" class="space-y-3">
-        <input type="text" id="login-email" required placeholder="Seu E-mail de Acesso" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="password" id="login-pass" required placeholder="Sua Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="text" id="login-email" required autocomplete="email" placeholder="Seu E-mail de Acesso" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="password" id="login-pass" required autocomplete="current-password" placeholder="Sua Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         <p id="auth-error-msg" class="text-xs text-[#ff1722] font-bold hidden"></p>
         <button type="submit" class="w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">Entrar na Plataforma</button>
       </form>
 
       <form id="register-form" onsubmit="window.app.handleRegister(event)" class="hidden space-y-3">
-        <input type="text" id="reg-name" required placeholder="Seu Nome Completo" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="email" id="reg-email" required placeholder="Seu Melhor E-mail" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="tel" id="reg-phone" placeholder="Seu WhatsApp com DDD" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="password" id="reg-pass" required placeholder="Crie uma Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="text" id="reg-name" required autocomplete="name" placeholder="Seu Nome Completo" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="email" id="reg-email" required autocomplete="email" placeholder="Seu Melhor E-mail" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="tel" id="reg-phone" autocomplete="tel" inputmode="numeric" placeholder="Seu WhatsApp com DDD" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="password" id="reg-pass" required autocomplete="new-password" placeholder="Crie uma Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">Criar Minha Conta Grátis</button>
       </form>
     </div>
@@ -390,6 +575,7 @@
         searchQuery: '',
         creatorUnlocked: false,
         editingEpData: null,
+        editingSerieId: null,
         verticalPlayer: false,
         activeEpisode: null,
         pixInterval: null,
@@ -595,7 +781,8 @@
           document.getElementById('hero-title').textContent = hero.title;
           document.getElementById('hero-category').textContent = hero.category;
           document.getElementById('hero-synopsis').textContent = hero.synopsis;
-          if (hero.banner) document.getElementById('hero-banner-img').src = hero.banner;
+          const heroImgEl = document.getElementById('hero-banner-img');
+          if (heroImgEl) heroImgEl.src = hero.banner || hero.poster;
         }
 
         // Categorias
@@ -626,6 +813,7 @@
               const studioControls = state.creatorUnlocked
                 ? `<div onclick="event.stopPropagation()" class="p-2 bg-[#0b0e17] border-t border-white/10 flex items-center justify-between text-[10px]">
                     <button onclick="window.app.setHero('${s.id}')" class="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold">${s.isHeroLaunch ? '⭐ Capa' : 'Destacar'}</button>
+                    <button onclick="window.app.editSerie('${s.id}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Editar</button>
                     <button onclick="window.app.deleteSerie('${s.id}')" class="px-2 py-1 rounded bg-red-500/20 text-red-400 font-bold">Excluir</button>
                   </div>`
                 : '';
@@ -719,6 +907,7 @@
         if (!container) return;
         container.classList.remove('hidden');
         const editing = state.editingEpData;
+        const editingSerie = state.seriesList.find((x) => x.id === state.editingSerieId) || null;
 
         container.innerHTML = `
           <section class="bg-[#0b0e17] border-b-2 border-[#00d4ff] p-6 shadow-2xl">
@@ -733,7 +922,10 @@
               <div class="grid md:grid-cols-3 gap-6">
                 <!-- CRIAR SÉRIE -->
                 <form onsubmit="window.app.createSerie(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-3">
-                  <h3 class="text-xs font-black uppercase text-[#00d4ff]">1. Nova Série / Novelinha</h3>
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-black uppercase text-[#00d4ff]">${editingSerie ? '✏️ Editando: ' + editingSerie.title : '1. Nova Série / Novelinha'}</h3>
+                    ${editingSerie ? '<button type="button" onclick="window.app.cancelEditSerie()" class="text-[10px] text-red-400 font-bold">Cancelar</button>' : ''}
+                  </div>
                   <input type="text" id="ns-title" required placeholder="Título da Série" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                   <input type="text" id="ns-cat" value="Mini Novelinha IA" placeholder="Categoria" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                   <textarea id="ns-desc" rows="2" placeholder="Sinopse..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"></textarea>
@@ -742,7 +934,7 @@
                     <input type="file" accept="image/*" onchange="window.app.uploadMedia(this.files[0], 'ns-poster')" class="w-full text-xs" />
                     <input type="text" id="ns-poster" placeholder="Ou cole URL da imagem da capa" class="w-full px-2.5 py-1.5 rounded bg-[#0b0e17] border border-white/10 text-xs text-white" />
                   </div>
-                  <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">+ Publicar Série</button>
+                  <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">${editingSerie ? '💾 Salvar Alterações' : '+ Publicar Série'}</button>
                 </form>
 
                 <!-- PUBLICAR OU EDITAR EPISÓDIO -->
@@ -1013,7 +1205,7 @@
                   <img src="data:image/png;base64,${data.qrCodeBase64}" alt="QR Code PIX" class="w-full h-full object-contain" />
                 </div>
                 <input type="text" readonly value="${data.qrCode}" class="w-full px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-[10px] text-gray-400 font-mono text-center" />
-                <button onclick="navigator.clipboard.writeText('${data.qrCode}'); window.app.notifyCopy();" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase shadow-lg">
+                <button onclick="window.app.copyPix('${data.qrCode}')" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase shadow-lg">
                   📋 Copiar Código PIX (Copia e Cola)
                 </button>
                 <p class="text-[11px] text-emerald-400 font-bold">⚡ Aguardando confirmação automática do pagamento...</p>
@@ -1046,6 +1238,24 @@
         },
         notifyCopy() {
           toast('Código PIX copiado! Cole no aplicativo do seu banco.');
+        },
+        copyPix(code) {
+          const fallback = () => {
+            const ta = document.createElement('textarea');
+            ta.value = code;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(ta);
+          };
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(code).catch(fallback);
+          } else {
+            fallback();
+          }
+          this.notifyCopy();
         },
         openReviewForm() {
           const user = getCurrentUser();
@@ -1105,21 +1315,53 @@
           const category = document.getElementById('ns-cat').value.trim();
           const synopsis = document.getElementById('ns-desc').value.trim();
           const poster = document.getElementById('ns-poster').value.trim() || makeArtworkSvg(title, category, '#2b0610', '#061524');
-          const created = {
-            id: 's_' + Date.now(),
-            title,
-            category,
-            synopsis,
-            poster,
-            banner: poster,
-            isHeroLaunch: false,
-            episodes: []
-          };
-          state.seriesList.unshift(created);
-          state.selectedSeriesId = created.id;
+
+          if (state.editingSerieId) {
+            state.seriesList = state.seriesList.map((s) =>
+              s.id === state.editingSerieId ? { ...s, title, category, synopsis, poster, banner: poster } : s
+            );
+            state.editingSerieId = null;
+            toast('Série atualizada com sucesso!');
+          } else {
+            const created = {
+              id: 's_' + Date.now(),
+              title,
+              category,
+              synopsis,
+              poster,
+              banner: poster,
+              isHeroLaunch: false,
+              episodes: []
+            };
+            state.seriesList.unshift(created);
+            state.selectedSeriesId = created.id;
+            toast('Nova série publicada!');
+          }
+
+          document.getElementById('ns-title').value = '';
+          document.getElementById('ns-desc').value = '';
+          document.getElementById('ns-poster').value = '';
           syncCloud();
           renderAll();
-          toast('Nova série publicada!');
+        },
+        editSerie(id) {
+          const s = state.seriesList.find((x) => x.id === id);
+          if (!s) return;
+          state.editingSerieId = id;
+          renderCreatorStudio();
+          document.getElementById('ns-title').value = s.title;
+          document.getElementById('ns-cat').value = s.category;
+          document.getElementById('ns-desc').value = s.synopsis || '';
+          document.getElementById('ns-poster').value = s.poster || '';
+          document.getElementById('creator-studio-container')?.scrollIntoView({ behavior: 'smooth' });
+          toast('Edite o nome/capa e clique em Salvar Alterações.');
+        },
+        cancelEditSerie() {
+          state.editingSerieId = null;
+          renderCreatorStudio();
+          document.getElementById('ns-title').value = '';
+          document.getElementById('ns-desc').value = '';
+          document.getElementById('ns-poster').value = '';
         },
         editEp(serieId, epId) {
           const serie = state.seriesList.find((s) => s.id === serieId);
@@ -1230,6 +1472,23 @@
 
       renderAll();
       window.addEventListener('load', initSupabase);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) {
+            en.target.classList.add('visible');
+            io.unobserve(en.target);
+          }
+        });
+      }, { threshold: 0.08 });
+      document.querySelectorAll('header, section, footer, #episodes-container').forEach(function (el) {
+        el.classList.add('fade-up');
+        io.observe(el);
+      });
     })();
   </script>
 </body>
