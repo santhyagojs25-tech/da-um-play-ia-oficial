@@ -17,18 +17,15 @@
   <meta property="og:description" content="Catálogo exclusivo de séries curtas e mini novelinhas produzidas com Inteligência Artificial." />
   <meta property="og:locale" content="pt_BR" />
   <meta property="og:site_name" content="Da Um Play IA" />
-  <!-- SUBSTITUA a imagem abaixo por uma arte oficial de 1200x630 da sua marca -->
-  <meta property="og:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80" />
+  <meta property="og:image" content="https://da-um-play-ia-oficial.vercel.app/og-cover.svg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
-  <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Da Um Play IA — Séries & Mini Novelinhas Originais" />
   <meta name="twitter:description" content="Mini novelinhas e séries originais com IA. 1º episódio grátis + VIP liberado via PIX." />
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80" />
+  <meta name="twitter:image" content="https://da-um-play-ia-oficial.vercel.app/og-cover.svg" />
 
-  <!-- Pré-conexão para acelerar carregamento -->
   <link rel="preconnect" href="https://wqtiqgyzayacwypugrik.supabase.co" crossorigin />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -60,7 +57,7 @@
       --text-soft: #9aa3b2;
       --line: rgba(255,255,255,0.08);
     }
-    * { -webkit-tap-highlight-color: transparent; }
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       background-color: var(--bg-main);
@@ -68,8 +65,13 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
       position: relative;
+      user-select: none;
+      -webkit-user-select: none;
     }
-    /* Luzes de ambiente premium (glow radial sutil) */
+    input, textarea, select {
+      user-select: text;
+      -webkit-user-select: text;
+    }
     body::before {
       content: '';
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -77,7 +79,6 @@
         radial-gradient(ellipse 60% 45% at 12% -5%, rgba(255,31,46,0.14), transparent 60%),
         radial-gradient(ellipse 55% 45% at 95% 110%, rgba(34,211,238,0.12), transparent 60%);
     }
-    /* Grão de filme cinematográfico */
     .grain-overlay {
       position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.035;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -90,27 +91,20 @@
     ::-webkit-scrollbar-thumb { background: #1e2436; border-radius: 9999px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
 
-    /* Header premium glass */
     .glass-bar {
-      background: rgba(6,8,14,0.72);
+      background: rgba(6,8,14,0.78);
       backdrop-filter: blur(20px) saturate(140%);
       -webkit-backdrop-filter: blur(20px) saturate(140%);
       border-bottom: 1px solid var(--line) !important;
       box-shadow: 0 8px 32px rgba(0,0,0,0.35);
     }
-    header a[href="#topo"] span.font-display { background: linear-gradient(90deg,#fff,#cbd5e1); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 
-    /* Botões premium */
-    button { transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s, background .25s, border-color .25s, opacity .25s; }
-    button:hover { transform: translateY(-2px); }
+    button { transition: transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s, background .22s, border-color .22s, opacity .22s; }
+    button:hover { transform: translateY(-1px); }
     button:active { transform: translateY(0) scale(0.98); }
-    #hero-section button, #header-actions button, .vip-cta { position: relative; overflow: hidden; }
-    #hero-section button:first-of-type, #header-actions button[onclick*="register"], button[type="submit"] {
+    #hero-section button:first-of-type, #header-actions button[onclick*="register"], .btn-red-glow {
       background: linear-gradient(135deg, #ff2d3c, #d90f19) !important;
       box-shadow: 0 8px 28px -6px rgba(255,31,46,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
-    }
-    #hero-section button:first-of-type:hover, #header-actions button[onclick*="register"]:hover {
-      box-shadow: 0 14px 38px -6px rgba(255,31,46,0.75), inset 0 1px 0 rgba(255,255,255,0.3);
     }
     #hero-section button:nth-of-type(2) {
       background: rgba(34,211,238,0.08) !important;
@@ -119,25 +113,20 @@
       backdrop-filter: blur(8px);
       box-shadow: 0 8px 28px -8px rgba(34,211,238,0.4);
     }
-    #hero-section button:nth-of-type(2):hover { box-shadow: 0 14px 38px -8px rgba(34,211,238,0.6); border-color: var(--accent-cyan) !important; }
 
-    /* Hero premium */
     #hero-section {
       background: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(34,211,238,0.08), transparent 60%), linear-gradient(135deg, #12060c, #070b14 55%, #04121a) !important;
       border-bottom: 1px solid var(--line);
     }
     #hero-title { text-shadow: 0 4px 40px rgba(0,0,0,0.6); background: linear-gradient(180deg,#ffffff,#c7cdd9); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-    #hero-section span.px-3.py-1.rounded-full:first-of-type { box-shadow: 0 6px 20px -4px rgba(255,31,46,0.6); }
     .vip-price-label, #vip-modal-price { background: linear-gradient(90deg, var(--accent-gold), #ffe9a8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
 
-    /* Títulos de seção premium */
     #catalogo h2, #avaliacoes h2, #perguntas h2 { position: relative; padding-bottom: 10px; }
     #catalogo h2::after, #avaliacoes h2::after, #perguntas h2::after {
       content: ''; position: absolute; left: 0; bottom: 0; width: 48px; height: 3px; border-radius: 9999px;
       background: linear-gradient(90deg, var(--accent-red), var(--accent-cyan));
     }
 
-    /* Cards de série premium */
     #series-grid article {
       border-radius: 18px !important;
       border: 1px solid var(--line) !important;
@@ -146,32 +135,25 @@
       overflow: hidden;
     }
     #series-grid article:hover {
-      transform: translateY(-8px) !important;
+      transform: translateY(-6px) !important;
       border-color: rgba(34,211,238,0.55) !important;
-      box-shadow: 0 24px 50px -12px rgba(34,211,238,0.25), 0 0 0 1px rgba(34,211,238,0.2);
+      box-shadow: 0 24px 50px -12px rgba(34,211,238,0.25);
     }
-    #series-grid article img { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
-    #series-grid article:hover img { transform: scale(1.08); }
-    #series-grid article h3 { transition: color .25s; }
-    #series-grid article:hover h3 { color: var(--accent-cyan); }
+    #series-grid article img { transition: transform .5s ease; }
+    #series-grid article:hover img { transform: scale(1.06); }
 
-    /* Cards de episódio premium */
     #episodes-grid > div {
       border-radius: 18px !important;
       border: 1px solid var(--line) !important;
       background: var(--bg-elev);
       overflow: hidden;
-      transition: transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s, box-shadow .3s;
+      transition: transform .25s ease, border-color .25s;
     }
     #episodes-grid > div:hover {
-      transform: translateY(-5px);
+      transform: translateY(-4px);
       border-color: rgba(34,211,238,0.5) !important;
-      box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6);
     }
-    #episodes-grid > div .w-11.h-11 { transition: transform .3s, box-shadow .3s; box-shadow: 0 6px 18px -4px rgba(255,31,46,0.6); }
-    #episodes-grid > div:hover .w-11.h-11 { transform: scale(1.15); box-shadow: 0 10px 26px -4px rgba(255,31,46,0.8); }
 
-    /* Painel de episódios (glass premium) */
     #episodes-container {
       background: linear-gradient(160deg, rgba(11,14,23,0.9), rgba(8,10,18,0.95)) !important;
       border: 1px solid var(--line) !important;
@@ -179,11 +161,9 @@
       box-shadow: 0 30px 60px -20px rgba(0,0,0,0.7);
     }
 
-    /* Inputs premium */
     input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="search"], input[type="number"], textarea, select {
-      background: rgba(8,10,18,0.8) !important;
-      border: 1px solid rgba(255,255,255,0.12) !important;
-      transition: border-color .25s, box-shadow .25s;
+      background: rgba(8,10,18,0.85) !important;
+      border: 1px solid rgba(255,255,255,0.14) !important;
     }
     input:focus, textarea:focus, select:focus {
       border-color: var(--accent-cyan) !important;
@@ -191,54 +171,63 @@
       outline: none;
     }
 
-    /* Filtros de categoria */
-    #categories-bar button { border-radius: 9999px !important; border: 1px solid transparent; }
-    #categories-bar button:not(.bg-\[\#ff1722\]) { background: rgba(255,255,255,0.05) !important; border-color: var(--line); }
-    #categories-bar button:not(.bg-\[\#ff1722\]):hover { border-color: rgba(34,211,238,0.4); color: var(--accent-cyan) !important; }
-
-    /* Avaliações */
-    #reviews-list > div { border-radius: 18px !important; border: 1px solid var(--line) !important; background: var(--bg-elev) !important; transition: transform .3s, border-color .3s; }
-    #reviews-list > div:hover { transform: translateY(-4px); border-color: rgba(245,197,66,0.4) !important; }
-
-    /* FAQ */
-    #perguntas .grid > div { border-radius: 18px !important; border: 1px solid var(--line) !important; transition: border-color .3s, transform .3s; }
-    #perguntas .grid > div:hover { border-color: rgba(34,211,238,0.35) !important; transform: translateY(-3px); }
-
-    /* Modais premium */
-    #auth-modal > div, #vip-modal > div, #player-wrapper {
-      background: linear-gradient(160deg, #0d101a, #080a12) !important;
-      border: 1px solid rgba(34,211,238,0.25) !important;
-      box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8), 0 0 60px -20px rgba(34,211,238,0.15);
+    /* ==========================================================
+       SUPER PLAYER DE CINEMA IMERSIVO (CORREÇÃO DEFINITIVA)
+       ========================================================== */
+    #player-modal {
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
     }
-    #vip-modal > div { border-color: rgba(34,211,238,0.5) !important; }
+    #player-frame-box.mode-horizontal {
+      width: 100%;
+      max-width: 1080px;
+      aspect-ratio: 16 / 9;
+      max-height: 74dvh;
+    }
+    #player-frame-box.mode-vertical {
+      height: 74dvh;
+      aspect-ratio: 9 / 16;
+      max-width: 94vw;
+    }
+    #player-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000000;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.9), 0 0 40px rgba(34,211,238,0.12);
+    }
+    #player-stage video,
+    #player-stage iframe {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      border: 0 !important;
+      background: #000 !important;
+    }
+    #player-stage video {
+      object-fit: contain !important;
+    }
 
-    /* Toast premium */
     #toast-box {
-      background: rgba(10,14,22,0.92) !important;
+      background: rgba(10,14,22,0.95) !important;
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(34,211,238,0.4) !important;
+      border: 1px solid rgba(34,211,238,0.45) !important;
       box-shadow: 0 20px 50px -10px rgba(0,0,0,0.7);
-      animation: toast-slide-in .35s cubic-bezier(.2,.7,.2,1);
     }
-    @keyframes toast-slide-in { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
-
-    /* Animação de entrada ao rolar */
-    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
-    .fade-up.visible { opacity: 1; transform: none; }
-
-    /* Footer premium */
-    footer { background: linear-gradient(180deg, #07090f, #040508) !important; border-top: 1px solid var(--line) !important; }
-    footer a[href*="wa.me"] { transition: transform .25s, box-shadow .25s; }
-    footer a[href*="wa.me"]:hover { transform: translateY(-2px); box-shadow: 0 10px 26px -8px rgba(16,185,129,0.5); }
   </style>
 </head>
 <body class="bg-[#040508] text-white min-h-screen flex flex-col pb-20 md:pb-0">
   <div class="grain-overlay"></div>
 
   <!-- NOTIFICAÇÃO TOAST -->
-  <div id="toast-box" class="hidden fixed top-20 right-4 z-50 max-w-sm glass-bar border border-[#00d4ff]/50 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
+  <div id="toast-box" class="hidden fixed top-20 right-4 z-[70] max-w-sm glass-bar text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
 
-  <!-- CABEÇALHO SEM CUPOM (LIMPO E DIRETO) -->
+  <!-- CABEÇALHO -->
   <header class="sticky top-0 z-40 glass-bar border-b border-white/10 px-4 md:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
     <div class="flex items-center gap-6">
       <a href="#topo" class="flex items-center gap-3 text-left focus:outline-none">
@@ -277,7 +266,7 @@
   <!-- CONTEÚDO PRINCIPAL -->
   <main id="topo" class="flex-1">
     <!-- HERO BANNER -->
-    <section id="hero-section" class="relative min-h-[460px] flex items-end p-6 md:p-14 overflow-hidden border-b border-white/10 bg-gradient-to-br from-[#12060c] via-[#070b14] to-[#04121a]">
+    <section id="hero-section" class="relative min-h-[460px] flex items-end p-6 md:p-14 overflow-hidden border-b border-white/10">
       <img id="hero-banner-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%231a050d'/><stop offset='50%' stop-color='%23070b14'/><stop offset='100%' stop-color='%23021b24'/></linearGradient></defs><rect width='1600' height='900' fill='url(%23g)'/></svg>" alt="Destaque Da Um Play IA" class="absolute inset-0 w-full h-full object-cover opacity-50" />
       <div class="absolute inset-0 bg-gradient-to-t from-[#040508] via-[#040508]/70 to-transparent"></div>
       <div class="relative z-10 max-w-2xl space-y-4">
@@ -308,7 +297,7 @@
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 class="font-display text-2xl font-black">Catálogo de Séries & Mini Novelinhas</h2>
-          <p class="text-xs text-gray-400">Selecione um título abaixo para visualizar os episódios disponíveis.</p>
+          <p class="text-xs text-gray-400">Toque na capa da série para abrir os episódios abaixo.</p>
         </div>
         <input
           type="search"
@@ -391,35 +380,76 @@
     </section>
   </main>
 
-  <noscript>
-    <div style="color:#fff;background:#040508;padding:48px 24px;font-family:Arial,sans-serif;max-width:720px;margin:0 auto;line-height:1.6;">
-      <h1 style="font-size:28px;">Da Um Play IA — Séries Curtas e Mini Novelinhas Originais</h1>
-      <p>Plataforma de streaming de séries curtas e mini novelinhas produzidas com Inteligência Artificial. O 1º episódio é grátis; o Acesso VIP (30 dias) é liberado automaticamente via PIX.</p>
-      <h2 style="font-size:20px;margin-top:24px;">Catálogo</h2>
-      <ul>
-        <li><strong>A Herdeira de Ferro IA</strong> — Mini Novelinha — 1º episódio grátis</li>
-      </ul>
-      <p style="margin-top:24px;color:#9ca3af;">Ative o JavaScript no seu navegador para assistir. Suporte via WhatsApp.</p>
-    </div>
-  </noscript>
-
-  <!-- MODAL DO PLAYER DE VÍDEO HÍBRIDO -->
-  <div id="player-modal" class="hidden fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-2 md:p-4">
-    <div id="player-wrapper" class="bg-[#0b0e17] border border-white/15 rounded-3xl w-full max-w-4xl overflow-hidden shadow-2xl">
-      <div class="p-3.5 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <span id="player-ep-label" class="text-[10px] font-black uppercase text-[#00d4ff]">EPISÓDIO</span>
-          <h3 id="player-ep-title" class="font-display text-sm font-black text-white">Carregando...</h3>
-        </div>
-        <div class="flex items-center gap-2">
-          <button onclick="window.app.togglePlayerAspect()" class="px-2.5 py-1 rounded-lg bg-white/10 text-[11px] font-bold text-gray-200">
-            📱/🖥️ Formato
-          </button>
-          <button onclick="window.app.closePlayer()" class="px-3 py-1 rounded-lg bg-[#ff1722] text-xs font-bold">✕</button>
+  <!-- =========================================================================
+       NOVO SALÃO DE CINEMA IMERSIVO (TELA CHEIA REAL PARA CELULAR E PC)
+       ========================================================================= -->
+  <div id="player-modal" class="hidden fixed inset-0 z-50 bg-[#030407]/98 flex flex-col justify-between">
+    <!-- BARRA DO TOPO DO PLAYER -->
+    <div class="w-full px-4 md:px-8 py-3 bg-[#080a12] border-b border-white/10 flex flex-wrap items-center justify-between gap-2 z-20">
+      <div class="flex items-center gap-3 min-w-0">
+        <button onclick="window.app.closePlayer()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-[#ff1722] text-white text-xs font-extrabold flex items-center gap-1.5 transition">
+          <span>←</span>
+          <span>Voltar</span>
+        </button>
+        <div class="truncate">
+          <span id="player-ep-label" class="block text-[10px] font-black uppercase tracking-wider text-[#00d4ff]">SÉRIE • EPISÓDIO</span>
+          <h3 id="player-ep-title" class="font-display text-sm md:text-base font-black text-white truncate">Carregando...</h3>
         </div>
       </div>
-      <div id="player-stage" class="bg-black aspect-video relative flex items-center justify-center overflow-hidden"></div>
-      <div id="player-ep-strip" class="p-3 bg-[#040508] border-t border-white/10 flex items-center gap-2 overflow-x-auto"></div>
+
+      <div class="flex items-center gap-2">
+        <button
+          id="btn-aspect-toggle"
+          onclick="window.app.togglePlayerAspect()"
+          class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-xs font-bold text-[#00d4ff] transition"
+        >
+          📱 Modo Vertical
+        </button>
+        <button
+          onclick="window.app.enterFullscreen()"
+          class="px-3 py-2 rounded-xl bg-[#00d4ff]/15 hover:bg-[#00d4ff]/25 border border-[#00d4ff]/40 text-xs font-extrabold text-[#00d4ff] transition"
+        >
+          ⛶ Tela Cheia
+        </button>
+        <button
+          onclick="window.app.closePlayer()"
+          class="w-9 h-9 rounded-xl bg-[#ff1722] hover:bg-[#d90f19] text-white text-sm font-black flex items-center justify-center"
+          title="Fechar Player"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- PALCO CENTRAL DO VÍDEO (GARANTE TAMANHO GRANDE E PROPORÇÃO EXATA) -->
+    <div class="flex-1 w-full flex items-center justify-center p-2 md:p-4 overflow-hidden relative">
+      <div id="player-frame-box" class="mode-horizontal relative flex items-center justify-center transition-all duration-300">
+        <div id="player-stage"></div>
+      </div>
+    </div>
+
+    <!-- BARRA INFERIOR DE NAVEGAÇÃO ENTRE EPISÓDIOS -->
+    <div class="w-full px-4 md:px-8 py-3 bg-[#080a12] border-t border-white/10 z-20">
+      <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-center">
+          <button
+            id="btn-prev-ep"
+            onclick="window.app.stepEpisode(-1)"
+            class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white disabled:opacity-30"
+          >
+            ⏮️ Ep. Anterior
+          </button>
+          <button
+            id="btn-next-ep"
+            onclick="window.app.stepEpisode(1)"
+            class="px-4 py-2 rounded-xl bg-[#ff1722] hover:bg-[#d90f19] text-xs font-black text-white shadow-lg disabled:opacity-30"
+          >
+            Próximo Ep. ⏭️
+          </button>
+        </div>
+
+        <div id="player-ep-strip" class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto py-1"></div>
+      </div>
     </div>
   </div>
 
@@ -436,7 +466,7 @@
         <input type="text" id="login-email" required autocomplete="email" placeholder="Seu E-mail de Acesso" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         <input type="password" id="login-pass" required autocomplete="current-password" placeholder="Sua Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         <p id="auth-error-msg" class="text-xs text-[#ff1722] font-bold hidden"></p>
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">Entrar na Plataforma</button>
+        <button type="submit" class="btn-red-glow w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">Entrar na Plataforma</button>
       </form>
 
       <form id="register-form" onsubmit="window.app.handleRegister(event)" class="hidden space-y-3">
@@ -444,12 +474,12 @@
         <input type="email" id="reg-email" required autocomplete="email" placeholder="Seu Melhor E-mail" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         <input type="tel" id="reg-phone" autocomplete="tel" inputmode="numeric" placeholder="Seu WhatsApp com DDD" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         <input type="password" id="reg-pass" required autocomplete="new-password" placeholder="Crie uma Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">Criar Minha Conta Grátis</button>
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase shadow-lg">Criar Minha Conta Grátis</button>
       </form>
     </div>
   </div>
 
-  <!-- MODAL PIX MERCADO PAGO (COM OPÇÃO DE CUPOM EMBUTIDA SÓ QUANDO QUISER ADICIONAR) -->
+  <!-- MODAL PIX MERCADO PAGO -->
   <div id="vip-modal" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
     <div class="bg-[#0b0e17] border-2 border-[#00d4ff] rounded-3xl max-w-md w-full p-6 space-y-4 relative text-center shadow-2xl">
       <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
@@ -459,7 +489,6 @@
       <h3 class="font-display text-xl font-black">Acesso VIP — 30 Dias</h3>
       <div id="vip-modal-price" class="font-display text-3xl font-black text-[#00d4ff]">R$ 9,90</div>
 
-      <!-- OPÇÃO DISCRETA PARA QUEM QUISER ADICIONAR CUPOM NA HORA DE ASSINAR -->
       <div class="pt-1">
         <button type="button" onclick="window.app.toggleInlineCoupon()" class="text-[11px] font-bold text-gray-400 hover:text-[#00d4ff] underline">
           🎟️ Possui um cupom promocional? Clique para adicionar
@@ -513,6 +542,21 @@
   <!-- ENGINE NATIVA DE ALTA PERFORMANCE -->
   <script>
     (function () {
+      window.addEventListener('contextmenu', function (e) {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+        }
+      });
+      window.addEventListener('keydown', function (e) {
+        if (
+          e.key === 'F12' ||
+          (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
+          (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase()))
+        ) {
+          e.preventDefault();
+        }
+      });
+
       const SB_URL = 'https://wqtiqgyzayacwypugrik.supabase.co';
       const SB_KEY = 'sb_publishable_vPzmMtwGYn2JJq9bNqEWOA_BLPKrppF';
       const DEFAULT_CREATOR_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
@@ -551,7 +595,7 @@
               duration: '03 min',
               isVip: false,
               comingSoon: false,
-              isVertical: true,
+              isVertical: false,
               thumb: makeArtworkSvg('Episódio 01', 'ACESSO GRATUITO', '#1f0812', '#091926'),
               videoUrl: ''
             }
@@ -577,6 +621,7 @@
         editingEpData: null,
         editingSerieId: null,
         verticalPlayer: false,
+        activeSerieId: null,
         activeEpisode: null,
         pixInterval: null,
         supabaseClient: null
@@ -608,52 +653,60 @@
         return diff > 0 ? Math.ceil(diff / 86400000) : 0;
       }
 
-      // PLAYER INTELIGENTE COM DESBLOQUEIO PARA CATBOX, YOUTUBE NÃO LISTADO, STREAMABLE, DROPBOX E DRIVE
+      // CONSTRUTOR DO PLAYER DE VÍDEO COM PREENCHIMENTO 100% REAL
       function buildVideoEmbedHtml(rawUrl) {
         if (!rawUrl || !rawUrl.trim()) {
-          return `<div class="p-8 text-center space-y-2">
-            <p class="text-sm font-bold text-[#00d4ff]">🎬 Episódio em Atualização</p>
-            <p class="text-xs text-gray-400">O vídeo oficial deste episódio está sendo processado.</p>
+          return `<div class="w-full h-full flex flex-col items-center justify-center p-8 text-center space-y-3 bg-[#060810]">
+            <div class="w-14 h-14 rounded-full bg-[#ff1722]/20 border border-[#ff1722]/40 flex items-center justify-center text-2xl">🎬</div>
+            <p class="text-base font-bold text-[#00d4ff]">Vídeo ainda não vinculado a este episódio</p>
+            <p class="text-xs text-gray-400 max-w-md">Abra o Estúdio ADM, clique em "✏️ Trocar Vídeo" neste episódio e cole o link do vídeo (YouTube Não Listado, Google Drive Público ou arquivo MP4).</p>
           </div>`;
         }
         let url = rawUrl.trim();
 
-        // 1. YouTube (Normal, Shorts ou Não Listado) -> Nunca dá tela preta e aceita qualquer tamanho
+        const spinnerHtml = `<div id="vid-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-black z-0 pointer-events-none">
+          <div class="w-10 h-10 border-4 border-[#00d4ff] border-t-transparent rounded-full animate-spin mb-2"></div>
+          <span class="text-[11px] font-bold text-gray-400">Abrindo reprodutor em alta definição...</span>
+        </div>`;
+
+        // 1. YouTube (Normal, Shorts ou Não Listado)
         const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
         if (ytMatch) {
           const vidId = ytMatch[1];
-          return `<iframe
+          return `${spinnerHtml}<iframe
             src="https://www.youtube-nocookie.com/embed/${vidId}?autoplay=1&rel=0&modestbranding=1&playsinline=1"
-            class="w-full h-full border-0"
             allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
             allowfullscreen
+            onload="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"
           ></iframe>`;
         }
 
         // 2. Streamable
         const streamableMatch = url.match(/streamable\.com\/(?:e\/)?([a-zA-Z0-9]+)/);
         if (streamableMatch) {
-          return `<iframe
+          return `${spinnerHtml}<iframe
             src="https://streamable.com/e/${streamableMatch[1]}?autoplay=1"
-            class="w-full h-full border-0"
             allow="autoplay; fullscreen"
             allowfullscreen
+            onload="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"
           ></iframe>`;
         }
 
-        // 3. Google Drive (Requer estar como "Qualquer pessoa com o link" no Drive)
+        // 3. Google Drive (Oculta botão de pop-out e ocupa 100% da tela do player)
         const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
         if (driveMatch && url.includes('drive.google.com')) {
           const fileId = driveMatch[1];
-          return `<iframe
-            src="https://drive.google.com/file/d/${fileId}/preview"
-            class="w-full h-full border-0"
-            allow="autoplay; fullscreen"
-            allowfullscreen
-          ></iframe>`;
+          return `${spinnerHtml}
+            <div class="absolute top-0 right-0 w-16 h-16 z-20 bg-transparent" title="Player Protegido"></div>
+            <iframe
+              src="https://drive.google.com/file/d/${fileId}/preview"
+              allow="autoplay; fullscreen"
+              allowfullscreen
+              onload="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"
+            ></iframe>`;
         }
 
-        // 4. Ajuste automático de links do Catbox ou Dropbox
+        // 4. Ajuste automático de links diretos Dropbox / Catbox
         if (url.includes('dropbox.com')) {
           url = url.replace('?dl=0', '?raw=1').replace('www.dropbox.com', 'dl.dropboxusercontent.com');
         }
@@ -661,23 +714,33 @@
           url = url.replace('catbox.moe/', 'files.catbox.moe/');
         }
 
-        // 5. Player HTML5 Nativo com referrerpolicy="no-referrer" (Evita tela preta por bloqueio no Catbox)
-        return `<video
+        // 5. Player HTML5 Nativo Tela Cheia com avanço automático para o próximo episódio
+        return `${spinnerHtml}<video
+          id="native-video-el"
+          src="${url}"
           controls
           autoplay
           playsinline
           preload="auto"
           referrerpolicy="no-referrer"
           controlsList="nodownload noplaybackrate"
-          disablePictureInPicture
           oncontextmenu="return false;"
-          class="w-full h-full object-contain bg-black"
-        >
-          <source src="${url}" type="video/mp4" />
-          <source src="${url}" type="video/webm" />
-          <source src="${url}" />
-          Seu navegador não conseguiu reproduzir este formato de vídeo.
-        </video>`;
+          onloadeddata="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';"
+          onended="window.app.stepEpisode(1)"
+        ></video>`;
+      }
+
+      function applyAspectClasses() {
+        const box = document.getElementById('player-frame-box');
+        const btn = document.getElementById('btn-aspect-toggle');
+        if (!box || !btn) return;
+        if (state.verticalPlayer) {
+          box.className = 'mode-vertical relative flex items-center justify-center transition-all duration-300';
+          btn.innerHTML = '🖥️ Mudar p/ Horizontal';
+        } else {
+          box.className = 'mode-horizontal relative flex items-center justify-center transition-all duration-300';
+          btn.innerHTML = '📱 Mudar p/ Vertical';
+        }
       }
 
       async function initSupabase() {
@@ -703,6 +766,7 @@
               if (data.settings_data.supportWhatsapp) state.supportWhatsapp = data.settings_data.supportWhatsapp;
               if (data.settings_data.basePrice) state.basePrice = Number(data.settings_data.basePrice);
               if (data.settings_data.mpToken) state.gatewayKey = data.settings_data.mpToken;
+              if (data.settings_data.creatorHash) state.creatorHash = data.settings_data.creatorHash;
               if (data.settings_data.reviews && Array.isArray(data.settings_data.reviews)) {
                 state.reviews = data.settings_data.reviews;
               }
@@ -726,6 +790,7 @@
               supportWhatsapp: state.supportWhatsapp,
               basePrice: state.basePrice,
               mpToken: state.gatewayKey,
+              creatorHash: state.creatorHash,
               reviews: state.reviews
             },
             updated_at: new Date().toISOString()
@@ -740,6 +805,7 @@
         localStorage.setItem('dup_clean_reviews', JSON.stringify(state.reviews));
         localStorage.setItem('dup_clean_wa', state.supportWhatsapp);
         localStorage.setItem('dup_clean_price', String(state.basePrice));
+        localStorage.setItem('dup_creator_hash', state.creatorHash);
         if (state.currentUserId) localStorage.setItem('dup_clean_uid', state.currentUserId);
         else localStorage.removeItem('dup_clean_uid');
       }
@@ -752,7 +818,6 @@
         const waLink = document.getElementById('footer-wa-link');
         if (waLink) waLink.href = `https://wa.me/${state.supportWhatsapp}`;
 
-        // Renderiza Ações do Topo (SEM BOTÃO DE CUPOM NO CABEÇALHO)
         const headerActions = document.getElementById('header-actions');
         if (headerActions) {
           let html = '';
@@ -775,7 +840,6 @@
           headerActions.innerHTML = html;
         }
 
-        // Renderiza Hero
         const hero = state.seriesList.find((s) => s.isHeroLaunch) || state.seriesList[0];
         if (hero) {
           document.getElementById('hero-title').textContent = hero.title;
@@ -785,7 +849,6 @@
           if (heroImgEl) heroImgEl.src = hero.banner || hero.poster;
         }
 
-        // Categorias
         const cats = ['Todas', ...new Set(state.seriesList.map((s) => s.category))];
         const catBar = document.getElementById('categories-bar');
         if (catBar) {
@@ -798,7 +861,6 @@
             .join('');
         }
 
-        // Grade de Séries
         const filtered = state.seriesList.filter((s) => {
           const mCat = state.selectedCategory === 'Todas' || s.category === state.selectedCategory;
           const mSearch = s.title.toLowerCase().includes(state.searchQuery.toLowerCase());
@@ -835,7 +897,6 @@
             .join('');
         }
 
-        // Episódios da Série Selecionada
         const activeSerie = state.seriesList.find((s) => s.id === state.selectedSeriesId) || state.seriesList[0];
         if (activeSerie) {
           document.getElementById('selected-serie-cat').textContent = activeSerie.category;
@@ -859,7 +920,7 @@
                 <div class="aspect-video relative bg-[#0b0e17]">
                   <img src="${ep.thumb || activeSerie.poster}" alt="${ep.title}" loading="lazy" class="w-full h-full object-cover" />
                   <div class="absolute inset-0 bg-black/45 flex items-center justify-center">
-                    <div class="w-11 h-11 rounded-full bg-[#ff1722] flex items-center justify-center font-bold shadow-lg">${locked ? '🔒' : '▶'}</div>
+                    <div class="w-12 h-12 rounded-full bg-[#ff1722] flex items-center justify-center font-bold shadow-lg text-base">${locked ? '🔒' : '▶'}</div>
                   </div>
                   <span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded text-[10px] font-black uppercase ${
                     ep.isVip ? 'bg-[#00d4ff] text-[#040508]' : 'bg-emerald-500 text-black'
@@ -867,7 +928,7 @@
                 </div>
                 <div class="p-4">
                   <div class="flex items-center justify-between text-[11px] text-gray-400 mb-1">
-                    <span>Episódio ${ep.number}</span>
+                    <span>Episódio ${ep.number} ${ep.isVertical ? '• 📱 Vertical' : '• 🖥️ Cinema'}</span>
                     <span>${ep.duration || '03 min'}</span>
                   </div>
                   <h4 class="font-display font-bold text-sm text-white">${ep.title}</h4>
@@ -878,7 +939,6 @@
             .join('');
         }
 
-        // Avaliações Reais
         const revBox = document.getElementById('reviews-list');
         if (revBox) {
           if (state.reviews.length === 0) {
@@ -915,24 +975,24 @@
               <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
                 <div>
                   <h2 class="font-display text-lg font-black text-[#00d4ff] uppercase">🎬 Estúdio de Gestão de Conteúdo</h2>
-                  <p class="text-xs text-gray-400">Dica: Para vídeos acima de 50MB que nunca travam nem pedem login, suba no YouTube como "Não Listado" (ou libere "Qualquer pessoa com o link" no Google Drive).</p>
+                  <p class="text-xs text-gray-400">Para vídeos acima de 50MB: suba no YouTube como "Não Listado" ou no Google Drive marcado como "Qualquer pessoa com o link".</p>
                 </div>
               </div>
 
               <div class="grid md:grid-cols-3 gap-6">
-                <!-- CRIAR SÉRIE -->
+                <!-- CRIAR OU EDITAR SÉRIE -->
                 <form onsubmit="window.app.createSerie(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-3">
                   <div class="flex items-center justify-between">
                     <h3 class="text-xs font-black uppercase text-[#00d4ff]">${editingSerie ? '✏️ Editando: ' + editingSerie.title : '1. Nova Série / Novelinha'}</h3>
                     ${editingSerie ? '<button type="button" onclick="window.app.cancelEditSerie()" class="text-[10px] text-red-400 font-bold">Cancelar</button>' : ''}
                   </div>
-                  <input type="text" id="ns-title" required placeholder="Título da Série" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                  <input type="text" id="ns-cat" value="Mini Novelinha IA" placeholder="Categoria" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                  <textarea id="ns-desc" rows="2" placeholder="Sinopse..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"></textarea>
+                  <input type="text" id="ns-title" required value="${editingSerie ? editingSerie.title : ''}" placeholder="Título da Série" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                  <input type="text" id="ns-cat" value="${editingSerie ? editingSerie.category : 'Mini Novelinha IA'}" placeholder="Categoria" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                  <textarea id="ns-desc" rows="2" placeholder="Sinopse..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white">${editingSerie ? (editingSerie.synopsis || '') : ''}</textarea>
                   <div class="text-[11px] text-gray-300 space-y-1">
                     <label class="block font-bold text-[#00d4ff]">Capa da Série (Foto ou Link):</label>
                     <input type="file" accept="image/*" onchange="window.app.uploadMedia(this.files[0], 'ns-poster')" class="w-full text-xs" />
-                    <input type="text" id="ns-poster" placeholder="Ou cole URL da imagem da capa" class="w-full px-2.5 py-1.5 rounded bg-[#0b0e17] border border-white/10 text-xs text-white" />
+                    <input type="text" id="ns-poster" value="${editingSerie ? (editingSerie.poster || '') : ''}" placeholder="Ou cole URL da imagem da capa" class="w-full px-2.5 py-1.5 rounded bg-[#0b0e17] border border-white/10 text-xs text-white" />
                   </div>
                   <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">${editingSerie ? '💾 Salvar Alterações' : '+ Publicar Série'}</button>
                 </form>
@@ -960,10 +1020,15 @@
                     <label class="block text-[10px] text-gray-400 pt-1">Ou envie arquivo até 50MB direto:</label>
                     <input type="file" accept="video/*" onchange="window.app.uploadMedia(this.files[0], 'ne-video')" class="w-full text-[11px]" />
                   </div>
-                  <label class="flex items-center gap-2 text-xs text-gray-300">
-                    <input type="checkbox" id="ne-vip" ${editing ? (editing.isVip ? 'checked' : '') : 'checked'} /> Exclusivo para Assinantes VIP
-                  </label>
-                  <button type="submit" class="w-full py-2.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
+                  <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-300">
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                      <input type="checkbox" id="ne-vip" ${editing ? (editing.isVip ? 'checked' : '') : 'checked'} /> 🔒 Episódio VIP
+                    </label>
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                      <input type="checkbox" id="ne-vert" ${editing && editing.isVertical ? 'checked' : ''} /> 📱 Vídeo em Pé (Vertical)
+                    </label>
+                  </div>
+                  <button type="submit" class="btn-red-glow w-full py-2.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
                     ${editing ? '💾 Salvar Novo Link do Episódio' : '+ Publicar Episódio'}
                   </button>
                 </form>
@@ -1016,50 +1081,80 @@
         },
         playEpisode(serieId, epId) {
           const serie = state.seriesList.find((s) => s.id === serieId);
-          const ep = serie?.episodes?.find((e) => e.id === epId);
+          const eps = [...(serie?.episodes || [])].sort((a, b) => Number(a.number) - Number(b.number));
+          const epIndex = eps.findIndex((e) => e.id === epId);
+          const ep = eps[epIndex];
           if (!ep) return;
 
           const user = getCurrentUser();
-          if (!user) {
-            toast('Crie sua conta rápida para assistir!');
+          if (!user && !state.creatorUnlocked) {
+            toast('Crie sua conta rápida em 5 segundos para assistir!');
             this.openAuthModal('register');
             return;
           }
-          if (ep.isVip && (!user.isVip || (user.vipUntil && user.vipUntil < Date.now()))) {
+          if (ep.isVip && !state.creatorUnlocked && (!user.isVip || (user.vipUntil && user.vipUntil < Date.now()))) {
             this.openVipCheckout();
             return;
           }
 
+          state.activeSerieId = serie.id;
           state.activeEpisode = ep;
+          state.verticalPlayer = Boolean(ep.isVertical);
+          applyAspectClasses();
+
           document.getElementById('player-ep-label').textContent = `${serie.title} • EPISÓDIO ${ep.number}`;
           document.getElementById('player-ep-title').textContent = ep.title;
           document.getElementById('player-stage').innerHTML = buildVideoEmbedHtml(ep.videoUrl);
           document.getElementById('player-modal').classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+
+          const prevBtn = document.getElementById('btn-prev-ep');
+          const nextBtn = document.getElementById('btn-next-ep');
+          if (prevBtn) prevBtn.disabled = epIndex <= 0;
+          if (nextBtn) nextBtn.disabled = epIndex >= eps.length - 1;
 
           const strip = document.getElementById('player-ep-strip');
-          strip.innerHTML = serie.episodes
+          strip.innerHTML = eps
             .map(
-              (item) => `<button onclick="window.app.playEpisode('${serie.id}','${item.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold ${
-                item.id === ep.id ? 'bg-[#ff1722] text-white' : 'bg-white/10 text-gray-300'
-              }">Ep. ${item.number}</button>`
+              (item) => `<button onclick="window.app.playEpisode('${serie.id}','${item.id}')" class="px-3.5 py-2 rounded-xl text-xs font-extrabold whitespace-nowrap transition ${
+                item.id === ep.id ? 'bg-[#ff1722] text-white shadow-lg' : 'bg-white/10 text-gray-300 hover:bg-white/20'
+              }">Ep. ${item.number} ${item.isVip ? '👑' : ''}</button>`
             )
             .join('');
         },
+        stepEpisode(direction) {
+          if (!state.activeSerieId || !state.activeEpisode) return;
+          const serie = state.seriesList.find((s) => s.id === state.activeSerieId);
+          if (!serie) return;
+          const eps = [...(serie.episodes || [])].sort((a, b) => Number(a.number) - Number(b.number));
+          const idx = eps.findIndex((e) => e.id === state.activeEpisode.id);
+          const target = eps[idx + direction];
+          if (target) {
+            this.playEpisode(serie.id, target.id);
+          }
+        },
         togglePlayerAspect() {
           state.verticalPlayer = !state.verticalPlayer;
-          const wrap = document.getElementById('player-wrapper');
+          applyAspectClasses();
+        },
+        enterFullscreen() {
           const stage = document.getElementById('player-stage');
-          if (state.verticalPlayer) {
-            wrap.classList.replace('max-w-4xl', 'max-w-sm');
-            stage.classList.replace('aspect-video', 'aspect-[9/16]');
-          } else {
-            wrap.classList.replace('max-w-sm', 'max-w-4xl');
-            stage.classList.replace('aspect-[9/16]', 'aspect-video');
+          const vid = document.getElementById('native-video-el');
+          if (vid && vid.webkitEnterFullscreen) {
+            vid.webkitEnterFullscreen();
+            return;
           }
+          const target = stage || document.getElementById('player-modal');
+          if (target.requestFullscreen) target.requestFullscreen();
+          else if (target.webkitRequestFullscreen) target.webkitRequestFullscreen();
         },
         closePlayer() {
           document.getElementById('player-stage').innerHTML = '';
           document.getElementById('player-modal').classList.add('hidden');
+          document.body.style.overflow = '';
+          if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+          }
         },
         openAuthModal(mode) {
           document.getElementById('auth-modal').classList.remove('hidden');
@@ -1338,9 +1433,6 @@
             toast('Nova série publicada!');
           }
 
-          document.getElementById('ns-title').value = '';
-          document.getElementById('ns-desc').value = '';
-          document.getElementById('ns-poster').value = '';
           syncCloud();
           renderAll();
         },
@@ -1349,19 +1441,12 @@
           if (!s) return;
           state.editingSerieId = id;
           renderCreatorStudio();
-          document.getElementById('ns-title').value = s.title;
-          document.getElementById('ns-cat').value = s.category;
-          document.getElementById('ns-desc').value = s.synopsis || '';
-          document.getElementById('ns-poster').value = s.poster || '';
           document.getElementById('creator-studio-container')?.scrollIntoView({ behavior: 'smooth' });
           toast('Edite o nome/capa e clique em Salvar Alterações.');
         },
         cancelEditSerie() {
           state.editingSerieId = null;
           renderCreatorStudio();
-          document.getElementById('ns-title').value = '';
-          document.getElementById('ns-desc').value = '';
-          document.getElementById('ns-poster').value = '';
         },
         editEp(serieId, epId) {
           const serie = state.seriesList.find((s) => s.id === serieId);
@@ -1373,7 +1458,8 @@
             number: ep.number,
             title: ep.title,
             videoUrl: ep.videoUrl,
-            isVip: ep.isVip
+            isVip: ep.isVip,
+            isVertical: Boolean(ep.isVertical)
           };
           renderCreatorStudio();
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1389,6 +1475,7 @@
           const title = document.getElementById('ne-title').value.trim();
           const videoUrl = document.getElementById('ne-video').value.trim();
           const isVip = document.getElementById('ne-vip').checked;
+          const isVertical = document.getElementById('ne-vert').checked;
 
           const serie = state.seriesList.find((s) => s.id === serieId);
           if (!serie) return;
@@ -1400,6 +1487,7 @@
               ep.title = title;
               ep.videoUrl = videoUrl;
               ep.isVip = isVip;
+              ep.isVertical = isVertical;
             }
             state.editingEpData = null;
             toast('Vídeo do episódio atualizado com sucesso!');
@@ -1411,7 +1499,7 @@
               duration: '04 min',
               isVip,
               comingSoon: false,
-              isVertical: true,
+              isVertical,
               thumb: serie.poster,
               videoUrl
             });
@@ -1472,23 +1560,6 @@
 
       renderAll();
       window.addEventListener('load', initSupabase);
-    })();
-  </script>
-
-  <script>
-    (function () {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) {
-            en.target.classList.add('visible');
-            io.unobserve(en.target);
-          }
-        });
-      }, { threshold: 0.08 });
-      document.querySelectorAll('header, section, footer, #episodes-container').forEach(function (el) {
-        el.classList.add('fade-up');
-        io.observe(el);
-      });
     })();
   </script>
 </body>
