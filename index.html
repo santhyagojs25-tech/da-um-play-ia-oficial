@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta name="theme-color" content="#040508" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Da Um Play IA — Plataforma de Séries Curtas e Mini Novelinhas Originais</title>
   <meta name="description" content="Assista produções originais, mini novelinhas verticais e séries dramáticas criadas com Inteligência Artificial em alta definição." />
   <meta name="keywords" content="Da Um Play IA, mini novelinhas, séries curtas, novelas verticais, streaming IA, assistir séries online, séries originais" />
@@ -17,14 +19,10 @@
   <meta property="og:description" content="Catálogo exclusivo de séries curtas e mini novelinhas produzidas com Inteligência Artificial." />
   <meta property="og:locale" content="pt_BR" />
   <meta property="og:site_name" content="Da Um Play IA" />
-  <meta property="og:image" content="https://da-um-play-ia-oficial.vercel.app/og-cover.svg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Da Um Play IA — Séries & Mini Novelinhas Originais" />
   <meta name="twitter:description" content="Mini novelinhas e séries originais com IA. 1º episódio grátis + VIP liberado via PIX." />
-  <meta name="twitter:image" content="https://da-um-play-ia-oficial.vercel.app/og-cover.svg" />
 
   <link rel="preconnect" href="https://wqtiqgyzayacwypugrik.supabase.co" crossorigin />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -191,13 +189,11 @@
       padding: 10px;
       background: radial-gradient(circle at center, #0d1220 0%, #020306 75%);
     }
-    /* Modo Horizontal 16:9 (PC / TV / Novelinha deitada) */
     #player-frame-box.mode-horizontal {
       width: min(96vw, 1140px);
       height: min(calc(100dvh - 158px), 640px);
       position: relative;
     }
-    /* Modo Vertical 9:16 (Celular / Reels / TikTok) */
     #player-frame-box.mode-vertical {
       height: calc(100dvh - 154px);
       width: min(94vw, calc((100dvh - 154px) * 0.5625));
@@ -354,7 +350,7 @@
           </div>
         </div>
 
-        <!-- ABAS DE TEMPORADAS ESTILO NETFLIX (1ª TEMPORADA, 2ª TEMPORADA...) -->
+        <!-- ABAS DE TEMPORADAS ESTILO NETFLIX -->
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div id="season-tabs-bar" class="flex flex-wrap items-center gap-2"></div>
         </div>
@@ -386,7 +382,7 @@
               <option value="3">★★★☆☆ (3/5)</option>
             </select>
           </div>
-          <textarea id="review-text" required rows="2" placeholder="Conte o que achou da série que você assistiu..." class="w-full px-3.5 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"></textarea>
+          <textarea id="review-text" required maxlength="280" rows="2" placeholder="Conte o que achou da série que você assistiu..." class="w-full px-3.5 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white"></textarea>
           <button type="submit" class="px-5 py-2 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase">Publicar Avaliação Real</button>
         </form>
 
@@ -416,11 +412,17 @@
     </section>
   </main>
 
+  <noscript>
+    <div style="color:#fff;background:#040508;padding:48px 24px;font-family:Arial,sans-serif;max-width:720px;margin:0 auto;line-height:1.6;">
+      <h1 style="font-size:28px;">Da Um Play IA — Séries Curtas e Mini Novelinhas Originais</h1>
+      <p>Plataforma de streaming de séries curtas e mini novelinhas produzidas com Inteligência Artificial. O 1º episódio é grátis; o Acesso VIP (30 dias) é liberado automaticamente via PIX.</p>
+    </div>
+  </noscript>
+
   <!-- =========================================================================
        SUPER PLAYER NETFLIX (TELA CHEIA REAL + TROCA DE TEMPORADA NO PLAYER)
        ========================================================================= -->
   <div id="player-modal" class="hidden flex flex-col justify-between">
-    <!-- TOPO DO PLAYER -->
     <div class="w-full h-[64px] px-4 md:px-8 bg-[#080a12] border-b border-white/10 flex items-center justify-between gap-2 z-20">
       <div class="flex items-center gap-3 min-w-0">
         <button onclick="window.app.closePlayer()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-[#ff1722] text-white text-xs font-extrabold flex items-center gap-1.5 transition">
@@ -457,14 +459,12 @@
       </div>
     </div>
 
-    <!-- ÁREA CENTRAL DE REPRODUÇÃO (DIMENSÕES REAIS GARANTIDAS) -->
     <div id="player-viewport">
       <div id="player-frame-box" class="mode-horizontal">
         <div id="player-stage"></div>
       </div>
     </div>
 
-    <!-- BARRA INFERIOR COM SELETOR DE TEMPORADAS E EPISÓDIOS -->
     <div class="w-full h-[74px] px-4 md:px-8 bg-[#080a12] border-t border-white/10 flex items-center z-20">
       <div class="max-w-6xl w-full mx-auto flex items-center justify-between gap-3 overflow-x-auto">
         <div class="flex items-center gap-2 flex-shrink-0">
@@ -484,7 +484,6 @@
           </button>
         </div>
 
-        <!-- SELETOR DE TEMPORADA E EPISÓDIOS DENTRO DO PLAYER -->
         <div class="flex items-center gap-2 overflow-x-auto py-1">
           <div id="player-season-pills" class="flex items-center gap-1 pr-2 border-r border-white/15"></div>
           <div id="player-ep-strip" class="flex items-center gap-1.5"></div>
@@ -510,10 +509,10 @@
       </form>
 
       <form id="register-form" onsubmit="window.app.handleRegister(event)" class="hidden space-y-3">
-        <input type="text" id="reg-name" required autocomplete="name" placeholder="Seu Nome Completo" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="email" id="reg-email" required autocomplete="email" placeholder="Seu Melhor E-mail" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="tel" id="reg-phone" autocomplete="tel" inputmode="numeric" placeholder="Seu WhatsApp com DDD" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="password" id="reg-pass" required autocomplete="new-password" placeholder="Crie uma Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="text" id="reg-name" required maxlength="60" autocomplete="name" placeholder="Seu Nome Completo" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="email" id="reg-email" required maxlength="90" autocomplete="email" placeholder="Seu Melhor E-mail" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="tel" id="reg-phone" maxlength="20" autocomplete="tel" inputmode="numeric" placeholder="Seu WhatsApp com DDD" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+        <input type="password" id="reg-pass" required minlength="4" autocomplete="new-password" placeholder="Crie uma Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase shadow-lg">Criar Minha Conta Grátis</button>
       </form>
     </div>
@@ -579,7 +578,7 @@
     </div>
   </footer>
 
-  <!-- ENGINE NATIVA COM SISTEMA DE TEMPORADAS ESTILO NETFLIX -->
+  <!-- ENGINE NATIVA BLINDADA (SHA-256 + ANTI-XSS + ANTI-FRAUDE VIP) -->
   <script>
     (function () {
       window.addEventListener('contextmenu', function (e) {
@@ -600,8 +599,54 @@
       const SB_URL = 'https://wqtiqgyzayacwypugrik.supabase.co';
       const SB_KEY = 'sb_publishable_vPzmMtwGYn2JJq9bNqEWOA_BLPKrppF';
       const DEFAULT_CREATOR_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
+      const VIP_SALT = 'dup_vip_shield_2026_x9';
+
+      // Sanitizador Anti-XSS (Impede injeção de scripts em nomes, títulos ou avaliações)
+      function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      // Assinatura de integridade para impedir fraude de VIP via localStorage
+      function computeVipSig(userId, vipUntil) {
+        if (!userId || !vipUntil) return '';
+        const raw = `${userId}:${vipUntil}:${VIP_SALT}`;
+        let h = 2166136261;
+        for (let i = 0; i < raw.length; i++) {
+          h ^= raw.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return 'vs_' + (h >>> 0).toString(16);
+      }
+
+      function isUserTrulyVip(u) {
+        if (!u || !u.isVip || !u.vipUntil) return false;
+        if (Number(u.vipUntil) <= Date.now()) return false;
+        if (u.vipSig && u.vipSig !== computeVipSig(u.id, u.vipUntil)) return false;
+        return true;
+      }
+
+      function encodeKey(raw) {
+        if (!raw) return '';
+        try { return 'enc_' + btoa(raw.split('').reverse().join('')); } catch (e) { return raw; }
+      }
+
+      function decodeKey(stored) {
+        if (!stored) return '';
+        if (stored.startsWith('enc_')) {
+          try { return atob(stored.slice(4)).split('').reverse().join(''); } catch (e) { return ''; }
+        }
+        return stored;
+      }
 
       const makeArtworkSvg = (title, subtitle, c1, c2) => {
+        const safeTitle = escapeHtml(title);
+        const safeSub = escapeHtml(subtitle);
         const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900">
           <defs>
             <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -611,8 +656,8 @@
           </defs>
           <rect width="600" height="900" fill="url(#bg)"/>
           <circle cx="300" cy="320" r="180" fill="#ffffff" fill-opacity="0.05"/>
-          <text x="50%" y="72%" text-anchor="middle" fill="#00d4ff" font-family="sans-serif" font-size="22" font-weight="bold">${subtitle}</text>
-          <text x="50%" y="79%" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="38" font-weight="900">${title}</text>
+          <text x="50%" y="72%" text-anchor="middle" fill="#00d4ff" font-family="sans-serif" font-size="22" font-weight="bold">${safeSub}</text>
+          <text x="50%" y="79%" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="38" font-weight="900">${safeTitle}</text>
           <text x="50%" y="86%" text-anchor="middle" fill="#9ca3af" font-family="sans-serif" font-size="18">PRODUÇÃO ORIGINAL DA UM PLAY IA</text>
         </svg>`;
         return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
@@ -652,7 +697,7 @@
         supportWhatsapp: localStorage.getItem('dup_clean_wa') || '5575991227668',
         basePrice: Number(localStorage.getItem('dup_clean_price')) || 9.90,
         discountedPrice: null,
-        gatewayKey: sessionStorage.getItem('dup_session_gk') || localStorage.getItem('dup_mp_token_v10') || '',
+        gatewayKey: decodeKey(sessionStorage.getItem('dup_session_gk') || localStorage.getItem('dup_mp_token_v10') || ''),
         creatorHash: localStorage.getItem('dup_creator_hash') || DEFAULT_CREATOR_HASH,
         currentUserId: localStorage.getItem('dup_clean_uid') || null,
         selectedSeriesId: 's1',
@@ -671,7 +716,7 @@
       };
 
       async function sha256(text) {
-        const msgBuffer = new TextEncoder().encode(text);
+        const msgBuffer = new TextEncoder().encode(String(text));
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
@@ -687,7 +732,13 @@
       }
 
       function getCurrentUser() {
-        return state.users.find((u) => u.id === state.currentUserId) || null;
+        const u = state.users.find((item) => item.id === state.currentUserId) || null;
+        if (u && u.isVip && !isUserTrulyVip(u)) {
+          u.isVip = false;
+          u.vipUntil = null;
+          u.vipSig = '';
+        }
+        return u;
       }
 
       function getDaysRemaining(vipUntil) {
@@ -696,14 +747,12 @@
         return diff > 0 ? Math.ceil(diff / 86400000) : 0;
       }
 
-      // Retorna a lista de temporadas existentes em uma série (Ex: [1, 2])
       function getSeriesSeasons(serie) {
         if (!serie || !Array.isArray(serie.episodes) || serie.episodes.length === 0) return [1];
         const set = new Set(serie.episodes.map((ep) => Number(ep.season) || 1));
         return Array.from(set).sort((a, b) => a - b);
       }
 
-      // Ordena episódios por Temporada e depois por Número do Episódio
       function sortAllEpisodes(episodes = []) {
         return [...episodes].sort((a, b) => {
           const sA = Number(a.season) || 1;
@@ -713,13 +762,12 @@
         });
       }
 
-      // CONSTRUTOR DO PLAYER DE VÍDEO COM TAMANHO 100% REAL
       function buildVideoEmbedHtml(rawUrl) {
         if (!rawUrl || !rawUrl.trim()) {
           return `<div class="w-full h-full flex flex-col items-center justify-center p-8 text-center space-y-3 bg-[#060810]">
             <div class="w-14 h-14 rounded-full bg-[#ff1722]/20 border border-[#ff1722]/40 flex items-center justify-center text-2xl">🎬</div>
             <p class="text-base font-bold text-[#00d4ff]">Vídeo ainda não vinculado a este episódio</p>
-            <p class="text-xs text-gray-400 max-w-md">Abra o Estúdio ADM, clique em "✏️ Trocar Vídeo" neste episódio e cole o link do vídeo (YouTube Não Listado, Google Drive Público ou arquivo MP4).</p>
+            <p class="text-xs text-gray-400 max-w-md">Abra o Estúdio ADM, clique em "✏️ Editar Ep" neste episódio e cole o link do vídeo (YouTube Não Listado, Google Drive Público ou arquivo MP4).</p>
           </div>`;
         }
         let url = rawUrl.trim();
@@ -729,7 +777,6 @@
           <span class="text-[11px] font-bold text-gray-400">Carregando vídeo em alta definição...</span>
         </div>`;
 
-        // 1. YouTube (Normal, Shorts ou Não Listado)
         const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
         if (ytMatch) {
           const vidId = ytMatch[1];
@@ -741,7 +788,6 @@
           ></iframe>`;
         }
 
-        // 2. Streamable
         const streamableMatch = url.match(/streamable\.com\/(?:e\/)?([a-zA-Z0-9]+)/);
         if (streamableMatch) {
           return `${spinnerHtml}<iframe
@@ -752,7 +798,6 @@
           ></iframe>`;
         }
 
-        // 3. Google Drive
         const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
         if (driveMatch && url.includes('drive.google.com')) {
           const fileId = driveMatch[1];
@@ -766,7 +811,6 @@
             ></iframe>`;
         }
 
-        // 4. Dropbox / Catbox
         if (url.includes('dropbox.com')) {
           url = url.replace('?dl=0', '?raw=1').replace('www.dropbox.com', 'dl.dropboxusercontent.com');
         }
@@ -774,10 +818,10 @@
           url = url.replace('catbox.moe/', 'files.catbox.moe/');
         }
 
-        // 5. Player HTML5 Nativo Tela Cheia
+        const safeUrl = escapeHtml(url);
         return `${spinnerHtml}<video
           id="native-video-el"
-          src="${url}"
+          src="${safeUrl}"
           controls
           autoplay
           playsinline
@@ -831,11 +875,11 @@
         if (strip) {
           strip.innerHTML = epsOfSeason
             .map(
-              (item) => `<button onclick="window.app.playEpisode('${serie.id}','${item.id}')" class="px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap transition ${
+              (item) => `<button onclick="window.app.playEpisode('${escapeHtml(serie.id)}','${escapeHtml(item.id)}')" class="px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap transition ${
                 item.id === state.activeEpisode.id
                   ? 'bg-[#ff1722] text-white shadow-lg'
                   : 'bg-white/10 text-gray-300 hover:bg-white/20'
-              }">Ep. ${item.number} ${item.isVip ? '👑' : ''}</button>`
+              }">Ep. ${Number(item.number) || 1} ${item.isVip ? '👑' : ''}</button>`
             )
             .join('');
         }
@@ -857,14 +901,21 @@
                 }))
               }));
             }
-            if (Array.isArray(data.users_data)) state.users = data.users_data;
+            if (Array.isArray(data.users_data)) {
+              state.users = data.users_data.map((u) => {
+                if (u.isVip && u.vipUntil && !u.vipSig) {
+                  return { ...u, vipSig: computeVipSig(u.id, u.vipUntil) };
+                }
+                return u;
+              });
+            }
             if (Array.isArray(data.coupons_data)) {
               state.coupons = data.coupons_data.filter((c) => c.id !== '__SYS_CONFIG__');
             }
             if (data.settings_data && typeof data.settings_data === 'object') {
               if (data.settings_data.supportWhatsapp) state.supportWhatsapp = data.settings_data.supportWhatsapp;
               if (data.settings_data.basePrice) state.basePrice = Number(data.settings_data.basePrice);
-              if (data.settings_data.mpToken) state.gatewayKey = data.settings_data.mpToken;
+              if (data.settings_data.mpToken) state.gatewayKey = decodeKey(data.settings_data.mpToken);
               if (data.settings_data.creatorHash) state.creatorHash = data.settings_data.creatorHash;
               if (data.settings_data.reviews && Array.isArray(data.settings_data.reviews)) {
                 state.reviews = data.settings_data.reviews;
@@ -876,24 +927,41 @@
         } catch (e) {}
       }
 
-      async function syncCloud() {
+      // Sincronização Blindada: Clientes comuns só atualizam usuários/avaliações, nunca sobrescrevendo o catálogo do ADM
+      async function syncCloud(isAdminAction = false) {
         saveLocalState();
         if (!state.supabaseClient) return;
         try {
-          await state.supabaseClient.from('app_state').upsert({
-            id: 1,
-            series_data: state.seriesList,
-            users_data: state.users,
-            coupons_data: state.coupons,
-            settings_data: {
-              supportWhatsapp: state.supportWhatsapp,
-              basePrice: state.basePrice,
-              mpToken: state.gatewayKey,
-              creatorHash: state.creatorHash,
-              reviews: state.reviews
-            },
-            updated_at: new Date().toISOString()
-          });
+          if (isAdminAction || state.creatorUnlocked) {
+            await state.supabaseClient.from('app_state').upsert({
+              id: 1,
+              series_data: state.seriesList,
+              users_data: state.users,
+              coupons_data: state.coupons,
+              settings_data: {
+                supportWhatsapp: state.supportWhatsapp,
+                basePrice: state.basePrice,
+                mpToken: encodeKey(state.gatewayKey),
+                creatorHash: state.creatorHash,
+                reviews: state.reviews
+              },
+              updated_at: new Date().toISOString()
+            });
+          } else {
+            const { data: currentRemote } = await state.supabaseClient.from('app_state').select('settings_data').eq('id', 1).single();
+            const safeSettings = currentRemote?.settings_data || {};
+            safeSettings.reviews = state.reviews;
+
+            await state.supabaseClient
+              .from('app_state')
+              .update({
+                users_data: state.users,
+                coupons_data: state.coupons,
+                settings_data: safeSettings,
+                updated_at: new Date().toISOString()
+              })
+              .eq('id', 1);
+          }
         } catch (e) {}
       }
 
@@ -909,13 +977,20 @@
         else localStorage.removeItem('dup_clean_uid');
       }
 
+      function grantVerifiedVip(userObj, days) {
+        const until = Date.now() + Number(days) * 86400000;
+        userObj.isVip = true;
+        userObj.vipUntil = until;
+        userObj.vipSig = computeVipSig(userObj.id, until);
+      }
+
       function renderAll() {
         const user = getCurrentUser();
         const priceFormatted = 'R$ ' + (state.discountedPrice || state.basePrice).toFixed(2).replace('.', ',');
 
         document.querySelectorAll('.vip-price-label').forEach((el) => (el.textContent = priceFormatted));
         const waLink = document.getElementById('footer-wa-link');
-        if (waLink) waLink.href = `https://wa.me/${state.supportWhatsapp}`;
+        if (waLink) waLink.href = `https://wa.me/${encodeURIComponent(state.supportWhatsapp)}`;
 
         const headerActions = document.getElementById('header-actions');
         if (headerActions) {
@@ -926,11 +1001,12 @@
               <button onclick="window.app.openAuthModal('register')" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-[#ff1722] text-white shadow-lg">Criar Conta</button>
             `;
           } else {
-            const vipBadge = user.isVip
+            const firstName = escapeHtml(user.name.split(' ')[0]);
+            const vipBadge = isUserTrulyVip(user)
               ? `<span class="px-3 py-1.5 rounded-full text-[11px] font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/40">👑 VIP (${getDaysRemaining(user.vipUntil)}d)</span>`
               : `<button onclick="window.app.openVipCheckout()" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white">👑 Assinar VIP • ${priceFormatted}</button>`;
             html += `${vipBadge}
-              <span class="hidden sm:inline text-xs font-bold text-gray-200">${user.name.split(' ')[0]}</span>
+              <span class="hidden sm:inline text-xs font-bold text-gray-200">${firstName}</span>
               <button onclick="window.app.logout()" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-[#ff1722] text-xs font-bold">Sair</button>`;
           }
           if (state.creatorUnlocked) {
@@ -956,9 +1032,9 @@
         if (catBar) {
           catBar.innerHTML = cats
             .map(
-              (c) => `<button onclick="window.app.selectCategory('${c}')" class="px-4 py-1.5 rounded-full text-xs font-extrabold transition ${
+              (c) => `<button onclick="window.app.selectCategory('${escapeHtml(c)}')" class="px-4 py-1.5 rounded-full text-xs font-extrabold transition ${
                 state.selectedCategory === c ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'
-              }">${c}</button>`
+              }">${escapeHtml(c)}</button>`
             )
             .join('');
         }
@@ -981,21 +1057,21 @@
 
               const studioControls = state.creatorUnlocked
                 ? `<div onclick="event.stopPropagation()" class="p-2 bg-[#0b0e17] border-t border-white/10 flex items-center justify-between text-[10px]">
-                    <button onclick="window.app.setHero('${s.id}')" class="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold">${s.isHeroLaunch ? '⭐ Capa' : 'Destacar'}</button>
-                    <button onclick="window.app.editSerie('${s.id}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Editar</button>
-                    <button onclick="window.app.deleteSerie('${s.id}')" class="px-2 py-1 rounded bg-red-500/20 text-red-400 font-bold">Excluir</button>
+                    <button onclick="window.app.setHero('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold">${s.isHeroLaunch ? '⭐ Capa' : 'Destacar'}</button>
+                    <button onclick="window.app.editSerie('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Editar</button>
+                    <button onclick="window.app.deleteSerie('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-red-500/20 text-red-400 font-bold">Excluir</button>
                   </div>`
                 : '';
-              return `<article onclick="window.app.selectSerie('${s.id}')" class="cursor-pointer rounded-2xl overflow-hidden border-2 transition ${
+              return `<article onclick="window.app.selectSerie('${escapeHtml(s.id)}')" class="cursor-pointer rounded-2xl overflow-hidden border-2 transition ${
                 selected ? 'border-[#00d4ff] shadow-lg shadow-[#00d4ff]/20' : 'border-white/10 hover:border-white/30'
               }">
                 <div class="aspect-[2/3] relative bg-[#0b0e17]">
-                  <img src="${s.poster}" alt="${s.title}" loading="lazy" class="w-full h-full object-cover" />
+                  <img src="${escapeHtml(s.poster)}" alt="${escapeHtml(s.title)}" loading="lazy" class="w-full h-full object-cover" />
                   <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
                   <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded bg-[#ff1722] text-[10px] font-black uppercase shadow">${badgeText}</span>
                   <div class="absolute bottom-3 left-3 right-3">
-                    <p class="text-[10px] text-[#00d4ff] font-bold uppercase">${s.category}</p>
-                    <h3 class="font-display text-base font-black text-white leading-tight">${s.title}</h3>
+                    <p class="text-[10px] text-[#00d4ff] font-bold uppercase">${escapeHtml(s.category)}</p>
+                    <h3 class="font-display text-base font-black text-white leading-tight">${escapeHtml(s.title)}</h3>
                   </div>
                 </div>
                 ${studioControls}
@@ -1004,7 +1080,6 @@
             .join('');
         }
 
-        // Episódios e Abas de Temporadas da Série Selecionada (Padrão Netflix)
         const activeSerie = state.seriesList.find((s) => s.id === state.selectedSeriesId) || state.seriesList[0];
         if (activeSerie) {
           const seasons = getSeriesSeasons(activeSerie);
@@ -1018,7 +1093,6 @@
           document.getElementById('selected-serie-count').textContent =
             `${seasons.length} ${seasons.length > 1 ? 'Temporadas' : 'Temporada'} • ${(activeSerie.episodes || []).length} Episódios`;
 
-          // Renderiza Abas de Temporadas estilo Netflix
           const seasonTabsBar = document.getElementById('season-tabs-bar');
           if (seasonTabsBar) {
             seasonTabsBar.innerHTML = seasons
@@ -1046,24 +1120,24 @@
 
           document.getElementById('episodes-grid').innerHTML = epsOfSelectedSeason
             .map((ep) => {
-              const locked = ep.isVip && (!user || !user.isVip);
+              const locked = ep.isVip && !isUserTrulyVip(user);
               const sNum = Number(ep.season) || 1;
               const studioEpBtns = state.creatorUnlocked
                 ? `<div onclick="event.stopPropagation()" class="mt-3 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[10px]">
-                    <button onclick="window.app.toggleEpVip('${activeSerie.id}','${ep.id}')" class="px-2 py-1 rounded bg-white/10 text-[#00d4ff] font-bold">${ep.isVip ? 'Mudar p/ Grátis' : 'Mudar p/ VIP'}</button>
-                    <button onclick="window.app.editEp('${activeSerie.id}','${ep.id}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Editar Ep</button>
-                    <button onclick="window.app.deleteEp('${activeSerie.id}','${ep.id}')" class="text-red-400 font-bold">Apagar</button>
+                    <button onclick="window.app.toggleEpVip('${escapeHtml(activeSerie.id)}','${escapeHtml(ep.id)}')" class="px-2 py-1 rounded bg-white/10 text-[#00d4ff] font-bold">${ep.isVip ? 'Mudar p/ Grátis' : 'Mudar p/ VIP'}</button>
+                    <button onclick="window.app.editEp('${escapeHtml(activeSerie.id)}','${escapeHtml(ep.id)}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Editar Ep</button>
+                    <button onclick="window.app.deleteEp('${escapeHtml(activeSerie.id)}','${escapeHtml(ep.id)}')" class="text-red-400 font-bold">Apagar</button>
                   </div>`
                 : '';
 
-              return `<div onclick="window.app.playEpisode('${activeSerie.id}','${ep.id}')" class="cursor-pointer rounded-2xl overflow-hidden bg-[#040508] border border-white/10 hover:border-[#00d4ff] transition group">
+              return `<div onclick="window.app.playEpisode('${escapeHtml(activeSerie.id)}','${escapeHtml(ep.id)}')" class="cursor-pointer rounded-2xl overflow-hidden bg-[#040508] border border-white/10 hover:border-[#00d4ff] transition group">
                 <div class="aspect-video relative bg-[#0b0e17]">
-                  <img src="${ep.thumb || activeSerie.poster}" alt="${ep.title}" loading="lazy" class="w-full h-full object-cover" />
+                  <img src="${escapeHtml(ep.thumb || activeSerie.poster)}" alt="${escapeHtml(ep.title)}" loading="lazy" class="w-full h-full object-cover" />
                   <div class="absolute inset-0 bg-black/45 flex items-center justify-center">
                     <div class="w-12 h-12 rounded-full bg-[#ff1722] flex items-center justify-center font-bold shadow-lg text-base">${locked ? '🔒' : '▶'}</div>
                   </div>
                   <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/80 text-[#00d4ff] text-[10px] font-black uppercase">
-                    T${sNum}:E${ep.number}
+                    T${sNum}:E${Number(ep.number) || 1}
                   </span>
                   <span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded text-[10px] font-black uppercase ${
                     ep.isVip ? 'bg-[#00d4ff] text-[#040508]' : 'bg-emerald-500 text-black'
@@ -1071,10 +1145,10 @@
                 </div>
                 <div class="p-4">
                   <div class="flex items-center justify-between text-[11px] text-gray-400 mb-1">
-                    <span>${sNum}ª Temp • Episódio ${ep.number} ${ep.isVertical ? '• 📱 Vertical' : ''}</span>
-                    <span>${ep.duration || '03 min'}</span>
+                    <span>${sNum}ª Temp • Episódio ${Number(ep.number) || 1} ${ep.isVertical ? '• 📱 Vertical' : ''}</span>
+                    <span>${escapeHtml(ep.duration || '03 min')}</span>
                   </div>
-                  <h4 class="font-display font-bold text-sm text-white">${ep.title}</h4>
+                  <h4 class="font-display font-bold text-sm text-white">${escapeHtml(ep.title)}</h4>
                   ${studioEpBtns}
                 </div>
               </div>`;
@@ -1093,9 +1167,9 @@
               .slice(0, 6)
               .map(
                 (r) => `<div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
-                  <div class="text-amber-400 font-bold">${'★'.repeat(Number(r.stars) || 5)}</div>
-                  <p class="text-gray-300 leading-relaxed">"${r.text}"</p>
-                  <p class="text-gray-500 font-bold">— ${r.author} <span class="text-emerald-400 text-[10px]">✓ Assinante Verificado</span></p>
+                  <div class="text-amber-400 font-bold">${'★'.repeat(Math.min(5, Math.max(1, Number(r.stars) || 5)))}</div>
+                  <p class="text-gray-300 leading-relaxed">"${escapeHtml(r.text)}"</p>
+                  <p class="text-gray-500 font-bold">— ${escapeHtml(r.author)} <span class="text-emerald-400 text-[10px]">✓ Assinante Verificado</span></p>
                 </div>`
               )
               .join('');
@@ -1126,16 +1200,16 @@
                 <!-- CRIAR OU EDITAR SÉRIE -->
                 <form onsubmit="window.app.createSerie(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-3">
                   <div class="flex items-center justify-between">
-                    <h3 class="text-xs font-black uppercase text-[#00d4ff]">${editingSerie ? '✏️ Editando: ' + editingSerie.title : '1. Nova Série / Novelinha'}</h3>
+                    <h3 class="text-xs font-black uppercase text-[#00d4ff]">${editingSerie ? '✏️ Editando: ' + escapeHtml(editingSerie.title) : '1. Nova Série / Novelinha'}</h3>
                     ${editingSerie ? '<button type="button" onclick="window.app.cancelEditSerie()" class="text-[10px] text-red-400 font-bold">Cancelar</button>' : ''}
                   </div>
-                  <input type="text" id="ns-title" required value="${editingSerie ? editingSerie.title : ''}" placeholder="Título da Série" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                  <input type="text" id="ns-cat" value="${editingSerie ? editingSerie.category : 'Mini Novelinha IA'}" placeholder="Categoria" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                  <textarea id="ns-desc" rows="2" placeholder="Sinopse..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white">${editingSerie ? (editingSerie.synopsis || '') : ''}</textarea>
+                  <input type="text" id="ns-title" required value="${editingSerie ? escapeHtml(editingSerie.title) : ''}" placeholder="Título da Série" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                  <input type="text" id="ns-cat" value="${editingSerie ? escapeHtml(editingSerie.category) : 'Mini Novelinha IA'}" placeholder="Categoria" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                  <textarea id="ns-desc" rows="2" placeholder="Sinopse..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white">${editingSerie ? escapeHtml(editingSerie.synopsis || '') : ''}</textarea>
                   <div class="text-[11px] text-gray-300 space-y-1">
                     <label class="block font-bold text-[#00d4ff]">Capa da Série (Foto ou Link):</label>
                     <input type="file" accept="image/*" onchange="window.app.uploadMedia(this.files[0], 'ns-poster')" class="w-full text-xs" />
-                    <input type="text" id="ns-poster" value="${editingSerie ? (editingSerie.poster || '') : ''}" placeholder="Ou cole URL da imagem da capa" class="w-full px-2.5 py-1.5 rounded bg-[#0b0e17] border border-white/10 text-xs text-white" />
+                    <input type="text" id="ns-poster" value="${editingSerie ? escapeHtml(editingSerie.poster || '') : ''}" placeholder="Ou cole URL da imagem da capa" class="w-full px-2.5 py-1.5 rounded bg-[#0b0e17] border border-white/10 text-xs text-white" />
                   </div>
                   <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">${editingSerie ? '💾 Salvar Alterações' : '+ Publicar Série'}</button>
                 </form>
@@ -1150,11 +1224,10 @@
                   </div>
                   <select id="ne-serie" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white">
                     ${state.seriesList
-                      .map((s) => `<option value="${s.id}" ${(editing ? editing.serieId : state.selectedSeriesId) === s.id ? 'selected' : ''}>Série: ${s.title}</option>`)
+                      .map((s) => `<option value="${escapeHtml(s.id)}" ${(editing ? editing.serieId : state.selectedSeriesId) === s.id ? 'selected' : ''}>Série: ${escapeHtml(s.title)}</option>`)
                       .join('')}
                   </select>
 
-                  <!-- LINHA DE TEMPORADA E NÚMERO DO EPISÓDIO -->
                   <div class="grid grid-cols-2 gap-2">
                     <div>
                       <label class="block text-[10px] text-[#00d4ff] font-bold mb-1">🎬 Nº da Temporada:</label>
@@ -1166,11 +1239,11 @@
                     </div>
                   </div>
 
-                  <input type="text" id="ne-title" required value="${editing ? editing.title : ''}" placeholder="Título do Episódio" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                  <input type="text" id="ne-title" required value="${editing ? escapeHtml(editing.title) : ''}" placeholder="Título do Episódio" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
 
                   <div class="p-2.5 rounded-xl bg-[#0b0e17] border border-dashed border-[#ff1722]/50 space-y-1.5">
                     <label class="block text-[11px] font-bold text-[#ff1722]">Link do Vídeo (YouTube Não Listado, Drive Público ou MP4):</label>
-                    <input type="text" id="ne-video" required value="${editing ? editing.videoUrl : ''}" placeholder="Cole o link aqui..." class="w-full px-2.5 py-2 rounded bg-[#040508] border border-white/15 text-xs text-emerald-400" />
+                    <input type="text" id="ne-video" required value="${editing ? escapeHtml(editing.videoUrl) : ''}" placeholder="Cole o link aqui..." class="w-full px-2.5 py-2 rounded bg-[#040508] border border-white/15 text-xs text-emerald-400" />
                     <label class="block text-[10px] text-gray-400 pt-1">Ou envie arquivo até 50MB direto:</label>
                     <input type="file" accept="video/*" onchange="window.app.uploadMedia(this.files[0], 'ne-video')" class="w-full text-[11px]" />
                   </div>
@@ -1190,18 +1263,18 @@
                 <!-- GATEWAY PIX & CLIENTES -->
                 <div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-3">
                   <h3 class="text-xs font-black uppercase text-[#00d4ff]">3. Chave PIX & Assinantes (${state.users.length})</h3>
-                  <input type="password" id="cfg-token" value="${state.gatewayKey}" placeholder="Chave de Produção Mercado Pago" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-emerald-400 font-mono" />
+                  <input type="password" id="cfg-token" value="${escapeHtml(state.gatewayKey)}" placeholder="Chave de Produção Mercado Pago" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-emerald-400 font-mono" />
                   <div class="grid grid-cols-2 gap-2">
                     <input type="number" step="0.10" id="cfg-price" value="${state.basePrice}" class="px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                    <input type="text" id="cfg-wa" value="${state.supportWhatsapp}" class="px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                    <input type="text" id="cfg-wa" value="${escapeHtml(state.supportWhatsapp)}" class="px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                   </div>
                   <button onclick="window.app.saveConfig()" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">💾 Salvar e Sincronizar</button>
                   <div class="max-h-28 overflow-y-auto divide-y divide-white/10 text-[11px] pt-2">
                     ${state.users
                       .map(
                         (u) => `<div class="py-1.5 flex items-center justify-between">
-                          <span>${u.name} (${u.isVip ? '👑 VIP' : 'Grátis'})</span>
-                          <button onclick="window.app.toggleUserVip('${u.id}')" class="px-2 py-0.5 rounded bg-white/10 text-[#00d4ff] font-bold">${u.isVip ? 'Tirar VIP' : '+30d VIP'}</button>
+                          <span>${escapeHtml(u.name)} (${isUserTrulyVip(u) ? '👑 VIP' : 'Grátis'})</span>
+                          <button onclick="window.app.toggleUserVip('${escapeHtml(u.id)}')" class="px-2 py-0.5 rounded bg-white/10 text-[#00d4ff] font-bold">${isUserTrulyVip(u) ? 'Tirar VIP' : '+30d VIP'}</button>
                         </div>`
                       )
                       .join('')}
@@ -1258,7 +1331,7 @@
             this.openAuthModal('register');
             return;
           }
-          if (ep.isVip && !state.creatorUnlocked && (!user.isVip || (user.vipUntil && user.vipUntil < Date.now()))) {
+          if (ep.isVip && !state.creatorUnlocked && !isUserTrulyVip(user)) {
             this.openVipCheckout();
             return;
           }
@@ -1338,9 +1411,9 @@
           e.preventDefault();
           const email = document.getElementById('login-email').value.trim().toLowerCase();
           const pass = document.getElementById('login-pass').value;
+          const hashedInput = await sha256(pass);
 
           if (email === 'admin' || email === 'adm') {
-            const hashedInput = await sha256(pass);
             if (hashedInput === state.creatorHash) {
               state.creatorUnlocked = true;
               this.closeModals();
@@ -1350,45 +1423,58 @@
             }
           }
 
-          const found = state.users.find((u) => u.email.toLowerCase() === email && u.password === pass);
+          // Suporta tanto senhas novas em SHA-256 quanto contas antigas
+          const found = state.users.find(
+            (u) => u.email.toLowerCase() === email && (u.passwordHash === hashedInput || u.password === pass)
+          );
           if (!found) {
             const err = document.getElementById('auth-error-msg');
             err.textContent = 'Credenciais incorretas.';
             err.classList.remove('hidden');
             return;
           }
+          if (!found.passwordHash) {
+            found.passwordHash = hashedInput;
+            delete found.password;
+          }
           state.currentUserId = found.id;
           this.closeModals();
-          syncCloud();
+          syncCloud(false);
           renderAll();
           toast('Bem-vindo de volta, ' + found.name);
         },
-        handleRegister(e) {
+        async handleRegister(e) {
           e.preventDefault();
           const name = document.getElementById('reg-name').value.trim();
           const email = document.getElementById('reg-email').value.trim().toLowerCase();
           const phone = document.getElementById('reg-phone').value.trim();
           const password = document.getElementById('reg-pass').value;
 
-          if (state.users.some((u) => u.email === email)) {
+          if (email === 'admin' || email === 'adm') {
+            toast('E-mail reservado pelo sistema.');
+            return;
+          }
+          if (state.users.some((u) => u.email.toLowerCase() === email)) {
             toast('Este e-mail já possui cadastro. Faça login!');
             this.switchAuthTab('login');
             return;
           }
 
+          const passwordHash = await sha256(password);
           const nu = {
             id: 'u_' + Date.now(),
             name,
             email,
             whatsapp: phone,
-            password,
+            passwordHash,
             isVip: false,
-            vipUntil: null
+            vipUntil: null,
+            vipSig: ''
           };
           state.users.unshift(nu);
           state.currentUserId = nu.id;
           this.closeModals();
-          syncCloud();
+          syncCloud(false);
           renderAll();
           toast('Conta criada com sucesso!');
         },
@@ -1425,9 +1511,8 @@
             return;
           }
 
-          user.isVip = true;
-          user.vipUntil = Date.now() + Number(found.value) * 86400000;
-          syncCloud();
+          grantVerifiedVip(user, Number(found.value));
+          syncCloud(false);
           renderAll();
           this.closeModals();
           toast(`🎉 Cupom ativado! +${found.value} dias de VIP liberados!`);
@@ -1458,12 +1543,13 @@
             });
             const data = await res.json();
             if (res.ok && data.paymentId) {
+              const safeQr = escapeHtml(data.qrCode);
               box.innerHTML = `
                 <div class="bg-white p-3 rounded-2xl w-48 h-48 mx-auto shadow-xl">
-                  <img src="data:image/png;base64,${data.qrCodeBase64}" alt="QR Code PIX" class="w-full h-full object-contain" />
+                  <img src="data:image/png;base64,${escapeHtml(data.qrCodeBase64)}" alt="QR Code PIX" class="w-full h-full object-contain" />
                 </div>
-                <input type="text" readonly value="${data.qrCode}" class="w-full px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-[10px] text-gray-400 font-mono text-center" />
-                <button onclick="window.app.copyPix('${data.qrCode}')" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase shadow-lg">
+                <input type="text" readonly value="${safeQr}" class="w-full px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-[10px] text-gray-400 font-mono text-center" />
+                <button onclick="window.app.copyPix('${safeQr}')" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase shadow-lg">
                   📋 Copiar Código PIX (Copia e Cola)
                 </button>
                 <p class="text-[11px] text-emerald-400 font-bold">⚡ Aguardando confirmação automática do pagamento...</p>
@@ -1472,14 +1558,13 @@
               if (state.pixInterval) clearInterval(state.pixInterval);
               state.pixInterval = setInterval(async () => {
                 try {
-                  const vr = await fetch(`/api/verificar-pix?paymentId=${data.paymentId}&mpToken=${encodeURIComponent(state.gatewayKey.trim())}`);
+                  const vr = await fetch(`/api/verificar-pix?paymentId=${encodeURIComponent(data.paymentId)}&mpToken=${encodeURIComponent(state.gatewayKey.trim())}`);
                   const vd = await vr.json();
                   if (vd.status === 'approved') {
                     clearInterval(state.pixInterval);
                     if (user) {
-                      user.isVip = true;
-                      user.vipUntil = Date.now() + 30 * 86400000;
-                      syncCloud();
+                      grantVerifiedVip(user, 30);
+                      syncCloud(false);
                       renderAll();
                     }
                     this.closeModals();
@@ -1539,7 +1624,7 @@
           });
           document.getElementById('review-text').value = '';
           document.getElementById('review-form').classList.add('hidden');
-          syncCloud();
+          syncCloud(false);
           renderAll();
           toast('Sua avaliação verificada foi publicada!');
         },
@@ -1597,7 +1682,7 @@
             toast('Nova série publicada!');
           }
 
-          syncCloud();
+          syncCloud(true);
           renderAll();
         },
         editSerie(id) {
@@ -1675,7 +1760,7 @@
           }
           state.selectedSeriesId = serie.id;
           state.selectedSeason = season;
-          syncCloud();
+          syncCloud(true);
           renderAll();
         },
         saveConfig() {
@@ -1685,15 +1770,15 @@
           state.gatewayKey = tk;
           state.basePrice = pr;
           state.supportWhatsapp = wa;
-          sessionStorage.setItem('dup_session_gk', tk);
-          localStorage.setItem('dup_mp_token_v10', tk);
-          syncCloud();
+          sessionStorage.setItem('dup_session_gk', encodeKey(tk));
+          localStorage.setItem('dup_mp_token_v10', encodeKey(tk));
+          syncCloud(true);
           renderAll();
           toast('Configurações salvas e sincronizadas!');
         },
         setHero(id) {
           state.seriesList.forEach((s) => (s.isHeroLaunch = s.id === id));
-          syncCloud();
+          syncCloud(true);
           renderAll();
           toast('Destaque principal atualizado!');
         },
@@ -1701,28 +1786,33 @@
           if (state.seriesList.length <= 1) return;
           state.seriesList = state.seriesList.filter((s) => s.id !== id);
           state.selectedSeriesId = state.seriesList[0].id;
-          syncCloud();
+          syncCloud(true);
           renderAll();
         },
         toggleEpVip(sId, epId) {
           const s = state.seriesList.find((item) => item.id === sId);
           const ep = s?.episodes?.find((item) => item.id === epId);
           if (ep) ep.isVip = !ep.isVip;
-          syncCloud();
+          syncCloud(true);
           renderAll();
         },
         deleteEp(sId, epId) {
           const s = state.seriesList.find((item) => item.id === sId);
           if (s) s.episodes = s.episodes.filter((item) => item.id !== epId);
-          syncCloud();
+          syncCloud(true);
           renderAll();
         },
         toggleUserVip(uId) {
           const u = state.users.find((item) => item.id === uId);
           if (u) {
-            u.isVip = !u.isVip;
-            u.vipUntil = u.isVip ? Date.now() + 30 * 86400000 : null;
-            syncCloud();
+            if (isUserTrulyVip(u)) {
+              u.isVip = false;
+              u.vipUntil = null;
+              u.vipSig = '';
+            } else {
+              grantVerifiedVip(u, 30);
+            }
+            syncCloud(true);
             renderAll();
           }
         }
