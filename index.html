@@ -65,7 +65,7 @@
   <!-- NOTIFICAÇÃO TOAST -->
   <div id="toast-box" class="hidden fixed top-20 right-4 z-50 max-w-sm glass-bar border border-[#00d4ff]/50 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
 
-  <!-- CABEÇALHO SEMÂNTICO PRÉ-RENDERIZADO (CARREGAMENTO INSTANTÂNEO PARA SEO) -->
+  <!-- CABEÇALHO SEM CUPOM (LIMPO E DIRETO) -->
   <header class="sticky top-0 z-40 glass-bar border-b border-white/10 px-4 md:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
     <div class="flex items-center gap-6">
       <a href="#topo" class="flex items-center gap-3 text-left focus:outline-none">
@@ -89,9 +89,6 @@
     </div>
 
     <div class="flex items-center gap-2" id="header-actions">
-      <button onclick="window.app.openCouponModal()" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-[11px] font-bold text-[#00d4ff]">
-        🎟️ Cupom
-      </button>
       <button onclick="window.app.openAuthModal('login')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15">
         Entrar
       </button>
@@ -101,10 +98,10 @@
     </div>
   </header>
 
-  <!-- ÁREA DINÂMICA DO ESTÚDIO DO CRIADOR (RENDERIZADA APENAS COM AUTENTICAÇÃO SHA-256) -->
+  <!-- ÁREA DINÂMICA DO ESTÚDIO DO CRIADOR -->
   <div id="creator-studio-container" class="hidden"></div>
 
-  <!-- CONTEÚDO PRINCIPAL PRÉ-RENDERIZADO -->
+  <!-- CONTEÚDO PRINCIPAL -->
   <main id="topo" class="flex-1">
     <!-- HERO BANNER -->
     <section id="hero-section" class="relative min-h-[460px] flex items-end p-6 md:p-14 overflow-hidden border-b border-white/10 bg-gradient-to-br from-[#12060c] via-[#070b14] to-[#04121a]">
@@ -169,7 +166,7 @@
       </div>
     </section>
 
-    <!-- MURAL DE AVALIAÇÕES REAIS DOS ASSINANTES (100% TRANSPARENTE E AUDITÁVEL) -->
+    <!-- MURAL DE AVALIAÇÕES REAIS DOS ASSINANTES -->
     <section id="avaliacoes" class="max-w-6xl mx-auto px-6 py-6">
       <div class="bg-[#0b0e17] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-4">
@@ -199,7 +196,7 @@
       </div>
     </section>
 
-    <!-- PERGUNTAS FREQUENTES CLARAS E TRANSPARENTES -->
+    <!-- PERGUNTAS FREQUENTES -->
     <section id="perguntas" class="max-w-6xl mx-auto px-6 py-8">
       <div class="bg-[#0b0e17] border border-white/10 rounded-3xl p-6 md:p-8 space-y-4">
         <h2 class="font-display text-xl font-black">Informações da Assinatura & Dúvidas Frequentes</h2>
@@ -221,7 +218,7 @@
     </section>
   </main>
 
-  <!-- MODAL DO PLAYER DE VÍDEO HÍBRIDO (SUPORTA MP4 DIRETO, YOUTUBE NÃO LISTADO E DRIVE) -->
+  <!-- MODAL DO PLAYER DE VÍDEO HÍBRIDO -->
   <div id="player-modal" class="hidden fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-2 md:p-4">
     <div id="player-wrapper" class="bg-[#0b0e17] border border-white/15 rounded-3xl w-full max-w-4xl overflow-hidden shadow-2xl">
       <div class="p-3.5 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
@@ -267,27 +264,35 @@
     </div>
   </div>
 
-  <!-- MODAL DE CUPOM -->
-  <div id="coupon-modal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
-    <form onsubmit="window.app.handleCoupon(event)" class="bg-[#0b0e17] border border-[#00d4ff] rounded-3xl max-w-sm w-full p-6 space-y-4 relative text-center">
-      <button type="button" onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
-      <div class="text-3xl">🎟️</div>
-      <h3 class="font-display text-lg font-black">Ativar Cupom Promocional</h3>
-      <input type="text" id="coupon-code-input" required placeholder="DIGITE SEU CUPOM" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-center text-sm font-black uppercase text-[#00d4ff]" />
-      <p id="coupon-feedback" class="text-xs font-bold text-amber-300"></p>
-      <button type="submit" class="w-full py-3 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">Resgatar Cupom</button>
-    </form>
-  </div>
-
-  <!-- MODAL PIX MERCADO PAGO -->
+  <!-- MODAL PIX MERCADO PAGO (COM OPÇÃO DE CUPOM EMBUTIDA SÓ QUANDO QUISER ADICIONAR) -->
   <div id="vip-modal" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
     <div class="bg-[#0b0e17] border-2 border-[#00d4ff] rounded-3xl max-w-md w-full p-6 space-y-4 relative text-center shadow-2xl">
       <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
       <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase">
-        🔒 Pagamento Processado via Mercado Pago
+        🔒 Pagamento Seguro via PIX
       </div>
       <h3 class="font-display text-xl font-black">Acesso VIP — 30 Dias</h3>
       <div id="vip-modal-price" class="font-display text-3xl font-black text-[#00d4ff]">R$ 9,90</div>
+
+      <!-- OPÇÃO DISCRETA PARA QUEM QUISER ADICIONAR CUPOM NA HORA DE ASSINAR -->
+      <div class="pt-1">
+        <button type="button" onclick="window.app.toggleInlineCoupon()" class="text-[11px] font-bold text-gray-400 hover:text-[#00d4ff] underline">
+          🎟️ Possui um cupom promocional? Clique para adicionar
+        </button>
+        <form id="inline-coupon-box" onsubmit="window.app.handleCoupon(event)" class="hidden mt-2.5 flex gap-2">
+          <input
+            type="text"
+            id="coupon-code-input"
+            placeholder="DIGITE O CUPOM"
+            class="flex-1 px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-xs font-black uppercase text-[#00d4ff] text-center"
+          />
+          <button type="submit" class="px-4 py-2 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">
+            Aplicar
+          </button>
+        </form>
+        <p id="coupon-feedback" class="text-[11px] font-bold text-amber-300 mt-1"></p>
+      </div>
+
       <div id="pix-container" class="space-y-3 py-2"></div>
     </div>
   </div>
@@ -320,15 +325,13 @@
     </div>
   </footer>
 
-  <!-- ENGINE NATIVA DE ALTA PERFORMANCE (ZERO BABEL STANDALONE) -->
+  <!-- ENGINE NATIVA DE ALTA PERFORMANCE -->
   <script>
     (function () {
       const SB_URL = 'https://wqtiqgyzayacwypugrik.supabase.co';
       const SB_KEY = 'sb_publishable_vPzmMtwGYn2JJq9bNqEWOA_BLPKrppF';
-      // Hash SHA-256 irreversível (não expõe senha em texto ou Base64 no código-fonte)
       const DEFAULT_CREATOR_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
 
-      // Gerador de Capas Vetoriais Originais (Zero dependência de Unsplash)
       const makeArtworkSvg = (title, subtitle, c1, c2) => {
         const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900">
           <defs>
@@ -374,7 +377,7 @@
       const state = {
         seriesList: JSON.parse(localStorage.getItem('dup_clean_series') || 'null') || INITIAL_CATALOG,
         users: JSON.parse(localStorage.getItem('dup_clean_users') || '[]'),
-        coupons: JSON.parse(localStorage.getItem('dup_clean_coupons') || '[{"id":"c1","code":"VIP7DIAS","type":"days","value":7,"usesLeft":20}]'),
+        coupons: JSON.parse(localStorage.getItem('dup_clean_coupons') || '[{"id":"c1","code":"VIP7DIAS","type":"days","value":7,"usesLeft":20},{"id":"c2","code":"PROMO490","type":"price","value":4.90,"usesLeft":50}]'),
         reviews: JSON.parse(localStorage.getItem('dup_clean_reviews') || '[]'),
         supportWhatsapp: localStorage.getItem('dup_clean_wa') || '5575991227668',
         basePrice: Number(localStorage.getItem('dup_clean_price')) || 9.90,
@@ -386,6 +389,7 @@
         selectedCategory: 'Todas',
         searchQuery: '',
         creatorUnlocked: false,
+        editingEpData: null,
         verticalPlayer: false,
         activeEpisode: null,
         pixInterval: null,
@@ -405,7 +409,7 @@
         el.textContent = '⚡ ' + msg;
         el.classList.remove('hidden');
         clearTimeout(window.__toastTimer);
-        window.__toastTimer = setTimeout(() => el.classList.add('hidden'), 3500);
+        window.__toastTimer = setTimeout(() => el.classList.add('hidden'), 3800);
       }
 
       function getCurrentUser() {
@@ -418,17 +422,17 @@
         return diff > 0 ? Math.ceil(diff / 86400000) : 0;
       }
 
-      // Conversor inteligente de links de vídeo (Aceita YouTube Não Listado, Google Drive, Dropbox, Catbox e MP4)
+      // PLAYER INTELIGENTE COM DESBLOQUEIO PARA CATBOX, YOUTUBE NÃO LISTADO, STREAMABLE, DROPBOX E DRIVE
       function buildVideoEmbedHtml(rawUrl) {
         if (!rawUrl || !rawUrl.trim()) {
           return `<div class="p-8 text-center space-y-2">
-            <p class="text-sm font-bold text-[#00d4ff]">🎬 Episódio em Processamento</p>
-            <p class="text-xs text-gray-400">O vídeo oficial deste episódio está sendo atualizado pelo criador.</p>
+            <p class="text-sm font-bold text-[#00d4ff]">🎬 Episódio em Atualização</p>
+            <p class="text-xs text-gray-400">O vídeo oficial deste episódio está sendo processado.</p>
           </div>`;
         }
-        const url = rawUrl.trim();
+        let url = rawUrl.trim();
 
-        // Suporte a YouTube (Normal, Shorts ou Não Listado) em Full HD/4K sem limite de MB
+        // 1. YouTube (Normal, Shorts ou Não Listado) -> Nunca dá tela preta e aceita qualquer tamanho
         const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
         if (ytMatch) {
           const vidId = ytMatch[1];
@@ -440,33 +444,54 @@
           ></iframe>`;
         }
 
-        // Suporte a Google Drive
-        const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
-        if (driveMatch) {
+        // 2. Streamable
+        const streamableMatch = url.match(/streamable\.com\/(?:e\/)?([a-zA-Z0-9]+)/);
+        if (streamableMatch) {
           return `<iframe
-            src="https://drive.google.com/file/d/${driveMatch[1]}/preview"
+            src="https://streamable.com/e/${streamableMatch[1]}?autoplay=1"
             class="w-full h-full border-0"
             allow="autoplay; fullscreen"
             allowfullscreen
           ></iframe>`;
         }
 
-        // Suporte a Dropbox (.mp4 direto)
-        const finalMp4Url = url.includes('dropbox.com')
-          ? url.replace('?dl=0', '?raw=1').replace('www.dropbox.com', 'dl.dropboxusercontent.com')
-          : url;
+        // 3. Google Drive (Requer estar como "Qualquer pessoa com o link" no Drive)
+        const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+        if (driveMatch && url.includes('drive.google.com')) {
+          const fileId = driveMatch[1];
+          return `<iframe
+            src="https://drive.google.com/file/d/${fileId}/preview"
+            class="w-full h-full border-0"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+          ></iframe>`;
+        }
 
+        // 4. Ajuste automático de links do Catbox ou Dropbox
+        if (url.includes('dropbox.com')) {
+          url = url.replace('?dl=0', '?raw=1').replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+        }
+        if (url.includes('catbox.moe') && !url.includes('files.catbox.moe')) {
+          url = url.replace('catbox.moe/', 'files.catbox.moe/');
+        }
+
+        // 5. Player HTML5 Nativo com referrerpolicy="no-referrer" (Evita tela preta por bloqueio no Catbox)
         return `<video
-          src="${finalMp4Url}"
           controls
           autoplay
           playsinline
-          preload="metadata"
+          preload="auto"
+          referrerpolicy="no-referrer"
           controlsList="nodownload noplaybackrate"
           disablePictureInPicture
           oncontextmenu="return false;"
-          class="w-full h-full object-contain"
-        ></video>`;
+          class="w-full h-full object-contain bg-black"
+        >
+          <source src="${url}" type="video/mp4" />
+          <source src="${url}" type="video/webm" />
+          <source src="${url}" />
+          Seu navegador não conseguiu reproduzir este formato de vídeo.
+        </video>`;
       }
 
       async function initSupabase() {
@@ -476,7 +501,6 @@
           const { data, error } = await state.supabaseClient.from('app_state').select('*').eq('id', 1).single();
           if (!error && data) {
             if (Array.isArray(data.series_data) && data.series_data.length > 0) {
-              // Limpa automaticamente vídeos de exemplo antigos do Google caso ainda estejam salvos no banco
               state.seriesList = data.series_data.map((s) => ({
                 ...s,
                 episodes: (s.episodes || []).map((ep) => ({
@@ -493,7 +517,7 @@
               if (data.settings_data.supportWhatsapp) state.supportWhatsapp = data.settings_data.supportWhatsapp;
               if (data.settings_data.basePrice) state.basePrice = Number(data.settings_data.basePrice);
               if (data.settings_data.mpToken) state.gatewayKey = data.settings_data.mpToken;
-              if (data.settings_data. reviews && Array.isArray(data.settings_data.reviews)) {
+              if (data.settings_data.reviews && Array.isArray(data.settings_data.reviews)) {
                 state.reviews = data.settings_data.reviews;
               }
             }
@@ -542,10 +566,10 @@
         const waLink = document.getElementById('footer-wa-link');
         if (waLink) waLink.href = `https://wa.me/${state.supportWhatsapp}`;
 
-        // Renderiza Ações do Topo
+        // Renderiza Ações do Topo (SEM BOTÃO DE CUPOM NO CABEÇALHO)
         const headerActions = document.getElementById('header-actions');
         if (headerActions) {
-          let html = `<button onclick="window.app.openCouponModal()" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-[11px] font-bold text-[#00d4ff]">🎟️ Cupom</button>`;
+          let html = '';
           if (!user) {
             html += `
               <button onclick="window.app.openAuthModal('login')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15">Entrar</button>
@@ -636,8 +660,9 @@
             .map((ep) => {
               const locked = ep.isVip && (!user || !user.isVip);
               const studioEpBtns = state.creatorUnlocked
-                ? `<div onclick="event.stopPropagation()" class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[10px]">
-                    <button onclick="window.app.toggleEpVip('${activeSerie.id}','${ep.id}')" class="px-2 py-1 rounded bg-white/10 text-[#00d4ff] font-bold">${ep.isVip ? 'Tornar Grátis' : 'Tornar VIP'}</button>
+                ? `<div onclick="event.stopPropagation()" class="mt-3 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[10px]">
+                    <button onclick="window.app.toggleEpVip('${activeSerie.id}','${ep.id}')" class="px-2 py-1 rounded bg-white/10 text-[#00d4ff] font-bold">${ep.isVip ? 'Mudar p/ Grátis' : 'Mudar p/ VIP'}</button>
+                    <button onclick="window.app.editEp('${activeSerie.id}','${ep.id}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Trocar Vídeo</button>
                     <button onclick="window.app.deleteEp('${activeSerie.id}','${ep.id}')" class="text-red-400 font-bold">Apagar</button>
                   </div>`
                 : '';
@@ -693,13 +718,15 @@
         const container = document.getElementById('creator-studio-container');
         if (!container) return;
         container.classList.remove('hidden');
+        const editing = state.editingEpData;
+
         container.innerHTML = `
           <section class="bg-[#0b0e17] border-b-2 border-[#00d4ff] p-6 shadow-2xl">
             <div class="max-w-6xl mx-auto space-y-6">
               <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
                 <div>
                   <h2 class="font-display text-lg font-black text-[#00d4ff] uppercase">🎬 Estúdio de Gestão de Conteúdo</h2>
-                  <p class="text-xs text-gray-400">Suba episódios sem limite de MB usando link do YouTube (Não Listado), Google Drive, Dropbox, Catbox ou arquivo MP4.</p>
+                  <p class="text-xs text-gray-400">Dica: Para vídeos acima de 50MB que nunca travam nem pedem login, suba no YouTube como "Não Listado" (ou libere "Qualquer pessoa com o link" no Google Drive).</p>
                 </div>
               </div>
 
@@ -718,26 +745,35 @@
                   <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">+ Publicar Série</button>
                 </form>
 
-                <!-- PUBLICAR EPISÓDIO (SUPORTA +50MB VIA YOUTUBE NÃO LISTADO / DRIVE / CATBOX) -->
+                <!-- PUBLICAR OU EDITAR EPISÓDIO -->
                 <form onsubmit="window.app.createEpisode(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-3">
-                  <h3 class="text-xs font-black uppercase text-[#ff1722]">2. Adicionar Episódio (Full HD / Sem Limite MB)</h3>
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-black uppercase text-[#ff1722]">
+                      ${editing ? '✏️ Editando Episódio ' + editing.number : '2. Adicionar Episódio'}
+                    </h3>
+                    ${editing ? `<button type="button" onclick="window.app.cancelEditEp()" class="text-[10px] text-red-400 font-bold">Cancelar</button>` : ''}
+                  </div>
                   <select id="ne-serie" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white">
-                    ${state.seriesList.map((s) => `<option value="${s.id}">${s.title}</option>`).join('')}
+                    ${state.seriesList
+                      .map((s) => `<option value="${s.id}" ${editing && editing.serieId === s.id ? 'selected' : ''}>${s.title}</option>`)
+                      .join('')}
                   </select>
                   <div class="grid grid-cols-3 gap-2">
-                    <input type="number" id="ne-num" value="1" class="px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                    <input type="text" id="ne-title" required placeholder="Título do Episódio" class="col-span-2 px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                    <input type="number" id="ne-num" value="${editing ? editing.number : 1}" class="px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                    <input type="text" id="ne-title" required value="${editing ? editing.title : ''}" placeholder="Título do Episódio" class="col-span-2 px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                   </div>
                   <div class="p-2.5 rounded-xl bg-[#0b0e17] border border-dashed border-[#ff1722]/50 space-y-1.5">
-                    <label class="block text-[11px] font-bold text-[#ff1722]">Vídeo (>50MB use Link YouTube Não Listado / Drive / Catbox):</label>
-                    <input type="text" id="ne-video" required placeholder="Cole o link do YouTube Não Listado, Drive ou MP4" class="w-full px-2.5 py-2 rounded bg-[#040508] border border-white/15 text-xs text-emerald-400" />
+                    <label class="block text-[11px] font-bold text-[#ff1722]">Link do Vídeo (YouTube Não Listado, Drive Público ou MP4):</label>
+                    <input type="text" id="ne-video" required value="${editing ? editing.videoUrl : ''}" placeholder="Cole o link aqui..." class="w-full px-2.5 py-2 rounded bg-[#040508] border border-white/15 text-xs text-emerald-400" />
                     <label class="block text-[10px] text-gray-400 pt-1">Ou envie arquivo até 50MB direto:</label>
                     <input type="file" accept="video/*" onchange="window.app.uploadMedia(this.files[0], 'ne-video')" class="w-full text-[11px]" />
                   </div>
                   <label class="flex items-center gap-2 text-xs text-gray-300">
-                    <input type="checkbox" id="ne-vip" checked /> Exclusivo para Assinantes VIP
+                    <input type="checkbox" id="ne-vip" ${editing ? (editing.isVip ? 'checked' : '') : 'checked'} /> Exclusivo para Assinantes VIP
                   </label>
-                  <button type="submit" class="w-full py-2.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">+ Publicar Episódio</button>
+                  <button type="submit" class="w-full py-2.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
+                    ${editing ? '💾 Salvar Novo Link do Episódio' : '+ Publicar Episódio'}
+                  </button>
                 </form>
 
                 <!-- GATEWAY PIX & CLIENTES -->
@@ -766,7 +802,6 @@
         `;
       }
 
-      // API Pública de Interação da Interface
       window.app = {
         selectCategory(cat) {
           state.selectedCategory = cat;
@@ -846,7 +881,7 @@
           document.getElementById('tab-reg-btn').className = `flex-1 py-2 rounded-lg text-xs font-black uppercase ${!isLogin ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'}`;
         },
         closeModals() {
-          ['auth-modal', 'coupon-modal', 'vip-modal'].forEach((id) => document.getElementById(id)?.classList.add('hidden'));
+          ['auth-modal', 'vip-modal'].forEach((id) => document.getElementById(id)?.classList.add('hidden'));
           if (state.pixInterval) clearInterval(state.pixInterval);
         },
         async handleLogin(e) {
@@ -913,9 +948,9 @@
           renderAll();
           toast('Sessão encerrada.');
         },
-        openCouponModal() {
-          document.getElementById('coupon-feedback').textContent = '';
-          document.getElementById('coupon-modal').classList.remove('hidden');
+        toggleInlineCoupon() {
+          const box = document.getElementById('inline-coupon-box');
+          if (box) box.classList.toggle('hidden');
         },
         handleCoupon(e) {
           e.preventDefault();
@@ -928,10 +963,18 @@
           const code = document.getElementById('coupon-code-input').value.trim().toUpperCase();
           const found = state.coupons.find((c) => c.code === code && c.usesLeft > 0);
           if (!found) {
-            document.getElementById('coupon-feedback').textContent = 'Cupom inválido ou esgotado.';
+            document.getElementById('coupon-feedback').textContent = '❌ Cupom inválido ou esgotado.';
             return;
           }
           found.usesLeft -= 1;
+
+          if (found.type === 'price') {
+            state.discountedPrice = Number(found.value);
+            document.getElementById('coupon-feedback').textContent = `✅ Cupom aplicado! Novo valor: R$ ${Number(found.value).toFixed(2).replace('.', ',')}`;
+            this.openVipCheckout();
+            return;
+          }
+
           user.isVip = true;
           user.vipUntil = Date.now() + Number(found.value) * 86400000;
           syncCloud();
@@ -1040,7 +1083,7 @@
         async uploadMedia(file, targetInputId) {
           if (!file) return;
           if (file.size > 50 * 1024 * 1024) {
-            toast('Este vídeo tem mais de 50MB! Suba no YouTube como "Não Listado" (ou Catbox/Drive) e cole o link abaixo para manter 100% da qualidade!');
+            toast('Vídeo acima de 50MB! Suba no YouTube como "Não Listado" (ou libere "Qualquer pessoa com o link" no Google Drive) e cole o link abaixo!');
             return;
           }
           toast('Enviando arquivo para a nuvem...');
@@ -1078,6 +1121,25 @@
           renderAll();
           toast('Nova série publicada!');
         },
+        editEp(serieId, epId) {
+          const serie = state.seriesList.find((s) => s.id === serieId);
+          const ep = serie?.episodes?.find((e) => e.id === epId);
+          if (!ep) return;
+          state.editingEpData = {
+            serieId,
+            epId: ep.id,
+            number: ep.number,
+            title: ep.title,
+            videoUrl: ep.videoUrl,
+            isVip: ep.isVip
+          };
+          renderCreatorStudio();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        cancelEditEp() {
+          state.editingEpData = null;
+          renderCreatorStudio();
+        },
         createEpisode(e) {
           e.preventDefault();
           const serieId = document.getElementById('ne-serie').value;
@@ -1088,20 +1150,33 @@
 
           const serie = state.seriesList.find((s) => s.id === serieId);
           if (!serie) return;
-          serie.episodes.push({
-            id: 'ep_' + Date.now(),
-            number,
-            title,
-            duration: '04 min',
-            isVip,
-            comingSoon: false,
-            isVertical: true,
-            thumb: serie.poster,
-            videoUrl
-          });
+
+          if (state.editingEpData) {
+            const ep = serie.episodes.find((item) => item.id === state.editingEpData.epId);
+            if (ep) {
+              ep.number = number;
+              ep.title = title;
+              ep.videoUrl = videoUrl;
+              ep.isVip = isVip;
+            }
+            state.editingEpData = null;
+            toast('Vídeo do episódio atualizado com sucesso!');
+          } else {
+            serie.episodes.push({
+              id: 'ep_' + Date.now(),
+              number,
+              title,
+              duration: '04 min',
+              isVip,
+              comingSoon: false,
+              isVertical: true,
+              thumb: serie.poster,
+              videoUrl
+            });
+            toast('Episódio publicado com sucesso!');
+          }
           syncCloud();
           renderAll();
-          toast('Episódio publicado com sucesso!');
         },
         saveConfig() {
           const tk = document.getElementById('cfg-token').value.trim();
