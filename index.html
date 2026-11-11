@@ -8,7 +8,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Da Um Play IA — Plataforma Oficial de Séries e Mini Novelinhas IA</title>
   <meta name="description" content="Assista produções originais, mini novelinhas verticais e séries dramáticas criadas com Inteligência Artificial em alta definição. Acesso VIP Mensal de 30 dias." />
-  <meta name="keywords" content="Da Um Play IA, brasileiros ia, mini novelinhas, séries curtas, novelas verticais, streaming IA, séries originais" />
+  <meta name="keywords" content="Da Um Play IA, mini novelinhas, séries curtas, novelas verticais, streaming IA, séries originais" />
   <meta name="author" content="Da Um Play IA" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://da-um-play-ia-oficial.vercel.app/" />
@@ -24,9 +24,9 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 
   <style>
@@ -34,8 +34,8 @@
       --bg-main: #05060a;
       --bg-card: #0b0e17;
       --bg-elev: #10141f;
-      --accent-red: #ff1f2e;
-      --accent-cyan: #22d3ee;
+      --accent-red: #ff1722;
+      --accent-cyan: #00d4ff;
       --accent-gold: #f5c542;
       --line: rgba(255,255,255,0.08);
     }
@@ -47,10 +47,7 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
       position: relative;
-      user-select: none;
-      -webkit-user-select: none;
     }
-    input, textarea, select { user-select: text; -webkit-user-select: text; }
     body::before {
       content: '';
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -64,10 +61,9 @@
     }
     header, main, footer, section, nav { position: relative; z-index: 2; }
     h1, h2, h3, h4, .font-display { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
+    .font-serif-vip { font-family: 'Playfair Display', Georgia, serif; }
 
-    /* ==========================================================
-       ANIMAÇÃO DE ENTRADA CINEMATOGRÁFICA (SPLASH INTRO)
-       ========================================================== */
+    /* SPLASH SCREEN */
     #splash-intro {
       position: fixed;
       inset: 0;
@@ -85,35 +81,39 @@
       pointer-events: none;
     }
     .splash-logo-pulse {
-      animation: cinema-zoom 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: cinema-zoom 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     @keyframes cinema-zoom {
-      0% { transform: scale(0.75); opacity: 0; filter: blur(8px); }
-      50% { transform: scale(1.04); opacity: 1; filter: blur(0px); }
+      0% { transform: scale(0.78); opacity: 0; filter: blur(8px); }
+      50% { transform: scale(1.03); opacity: 1; filter: blur(0px); }
       100% { transform: scale(1); opacity: 1; }
     }
-    .splash-bar-fill {
-      width: 0%;
-      animation: bar-load 1.5s ease-out forwards;
+    @keyframes spinSlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes spinReverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+    @keyframes pulseDot {
+      0%, 80%, 100% { transform: scale(0.65); opacity: 0.35; }
+      40% { transform: scale(1.2); opacity: 1; }
     }
-    @keyframes bar-load {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
+    .ring-red { animation: spinSlow 14s linear infinite; }
+    .ring-cyan { animation: spinReverse 10s linear infinite; }
+    .dot-1 { animation: pulseDot 1.4s infinite ease-in-out both; animation-delay: -0.32s; }
+    .dot-2 { animation: pulseDot 1.4s infinite ease-in-out both; animation-delay: -0.16s; }
+    .dot-3 { animation: pulseDot 1.4s infinite ease-in-out both; }
 
     .glass-bar {
-      background: rgba(6,8,14,0.82);
+      background: rgba(6,8,14,0.85);
       backdrop-filter: blur(20px) saturate(140%);
       -webkit-backdrop-filter: blur(20px) saturate(140%);
       border-bottom: 1px solid var(--line) !important;
       box-shadow: 0 8px 32px rgba(0,0,0,0.35);
     }
 
-    button { transition: transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s, background .22s, border-color .22s, opacity .22s; }
-    button:hover { transform: translateY(-1px); }
-    button:active { transform: translateY(0) scale(0.98); }
+    button, a { transition: transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s, background .22s, border-color .22s, opacity .22s; }
+    button:hover, a:hover { transform: translateY(-1px); }
+    button:active, a:active { transform: translateY(0) scale(0.98); }
     .btn-red-glow {
       background: linear-gradient(135deg, #ff2d3c, #d90f19) !important;
+      color: #ffffff !important;
       box-shadow: 0 8px 28px -6px rgba(255,31,46,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
     }
 
@@ -133,8 +133,8 @@
     }
     #series-grid article:hover {
       transform: translateY(-6px) !important;
-      border-color: rgba(34,211,238,0.55) !important;
-      box-shadow: 0 24px 50px -12px rgba(34,211,238,0.25);
+      border-color: rgba(0,212,255,0.55) !important;
+      box-shadow: 0 24px 50px -12px rgba(0,212,255,0.25);
     }
     #series-grid article img { transition: transform .5s ease; }
     #series-grid article:hover img { transform: scale(1.06); }
@@ -148,22 +148,35 @@
     }
     #episodes-grid > div:hover {
       transform: translateY(-4px);
-      border-color: rgba(34,211,238,0.5) !important;
+      border-color: rgba(0,212,255,0.5) !important;
     }
 
     input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="search"], input[type="number"], textarea, select {
-      background: rgba(8,10,18,0.88) !important;
-      border: 1px solid rgba(255,255,255,0.14) !important;
+      background: linear-gradient(135deg, rgba(16, 24, 42, 0.96), rgba(11, 14, 23, 0.98)) !important;
+      border: 1px solid rgba(0, 212, 255, 0.28) !important;
+      color: #ffffff !important;
+      transition: all 0.2s ease;
     }
+    input::placeholder, textarea::placeholder { color: rgba(180, 188, 200, 0.85) !important; }
     input:focus, textarea:focus, select:focus {
-      border-color: var(--accent-cyan) !important;
-      box-shadow: 0 0 0 3px rgba(34,211,238,0.15) !important;
+      border-color: #00d4ff !important;
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.18), 0 4px 18px rgba(255, 23, 34, 0.12) !important;
       outline: none;
     }
 
-    /* ==========================================================
-       PLAYER ESTILO NETFLIX / REELSHORT
-       ========================================================== */
+    .vip-icon-frame {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px;
+      border: 1px solid rgba(0, 212, 255, 0.55);
+      border-radius: 16px;
+      background: rgba(11, 14, 23, 0.92);
+      color: #00d4ff;
+      box-shadow: 0 0 24px rgba(0, 212, 255, 0.18);
+    }
+
+    /* PLAYER DE CINEMA */
     #player-modal {
       position: fixed;
       inset: 0;
@@ -203,7 +216,7 @@
       background: #000000;
       border-radius: 16px;
       overflow: hidden;
-      border: 1px solid rgba(34, 211, 238, 0.3);
+      border: 1px solid rgba(0, 212, 255, 0.35);
       box-shadow: 0 25px 80px rgba(0,0,0,0.95);
     }
     #player-stage video,
@@ -220,25 +233,37 @@
     #player-stage video { object-fit: contain !important; }
   </style>
 </head>
-<body class="bg-[#040508] text-white min-h-screen flex flex-col pb-20 md:pb-0">
+<body class="bg-[#040508] text-white min-h-screen flex flex-col pb-24 md:pb-0">
   <div class="grain-overlay"></div>
 
-  <!-- =========================================================================
-       1. ANIMAÇÃO DE ENTRADA QUANDO ABRE O SITE (ESTILO BRASILEIROS IA / NETFLIX)
-       ========================================================================= -->
+  <!-- 1. SPLASH SCREEN -->
   <div id="splash-intro">
     <div class="splash-logo-pulse flex flex-col items-center text-center px-6">
-      <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] p-0.5 shadow-2xl shadow-[#ff1722]/40 mb-5">
-        <div class="w-full h-full bg-[#040508] rounded-[22px] flex items-center justify-center text-3xl font-black text-[#ff1722]">▶</div>
+      <div class="relative w-44 h-44 mb-5 flex items-center justify-center">
+        <div class="ring-cyan absolute inset-0 rounded-full border-2 border-dashed border-[#00d4ff]/60 shadow-[0_0_40px_rgba(0,212,255,0.3)]"></div>
+        <div class="ring-red absolute inset-3.5 rounded-full border-2 border-[#ff1722]/75 shadow-[0_0_30px_rgba(255,23,34,0.4)]"></div>
+        <div class="absolute inset-8 rounded-full bg-gradient-to-b from-[#ff1722]/25 via-[#00d4ff]/15 to-transparent blur-md"></div>
+
+        <div class="relative z-10 w-20 h-20 rounded-3xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] p-0.5 shadow-2xl shadow-[#ff1722]/40">
+          <div class="w-full h-full bg-[#040508] rounded-[22px] flex items-center justify-center text-3xl font-black text-[#ff1722]">▶</div>
+        </div>
       </div>
-      <div class="font-display text-3xl md:text-5xl font-black tracking-tight text-white">
-        DA UM <span class="text-[#ff1722]">PLAY</span> <span class="text-[#00d4ff]">IA</span>
+
+      <div class="flex items-center justify-center gap-2.5">
+        <div class="font-display text-3xl md:text-5xl font-black tracking-tight text-white">
+          DA UM <span class="text-[#ff1722]">PLAY</span> <span class="text-[#00d4ff]">IA</span>
+        </div>
+        <span class="bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white font-black text-xs px-2.5 py-0.5 rounded shadow">VIP</span>
       </div>
-      <span class="text-[11px] uppercase tracking-[0.3em] text-gray-400 font-bold mt-2">
-        Streaming Oficial de Séries & Mini Novelinhas IA
+
+      <span class="text-xs uppercase tracking-[0.2em] text-gray-300 font-bold mt-2 max-w-md">
+        Um lugar reservado para quem faz parte da nossa história.
       </span>
-      <div class="w-56 h-1.5 bg-white/10 rounded-full overflow-hidden mt-6">
-        <div class="splash-bar-fill h-full bg-gradient-to-r from-[#ff1722] to-[#00d4ff] rounded-full"></div>
+
+      <div class="flex items-center justify-center gap-2.5 mt-6">
+        <span class="dot-1 w-3 h-3 rounded-full bg-[#ff1722] shadow-[0_0_12px_#ff1722]"></span>
+        <span class="dot-2 w-3 h-3 rounded-full bg-[#00d4ff] shadow-[0_0_12px_#00d4ff]"></span>
+        <span class="dot-3 w-3 h-3 rounded-full bg-[#ff1722] shadow-[0_0_12px_#ff1722]"></span>
       </div>
     </div>
   </div>
@@ -247,32 +272,61 @@
   <div id="toast-box" class="hidden fixed top-20 right-4 z-[10000] max-w-sm glass-bar border border-[#00d4ff]/50 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
 
   <!-- CABEÇALHO -->
-  <header class="sticky top-0 z-40 glass-bar border-b border-white/10 px-4 md:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
-    <div class="flex items-center gap-6">
-      <a href="#topo" class="flex items-center gap-3 text-left focus:outline-none">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] p-0.5 shadow-lg">
+  <header class="sticky top-0 z-40 glass-bar border-b border-white/10 px-3 md:px-8 py-3 flex flex-wrap items-center justify-between gap-2.5">
+    <div class="flex items-center gap-4">
+      <a href="#topo" class="flex items-center gap-2.5 text-left focus:outline-none">
+        <div class="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] p-0.5 shadow-lg flex-shrink-0">
           <div class="w-full h-full bg-[#040508] rounded-[14px] flex items-center justify-center font-black text-[#ff1722]">▶</div>
         </div>
         <div>
-          <span class="font-display text-lg md:text-2xl font-black tracking-tight text-white">
-            DA UM <span class="text-[#ff1722]">PLAY</span> <span class="text-[#00d4ff]">IA</span>
-          </span>
-          <span class="block text-[9px] uppercase tracking-[0.2em] text-gray-400 font-bold">Membros & Séries Originais</span>
+          <div class="flex items-center gap-1.5">
+            <span class="font-display text-base md:text-2xl font-black tracking-tight text-white">
+              DA UM <span class="text-[#ff1722]">PLAY</span> <span class="text-[#00d4ff]">IA</span>
+            </span>
+            <span class="bg-[#00d4ff]/20 border border-[#00d4ff]/50 text-[#00d4ff] font-black text-[10px] px-1.5 py-0.5 rounded">VIP</span>
+          </div>
+          <span class="hidden sm:block text-[10px] uppercase tracking-[0.16em] text-gray-300 font-bold">Produções Originais com IA</span>
         </div>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-5 text-xs font-bold text-gray-300">
+      <nav class="hidden lg:flex items-center gap-5 text-xs font-bold text-gray-200 pl-3 border-l border-white/10">
         <a href="#topo" class="hover:text-[#00d4ff] transition">Início</a>
         <a href="#catalogo" class="hover:text-[#00d4ff] transition">Catálogo</a>
         <a href="#avaliacoes" class="hover:text-[#00d4ff] transition">Comunidade</a>
-        <button onclick="window.app.toggleSupportChat()" class="hover:text-[#00d4ff] transition">Suporte Online</button>
       </nav>
     </div>
 
-    <div class="flex items-center gap-2" id="header-actions"></div>
+    <!-- BOTÕES DE REDES E LOGIN NO TOPO -->
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <a
+        id="nav-insta-link"
+        href="https://instagram.com/Essencia_da_vidah"
+        target="_blank"
+        rel="noreferrer"
+        title="Instagram Oficial"
+        class="px-2.5 py-2 rounded-xl bg-gradient-to-r from-[#833ab4]/25 via-[#fd1d1d]/25 to-[#fcb045]/25 hover:from-[#833ab4]/40 hover:to-[#fcb045]/40 border border-pink-500/40 text-pink-300 text-xs font-extrabold flex items-center gap-1.5 shadow"
+      >
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        <span class="hidden sm:inline">Instagram</span>
+      </a>
+
+      <a
+        id="nav-wa-link"
+        href="https://wa.me/5575991227668?text=Ol%C3%A1%2C%20preciso%20de%20suporte%20na%20plataforma%20Da%20Um%20Play%20IA"
+        target="_blank"
+        rel="noreferrer"
+        title="Suporte WhatsApp"
+        class="px-2.5 py-2 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/50 text-[#25D366] text-xs font-extrabold flex items-center gap-1.5 shadow"
+      >
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-2.284 4.967 5.144-2.214c1.903 1.396 4.256 2.214 6.856 2.214 6.627 0 12-5.373 12-12s-5.373-12-12-12z"/></svg>
+        <span class="hidden sm:inline">Suporte</span>
+      </a>
+
+      <div class="flex items-center gap-1.5" id="header-actions"></div>
+    </div>
   </header>
 
-  <!-- ÁREA DINÂMICA DO ESTÚDIO DO CRIADOR -->
+  <!-- ÁREA DINÂMICA DO ESTÚDIO DO CRIADOR (SÓ APARECE SE O PERFIL TIVER role = 'admin' NO SUPABASE) -->
   <div id="creator-studio-container" class="hidden"></div>
 
   <!-- CONTEÚDO PRINCIPAL -->
@@ -283,14 +337,15 @@
       <div class="absolute inset-0 bg-gradient-to-t from-[#040508] via-[#040508]/70 to-transparent"></div>
       <div class="relative z-10 max-w-2xl space-y-4">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="px-3 py-1 rounded-full bg-[#ff1722] text-white text-[10px] font-black uppercase tracking-wider">Lançamento Original</span>
-          <span id="hero-category" class="px-3 py-1 rounded-full bg-[#00d4ff]/15 border border-[#00d4ff]/40 text-[#00d4ff] text-[11px] font-bold">Mini Novelinha IA</span>
-          <span id="hero-seasons-badge" class="px-2.5 py-0.5 rounded bg-white/10 text-[10px] font-bold text-amber-400">1ª Temporada</span>
+          <span class="px-3 py-1 rounded-full bg-[#ff1722] text-white text-xs font-black uppercase tracking-wider">Lançamento Original</span>
+          <span id="hero-category" class="px-3 py-1 rounded-full bg-[#00d4ff]/15 border border-[#00d4ff]/40 text-[#00d4ff] text-xs font-bold">Mini Novelinha IA</span>
+          <span id="hero-seasons-badge" class="px-2.5 py-1 rounded bg-white/10 text-xs font-bold text-amber-400">1ª Temporada</span>
+          <span class="px-2.5 py-1 rounded bg-white/10 text-xs font-bold text-gray-200">🤖 Produção IA</span>
         </div>
         <h1 id="hero-title" class="font-display text-4xl md:text-6xl font-black leading-tight tracking-tight text-white">
           Produções Originais Da Um Play IA
         </h1>
-        <p id="hero-synopsis" class="text-sm md:text-base text-gray-300 leading-relaxed max-w-xl">
+        <p id="hero-synopsis" class="text-sm md:text-base text-gray-200 leading-relaxed max-w-xl">
           Histórias intensas, reviravoltas dramáticas e episódios exclusivos criados com tecnologia cinematográfica de Inteligência Artificial.
         </p>
         <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -309,14 +364,14 @@
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 class="font-display text-2xl font-black">Catálogo de Séries & Mini Novelinhas</h2>
-          <p class="text-xs text-gray-400">Toque em uma série para escolher a temporada e assistir aos episódios.</p>
+          <p class="text-xs text-gray-300">Toque em uma série para escolher a temporada e assistir aos episódios.</p>
         </div>
         <input
           type="search"
           id="search-input"
           oninput="window.app.handleSearch(this.value)"
           placeholder="🔍 Buscar título..."
-          class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white focus:border-[#00d4ff] focus:outline-none w-full sm:w-64"
+          class="px-4 py-2.5 rounded-full bg-white/5 border border-white/10 text-xs text-white focus:border-[#00d4ff] focus:outline-none w-full sm:w-64"
         />
       </div>
 
@@ -327,9 +382,9 @@
       <div id="episodes-container" class="bg-[#0b0e17] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 scroll-mt-24">
         <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5">
           <div class="space-y-1">
-            <span id="selected-serie-cat" class="text-[11px] uppercase font-extrabold text-[#00d4ff]">Série Selecionada</span>
+            <span id="selected-serie-cat" class="text-xs uppercase font-extrabold text-[#00d4ff]">Série Selecionada</span>
             <h3 id="selected-serie-title" class="font-display text-2xl md:text-3xl font-black">Episódios</h3>
-            <p id="selected-serie-desc" class="text-xs text-gray-400 max-w-2xl"></p>
+            <p id="selected-serie-desc" class="text-xs text-gray-300 max-w-2xl"></p>
           </div>
           <span id="selected-serie-count" class="text-xs font-bold text-[#00d4ff] bg-[#00d4ff]/10 border border-[#00d4ff]/30 px-3.5 py-1.5 rounded-full"></span>
         </div>
@@ -339,12 +394,12 @@
       </div>
     </section>
 
-    <!-- MURAL DA COMUNIDADE DE MEMBROS (COM @INSTAGRAM) -->
+    <!-- MURAL DA COMUNIDADE DE MEMBROS -->
     <section id="avaliacoes" class="max-w-6xl mx-auto px-6 py-6">
       <div class="bg-[#0b0e17] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <span class="text-[11px] font-black uppercase text-[#00d4ff]">Comunidade Oficial de Membros</span>
+            <span class="text-xs font-black uppercase text-[#00d4ff]">Comunidade Oficial de Membros</span>
             <h2 class="font-display text-xl md:text-2xl font-black">Mural dos Assinantes</h2>
           </div>
           <button onclick="window.app.openReviewForm()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold text-[#00d4ff]">
@@ -354,7 +409,7 @@
 
         <form id="review-form" onsubmit="window.app.submitRealReview(event)" class="hidden bg-[#040508] border border-white/15 rounded-2xl p-4 space-y-3">
           <div class="flex items-center gap-3">
-            <label class="text-xs font-bold text-gray-300">Sua Nota:</label>
+            <label class="text-xs font-bold text-gray-200">Sua Nota:</label>
             <select id="review-stars" class="px-3 py-1.5 rounded-lg bg-[#0b0e17] border border-white/15 text-xs text-amber-400 font-bold">
               <option value="5">★★★★★ (5/5)</option>
               <option value="4">★★★★☆ (4/5)</option>
@@ -370,34 +425,27 @@
     </section>
   </main>
 
-  <!-- =========================================================================
-       2. SUPORTE DENTRO DA PLATAFORMA (WIDGET DE CHAT INTERNO EM TEMPO REAL)
-       ========================================================================= -->
-  <div class="fixed bottom-5 right-5 z-[90]">
-    <!-- JANELA DO CHAT INTERNO -->
-    <div id="support-chat-window" class="hidden mb-3 w-80 sm:w-96 bg-[#0b0e17] border-2 border-[#00d4ff]/60 rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+  <!-- 2. BARRA FLUTUANTE COM OS 3 BOTÕES VISÍVEIS NA TELA (INSTAGRAM, WHATSAPP E CHAT) -->
+  <div class="fixed bottom-4 right-4 z-[90] flex flex-col items-end gap-2.5">
+    <div id="support-chat-window" class="hidden mb-1 w-80 sm:w-96 bg-[#0b0e17] border-2 border-[#00d4ff]/60 rounded-3xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-gradient-to-r from-[#080d1a] to-[#0f172a] border-b border-white/10 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
           <div>
-            <h4 class="font-display text-sm font-black text-white">Central de Suporte Interna</h4>
-            <span class="block text-[10px] text-[#00d4ff] font-bold">Atendimento dentro da plataforma</span>
+            <h4 class="font-display text-sm font-black text-white">Suporte Interno da Plataforma</h4>
+            <span class="block text-xs text-[#00d4ff] font-bold">Tire sua dúvida aqui ou no WhatsApp</span>
           </div>
         </div>
         <button onclick="window.app.toggleSupportChat()" class="text-gray-400 hover:text-white font-bold text-sm">✕</button>
       </div>
 
-      <!-- PERGUNTAS RÁPIDAS AUTOMÁTICAS -->
       <div class="px-3 py-2 bg-[#040508] border-b border-white/10 flex flex-wrap gap-1.5">
-        <button onclick="window.app.sendQuickSupport('Como funciona o VIP Mensal de 30 dias?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-[10px] font-bold text-gray-300">👑 Como funciona o VIP?</button>
-        <button onclick="window.app.sendQuickSupport('Já fiz o PIX, como libera?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-[10px] font-bold text-gray-300">⚡ Liberação PIX</button>
-        <button onclick="window.app.sendQuickSupport('Como edito meu perfil ou senha?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-[10px] font-bold text-gray-300">👤 Meu Perfil</button>
+        <button onclick="window.app.sendQuickSupport('Como funciona o VIP Mensal de 30 dias?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-200">👑 Como funciona o VIP?</button>
+        <button onclick="window.app.sendQuickSupport('Já fiz o PIX, como libera?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-200">⚡ Liberação PIX</button>
       </div>
 
-      <!-- HISTÓRICO DE MENSAGENS DO CHAT -->
-      <div id="support-messages-box" class="p-4 h-64 overflow-y-auto space-y-2.5 bg-[#06080f] text-xs"></div>
+      <div id="support-messages-box" class="p-4 h-60 overflow-y-auto space-y-2.5 bg-[#06080f] text-xs"></div>
 
-      <!-- ENVIAR DÚVIDA DIRETO NA PLATAFORMA -->
       <form onsubmit="window.app.submitSupportMessage(event)" class="p-3 bg-[#0b0e17] border-t border-white/10 flex gap-2">
         <input
           type="text"
@@ -413,99 +461,108 @@
       </form>
     </div>
 
-    <!-- BOTÃO FLUTUANTE DE SUPORTE -->
-    <button
-      onclick="window.app.toggleSupportChat()"
-      class="ml-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#00d4ff] to-[#0099cc] text-[#040508] font-black text-xs shadow-2xl hover:scale-105 transition"
-    >
-      <span class="text-base">💬</span>
-      <span>Suporte na Plataforma</span>
-    </button>
+    <div class="flex flex-col sm:flex-row items-end sm:items-center gap-2">
+      <a
+        id="float-insta-btn"
+        href="https://instagram.com/Essencia_da_vidah"
+        target="_blank"
+        rel="noreferrer"
+        class="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white font-black text-xs shadow-2xl hover:scale-105 transition"
+      >
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        <span>Instagram</span>
+      </a>
+
+      <a
+        id="float-wa-btn"
+        href="https://wa.me/5575991227668?text=Ol%C3%A1%2C%20preciso%20de%20suporte%20na%20plataforma%20Da%20Um%20Play%20IA"
+        target="_blank"
+        rel="noreferrer"
+        class="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-[#040508] font-black text-xs shadow-2xl hover:scale-105 transition"
+      >
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-2.284 4.967 5.144-2.214c1.903 1.396 4.256 2.214 6.856 2.214 6.627 0 12-5.373 12-12s-5.373-12-12-12z"/></svg>
+        <span>WhatsApp</span>
+      </a>
+
+      <button
+        onclick="window.app.toggleSupportChat()"
+        class="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-[#00d4ff] to-[#0099cc] text-[#040508] font-black text-xs shadow-2xl hover:scale-105 transition"
+      >
+        <span>💬</span>
+        <span>Chat Suporte</span>
+      </button>
+    </div>
   </div>
 
-  <!-- =========================================================================
-       3. MODAL DO PERFIL DO USUÁRIO (STATUS DE MEMBRO, INSTAGRAM, EDITAR E TROCAR SENHA)
-       ========================================================================= -->
+  <!-- 3. MODAL DO PERFIL DO USUÁRIO -->
   <div id="profile-modal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-[#0b0e17] border-2 border-[#00d4ff]/40 rounded-3xl max-w-lg w-full p-6 space-y-5 relative shadow-2xl my-8">
       <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
 
-      <!-- CARTÃO DE MEMBRO OFICIAL (ESTILO BRASILEIROS IA) -->
       <div class="p-4 rounded-2xl bg-gradient-to-br from-[#14070e] via-[#0b101d] to-[#051824] border border-white/15 flex items-center gap-4">
         <div id="prof-avatar" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ff1722] to-[#00d4ff] flex items-center justify-center font-display text-2xl font-black text-white shadow-lg flex-shrink-0">
           U
         </div>
         <div class="min-w-0 flex-1 space-y-1">
           <div class="flex flex-wrap items-center gap-1.5">
-            <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-black uppercase">
-              ✓ Membro Oficial
+            <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-black uppercase">
+              ✓ Membro Verificado
             </span>
-            <span id="prof-vip-badge" class="px-2.5 py-0.5 rounded-md bg-[#00d4ff]/20 border border-[#00d4ff]/40 text-[#00d4ff] text-[10px] font-black uppercase">
+            <span id="prof-vip-badge" class="px-2.5 py-0.5 rounded-md bg-[#00d4ff]/20 border border-[#00d4ff]/40 text-[#00d4ff] text-xs font-black uppercase">
               Plano Grátis
             </span>
           </div>
           <h3 id="prof-display-name" class="font-display text-lg font-black text-white truncate">Nome do Membro</h3>
-          <p id="prof-display-email" class="text-xs text-gray-400 truncate">email@exemplo.com</p>
-          <p id="prof-display-insta" class="text-xs text-[#00d4ff] font-bold truncate"></p>
+          <p id="prof-display-email" class="text-xs text-gray-300 truncate">email@exemplo.com</p>
         </div>
       </div>
 
-      <!-- STATUS DO VIP MENSAL DE 30 DIAS -->
       <div class="p-4 rounded-2xl bg-[#040508] border border-white/10 space-y-2">
         <div class="flex items-center justify-between text-xs">
-          <span class="font-bold text-gray-300">👑 Assinatura VIP Mensal (30 Dias):</span>
+          <span class="font-bold text-gray-200">👑 Assinatura VIP Mensal (30 Dias):</span>
           <span id="prof-vip-days" class="font-black text-[#00d4ff]">Inativo</span>
         </div>
         <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
           <div id="prof-vip-bar" class="h-full bg-gradient-to-r from-[#ff1722] to-[#00d4ff] rounded-full" style="width: 0%"></div>
         </div>
         <div class="pt-1 flex justify-end">
-          <button onclick="window.app.closeModals(); window.app.openVipCheckout();" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white text-[11px] font-black uppercase">
+          <button onclick="window.app.closeModals(); window.app.openVipCheckout();" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white text-xs font-black uppercase">
             ⚡ Ativar / Renovar +30 Dias VIP
           </button>
         </div>
       </div>
 
-      <!-- ABAS INTERNAS: EDITAR PERFIL vs TROCAR SENHA -->
       <div class="flex gap-2 bg-[#040508] p-1 rounded-xl">
         <button id="btn-prof-tab-edit" onclick="window.app.switchProfileTab('edit')" class="flex-1 py-2 rounded-lg text-xs font-black uppercase bg-[#00d4ff] text-[#040508]">
-          ✏️ Editar Perfil & Instagram
+          ✏️ Editar Meu Perfil
         </button>
         <button id="btn-prof-tab-pass" onclick="window.app.switchProfileTab('pass')" class="flex-1 py-2 rounded-lg text-xs font-black uppercase text-gray-400">
           🔒 Trocar Senha
         </button>
       </div>
 
-      <!-- FORMULÁRIO 1: EDITAR DADOS E INSTAGRAM -->
       <form id="prof-edit-form" onsubmit="window.app.saveProfileChanges(event)" class="space-y-3">
         <div>
-          <label class="block text-[11px] text-gray-400 font-bold mb-1">Seu Nome de Membro:</label>
+          <label class="block text-xs text-gray-300 font-bold mb-1">Seu Nome de Membro:</label>
           <input type="text" id="edit-prof-name" required maxlength="60" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-[11px] text-[#00d4ff] font-bold mb-1">📸 Seu @Instagram:</label>
-            <input type="text" id="edit-prof-insta" maxlength="50" placeholder="@seuinstagram" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-          </div>
-          <div>
-            <label class="block text-[11px] text-gray-400 font-bold mb-1">📱 Seu WhatsApp:</label>
-            <input type="tel" id="edit-prof-phone" maxlength="20" placeholder="(00) 90000-0000" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-          </div>
+        <div>
+          <label class="block text-xs text-gray-300 font-bold mb-1">📱 Seu WhatsApp:</label>
+          <input type="tel" id="edit-prof-phone" maxlength="20" placeholder="(00) 90000-0000" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         </div>
         <button type="submit" class="w-full py-3 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase shadow-lg">
           💾 Salvar Meu Perfil
         </button>
       </form>
 
-      <!-- FORMULÁRIO 2: TROCAR SENHA -->
       <form id="prof-pass-form" onsubmit="window.app.changeUserPassword(event)" class="hidden space-y-3">
         <div>
-          <label class="block text-[11px] text-gray-400 font-bold mb-1">Nova Senha:</label>
-          <input type="password" id="new-user-pass" required minlength="4" placeholder="Digite a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+          <label class="block text-xs text-gray-300 font-bold mb-1">Nova Senha (mínimo 6 caracteres):</label>
+          <input type="password" id="new-user-pass" required minlength="6" placeholder="Digite a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         </div>
         <div>
-          <label class="block text-[11px] text-gray-400 font-bold mb-1">Confirmar Nova Senha:</label>
-          <input type="password" id="confirm-user-pass" required minlength="4" placeholder="Repita a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+          <label class="block text-xs text-gray-300 font-bold mb-1">Confirmar Nova Senha:</label>
+          <input type="password" id="confirm-user-pass" required minlength="6" placeholder="Repita a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         </div>
         <button type="submit" class="btn-red-glow w-full py-3 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
           🔒 Atualizar Minha Senha
@@ -514,93 +571,163 @@
     </div>
   </div>
 
-  <!-- =========================================================================
-       4. MODAL DE LOGIN (GOOGLE + CÓDIGO NO E-MAIL OTP + SENHA)
-       ========================================================================= -->
-  <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-[#0b0e17] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 relative shadow-2xl my-8">
-      <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
+  <!-- 4. MODAL DE LOGIN E CADASTRO VIA SUPABASE AUTH -->
+  <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-[#040508]/95 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="max-w-md w-full my-8 flex flex-col items-center relative">
+      <button onclick="window.app.closeModals()" class="fixed top-5 right-5 w-10 h-10 rounded-xl bg-[#0b0e17] border border-white/15 text-gray-400 hover:text-white hover:border-[#00d4ff] font-bold flex items-center justify-center z-10">✕</button>
 
-      <div class="text-center space-y-1">
-        <span class="px-3 py-0.5 rounded-full bg-[#00d4ff]/15 text-[#00d4ff] text-[10px] font-black uppercase">Área de Membros</span>
-        <h3 class="font-display text-xl font-black text-white">Acesse sua Conta</h3>
-      </div>
-
-      <!-- BOTÃO OFICIAL DE LOGIN COM GOOGLE -->
-      <button
-        type="button"
-        onclick="window.app.loginWithGoogle()"
-        class="w-full py-3 px-4 rounded-xl bg-white hover:bg-gray-100 text-[#040508] font-extrabold text-xs flex items-center justify-center gap-2.5 shadow-lg transition"
-      >
-        <svg class="w-4 h-4" viewBox="0 0 24 24">
-          <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.7 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
-          <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
-          <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
-          <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 21.4 7.4 24 12 24z"/>
-        </svg>
-        <span>Continuar com o Google</span>
-      </button>
-
-      <!-- SELETOR DE MODO DE ACESSO -->
-      <div class="grid grid-cols-3 gap-1.5 bg-[#040508] p-1 rounded-xl">
-        <button id="tab-login-btn" onclick="window.app.switchAuthTab('login')" class="py-2 rounded-lg text-[11px] font-black uppercase bg-[#ff1722] text-white">Entrar</button>
-        <button id="tab-otp-btn" onclick="window.app.switchAuthTab('otp')" class="py-2 rounded-lg text-[11px] font-black uppercase text-gray-400">📩 Código E-mail</button>
-        <button id="tab-reg-btn" onclick="window.app.switchAuthTab('register')" class="py-2 rounded-lg text-[11px] font-black uppercase text-gray-400">Criar Conta</button>
-      </div>
-
-      <!-- 1. LOGIN COM SENHA -->
-      <form id="login-form" onsubmit="window.app.handleLogin(event)" class="space-y-3">
-        <input type="text" id="login-email" required autocomplete="email" placeholder="Seu E-mail de Acesso" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="password" id="login-pass" required autocomplete="current-password" placeholder="Sua Senha" class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <p id="auth-error-msg" class="text-xs text-[#ff1722] font-bold hidden"></p>
-        <button type="submit" class="btn-red-glow w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">Entrar na Plataforma</button>
-      </form>
-
-      <!-- 2. LOGIN COM CÓDIGO NO E-MAIL (OTP) -->
-      <div id="otp-form" class="hidden space-y-3">
-        <p class="text-[11px] text-gray-300 text-center">
-          Digite seu e-mail abaixo para receber um <b>Código de Acesso</b> instantâneo no seu e-mail:
+      <div class="text-center mb-5">
+        <div class="flex items-center justify-center gap-2 mb-1.5">
+          <span class="font-display text-2xl font-black tracking-tight text-white">
+            DA UM <span class="text-[#ff1722]">PLAY</span> <span class="text-[#00d4ff]">IA</span>
+          </span>
+          <span class="bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white font-black text-xs px-2 py-0.5 rounded shadow">VIP</span>
+        </div>
+        <p class="text-xs text-gray-300 tracking-[0.15em] uppercase">
+          Um lugar reservado para quem faz parte da nossa história.
         </p>
-        <div class="flex gap-2">
-          <input type="email" id="otp-email-input" placeholder="seuemail@gmail.com" class="flex-1 px-3.5 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-          <button type="button" onclick="window.app.sendEmailOtpCode()" class="px-4 py-3 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase whitespace-nowrap">
-            Enviar Código
-          </button>
-        </div>
-
-        <div id="otp-verify-box" class="hidden pt-2 border-t border-white/10 space-y-2.5">
-          <label class="block text-[11px] text-emerald-400 font-bold text-center">📩 Digite o código de 6 dígitos que chegou no seu e-mail:</label>
-          <input
-            type="text"
-            id="otp-code-digits"
-            maxlength="6"
-            inputmode="numeric"
-            placeholder="000000"
-            class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-[#00d4ff] text-center text-lg font-black tracking-[0.4em] text-[#00d4ff]"
-          />
-          <button type="button" onclick="window.app.verifyEmailOtpCode()" class="btn-red-glow w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
-            ✅ Validar Código e Entrar
-          </button>
-        </div>
       </div>
 
-      <!-- 3. CRIAR CONTA COM INSTAGRAM -->
-      <form id="register-form" onsubmit="window.app.handleRegister(event)" class="hidden space-y-2.5">
-        <input type="text" id="reg-name" required maxlength="60" placeholder="Seu Nome Completo" class="w-full px-4 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <input type="email" id="reg-email" required maxlength="90" placeholder="Seu Melhor E-mail" class="w-full px-4 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <div class="grid grid-cols-2 gap-2">
-          <input type="tel" id="reg-phone" maxlength="20" placeholder="WhatsApp com DDD" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-          <input type="text" id="reg-insta" maxlength="40" placeholder="@seuinstagram" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+      <div id="auth-context-icon" class="vip-icon-frame mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+        </svg>
+      </div>
+
+      <div class="text-center mb-6">
+        <h3 id="auth-heading-title" class="font-serif-vip text-3xl font-bold text-white mb-1">Bem-vindo de volta</h3>
+        <p id="auth-heading-sub" class="text-gray-300 text-sm">Acesse sua conta segura</p>
+      </div>
+
+      <div class="w-full bg-[#0b0e17] border border-white/15 rounded-3xl p-6 sm:p-7 shadow-2xl space-y-4">
+        <button
+          type="button"
+          onclick="window.app.loginWithGoogle()"
+          class="w-full py-3 px-4 rounded-xl border border-white/15 bg-[#040508]/90 hover:bg-white/10 text-white font-extrabold text-xs flex items-center justify-center gap-3 shadow-lg transition"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.7 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+            <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 21.4 7.4 24 12 24z"/>
+          </svg>
+          <span>Continuar com o Google</span>
+        </button>
+
+        <div class="relative my-4 text-center">
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+          <span class="relative bg-[#0b0e17] px-3 text-xs font-bold tracking-widest text-gray-400 uppercase">OU</span>
         </div>
-        <input type="password" id="reg-pass" required minlength="4" placeholder="Crie uma Senha" class="w-full px-4 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase shadow-lg">Criar Conta de Membro</button>
-      </form>
+
+        <div class="grid grid-cols-3 gap-1.5 bg-[#040508] p-1 rounded-xl border border-white/10">
+          <button id="tab-login-btn" onclick="window.app.switchAuthTab('login')" class="py-2 rounded-lg text-xs font-black uppercase bg-[#ff1722] text-white">Entrar</button>
+          <button id="tab-otp-btn" onclick="window.app.switchAuthTab('otp')" class="py-2 rounded-lg text-xs font-black uppercase text-gray-300">📩 Código</button>
+          <button id="tab-reg-btn" onclick="window.app.switchAuthTab('register')" class="py-2 rounded-lg text-xs font-black uppercase text-gray-300">Criar Conta</button>
+        </div>
+
+        <!-- 1. LOGIN COM SENHA (SUPABASE AUTH) -->
+        <form id="login-form" onsubmit="window.app.handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold mb-1.5 text-gray-200">E-mail</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-[#00d4ff] pointer-events-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              </span>
+              <input type="email" id="login-email" required autocomplete="email" placeholder="seu@email.com" class="w-full pl-10 pr-4 py-3 rounded-xl text-xs text-white" />
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <label class="text-xs font-bold text-gray-200">Senha</label>
+              <button type="button" onclick="window.app.switchAuthTab('otp')" class="text-xs text-[#00d4ff] font-bold hover:underline">Esqueci minha senha</button>
+            </div>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-[#00d4ff] pointer-events-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              </span>
+              <input type="password" id="login-pass" required autocomplete="current-password" placeholder="••••••••" class="w-full pl-10 pr-10 py-3 rounded-xl text-xs text-white" />
+              <button type="button" onclick="window.app.togglePassVisibility('login-pass')" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-white" aria-label="Mostrar senha">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <p id="auth-error-msg" class="text-xs text-[#ff1722] font-bold hidden"></p>
+          <button type="submit" class="btn-red-glow w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">Entrar na Plataforma</button>
+        </form>
+
+        <!-- 2. LOGIN COM CÓDIGO NO E-MAIL (OTP) -->
+        <div id="otp-form" class="hidden space-y-3">
+          <p class="text-xs text-gray-300 text-center">
+            Digite seu e-mail abaixo para receber um <b>Código de Acesso</b> instantâneo no seu e-mail:
+          </p>
+          <div class="flex gap-2">
+            <input type="email" id="otp-email-input" placeholder="seuemail@gmail.com" class="flex-1 px-3.5 py-3 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+            <button type="button" onclick="window.app.sendEmailOtpCode()" class="px-4 py-3 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase whitespace-nowrap">
+              Enviar Código
+            </button>
+          </div>
+
+          <div id="otp-verify-box" class="hidden pt-2 border-t border-white/10 space-y-2.5">
+            <label class="block text-xs text-emerald-400 font-bold text-center">📩 Digite o código de 6 dígitos enviado ao seu e-mail:</label>
+            <input
+              type="text"
+              id="otp-code-digits"
+              maxlength="6"
+              inputmode="numeric"
+              placeholder="000000"
+              class="w-full px-4 py-3 rounded-xl bg-[#040508] border border-[#00d4ff] text-center text-lg font-black tracking-[0.4em] text-[#00d4ff]"
+            />
+            <button type="button" onclick="window.app.verifyEmailOtpCode()" class="btn-red-glow w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
+              ✅ Validar Código e Entrar
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. CRIAR CONTA (SUPABASE AUTH) -->
+        <form id="register-form" onsubmit="window.app.handleRegister(event)" class="hidden space-y-3">
+          <div>
+            <label class="block text-xs font-bold mb-1 text-gray-200">Nome completo</label>
+            <input type="text" id="reg-name" required maxlength="60" placeholder="Seu Nome Completo" class="w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold mb-1 text-gray-200">E-mail</label>
+            <input type="email" id="reg-email" required maxlength="90" placeholder="seu@email.com" class="w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold mb-1 text-gray-200">WhatsApp (Opcional)</label>
+            <input type="tel" id="reg-phone" maxlength="20" placeholder="(00) 90000-0000" class="w-full px-3.5 py-2.5 rounded-xl text-xs text-white" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold mb-1 text-gray-200">Senha (mínimo 6 caracteres)</label>
+            <div class="relative">
+              <input type="password" id="reg-pass" required minlength="6" placeholder="Crie uma Senha segura" class="w-full px-4 pr-10 py-2.5 rounded-xl text-xs text-white" />
+              <button type="button" onclick="window.app.togglePassVisibility('reg-pass')" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-white" aria-label="Mostrar senha">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-gray-400 leading-relaxed">
+            Ao criar uma conta, você concorda com nossos <button type="button" onclick="window.app.openLegalModal('terms')" class="text-[#00d4ff] underline">Termos de Uso</button> e <button type="button" onclick="window.app.openLegalModal('privacy')" class="text-[#00d4ff] underline">Política de Privacidade (LGPD)</button>.
+          </p>
+
+          <button type="submit" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase shadow-lg">Criar Conta de Membro</button>
+        </form>
+      </div>
+
+      <p class="mt-5 text-sm text-gray-300">
+        <span id="auth-footer-question">Não tem conta?</span>
+        <button type="button" id="auth-footer-switch" onclick="window.app.switchAuthTab('register')" class="text-[#00d4ff] font-bold hover:underline ml-1">Criar conta</button>
+      </p>
     </div>
   </div>
 
-  <!-- =========================================================================
-       SUPER PLAYER NETFLIX (TELA CHEIA REAL + TEMPORADAS)
-       ========================================================================= -->
+  <!-- SUPER PLAYER NETFLIX -->
   <div id="player-modal" class="hidden flex flex-col justify-between">
     <div class="w-full h-[64px] px-4 md:px-8 bg-[#080a12] border-b border-white/10 flex items-center justify-between gap-2 z-20">
       <div class="flex items-center gap-3 min-w-0">
@@ -609,7 +736,7 @@
           <span>Voltar</span>
         </button>
         <div class="truncate">
-          <span id="player-ep-label" class="block text-[10px] font-black uppercase tracking-wider text-[#00d4ff]">SÉRIE • T1:E1</span>
+          <span id="player-ep-label" class="block text-xs font-black uppercase tracking-wider text-[#00d4ff]">SÉRIE • T1:E1</span>
           <h3 id="player-ep-title" class="font-display text-sm md:text-base font-black text-white truncate">Carregando...</h3>
         </div>
       </div>
@@ -645,100 +772,116 @@
     </div>
   </div>
 
-  <!-- MODAL PIX MERCADO PAGO (VIP MENSAL DE 30 DIAS) -->
+  <!-- MODAL PIX MERCADO PAGO -->
   <div id="vip-modal" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
     <div class="bg-[#0b0e17] border-2 border-[#00d4ff] rounded-3xl max-w-md w-full p-6 space-y-4 relative text-center shadow-2xl">
       <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-black uppercase">
         👑 Assinatura VIP Mensal • 30 Dias de Acesso
       </div>
       <h3 class="font-display text-xl font-black">Passaporte Membro VIP — 30 Dias</h3>
-      <p class="text-xs text-gray-400">Libera todas as séries, temporadas e lançamentos por 30 dias corridos.</p>
+      <p class="text-xs text-gray-300">Libera todas as séries, temporadas e lançamentos por 30 dias corridos.</p>
       <div id="vip-modal-price" class="font-display text-3xl font-black text-[#00d4ff]">R$ 9,90</div>
 
       <div class="pt-1">
-        <button type="button" onclick="window.app.toggleInlineCoupon()" class="text-[11px] font-bold text-gray-400 hover:text-[#00d4ff] underline">
+        <button type="button" onclick="window.app.toggleInlineCoupon()" class="text-xs font-bold text-gray-300 hover:text-[#00d4ff] underline">
           🎟️ Possui um cupom promocional? Clique para adicionar
         </button>
         <form id="inline-coupon-box" onsubmit="window.app.handleCoupon(event)" class="hidden mt-2.5 flex gap-2">
           <input type="text" id="coupon-code-input" placeholder="DIGITE O CUPOM" class="flex-1 px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-xs font-black uppercase text-[#00d4ff] text-center" />
           <button type="submit" class="px-4 py-2 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">Aplicar</button>
         </form>
-        <p id="coupon-feedback" class="text-[11px] font-bold text-amber-300 mt-1"></p>
+        <p id="coupon-feedback" class="text-xs font-bold text-amber-300 mt-1"></p>
       </div>
 
       <div id="pix-container" class="space-y-3 py-2"></div>
     </div>
   </div>
 
-  <!-- RODAPÉ -->
-  <footer class="bg-[#07090f] border-t border-white/10 pt-10 pb-8 px-6 text-xs text-gray-400">
-    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
-      <div>
+  <!-- MODAL LEGAL (TERMOS DE USO, PRIVACIDADE LGPD E POLÍTICA DE REEMBOLSO) -->
+  <div id="legal-modal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+    <div class="bg-[#0b0e17] border border-white/15 rounded-3xl max-w-lg w-full p-6 space-y-4 relative shadow-2xl">
+      <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
+      <h3 id="legal-modal-title" class="font-display text-lg font-black text-[#00d4ff]">Informações Legais</h3>
+      <div id="legal-modal-body" class="text-xs text-gray-200 leading-relaxed space-y-2 max-h-80 overflow-y-auto"></div>
+      <button onclick="window.app.closeModals()" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold">Fechar</button>
+    </div>
+  </div>
+
+  <!-- RODAPÉ OFICIAL COM LGPD, REEMBOLSO, TRANSPARÊNCIA IA E REDES OFICIAIS -->
+  <footer class="bg-[#07090f] border-t border-white/10 pt-10 pb-8 px-6 text-xs text-gray-300">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/10">
+      <div class="space-y-2">
         <span class="font-display text-lg font-black text-white">DA UM <span class="text-[#ff1722]">PLAY</span> <span class="text-[#00d4ff]">IA</span></span>
-        <p class="text-xs text-gray-500 mt-1">© 2026 Da Um Play IA. Plataforma Oficial de Séries e Mini Novelinhas.</p>
+        <p class="text-xs text-gray-300 leading-relaxed">
+          🤖 <b>Transparência de Conteúdo:</b> Todas as séries, vozes, roteiros e animações desta plataforma são obras de ficção originais produzidas com auxílio de Inteligência Artificial.
+        </p>
       </div>
-      <button onclick="window.app.toggleSupportChat()" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[#00d4ff] font-bold text-xs">
-        💬 Abrir Suporte Dentro da Plataforma
+
+      <div class="space-y-2">
+        <h4 class="text-white font-bold uppercase text-xs">Segurança, LGPD & Direitos</h4>
+        <ul class="space-y-1.5 text-gray-300">
+          <li><button onclick="window.app.openLegalModal('terms')" class="hover:text-[#00d4ff] underline">📄 Termos de Uso da Plataforma</button></li>
+          <li><button onclick="window.app.openLegalModal('privacy')" class="hover:text-[#00d4ff] underline">🔒 Política de Privacidade (LGPD)</button></li>
+          <li><button onclick="window.app.openLegalModal('refund')" class="hover:text-[#00d4ff] underline">💳 Política de Cancelamento e Reembolso</button></li>
+        </ul>
+      </div>
+
+      <div class="space-y-3">
+        <h4 class="text-white font-bold uppercase text-xs">Canais Oficiais & Suporte</h4>
+        <div class="flex flex-wrap gap-2.5">
+          <a
+            id="footer-wa-link"
+            href="https://wa.me/5575991227668?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20na%20plataforma%20Da%20Um%20Play%20IA"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/50 text-[#25D366] font-extrabold text-xs transition"
+          >
+            <span>💬 Suporte WhatsApp</span>
+          </a>
+
+          <a
+            id="footer-insta-link"
+            href="https://instagram.com/Essencia_da_vidah"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#833ab4]/25 via-[#fd1d1d]/25 to-[#fcb045]/25 hover:from-[#833ab4]/40 hover:to-[#fcb045]/40 border border-pink-500/40 text-pink-300 font-extrabold text-xs transition"
+          >
+            <span>📸 Instagram Oficial</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto pt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-gray-400">
+      <span>© 2026 Da Um Play IA. Todos os direitos reservados.</span>
+      <button onclick="window.app.toggleSupportChat()" class="text-[#00d4ff] font-bold hover:underline">
+        💬 Abrir Chat de Suporte na Plataforma
       </button>
     </div>
   </footer>
 
-  <!-- ENGINE COMPLETA -->
+  <!-- ENGINE SEGURA (SUPABASE AUTH + RLS + ZERO CREDENCIAIS EXPOSTAS) -->
   <script>
     (function () {
-      // Remove a animação de entrada após 1.7s
       window.addEventListener('DOMContentLoaded', function () {
         setTimeout(function () {
           const splash = document.getElementById('splash-intro');
           if (splash) splash.classList.add('hide-splash');
-        }, 1700);
+        }, 1500);
       });
 
       const SB_URL = 'https://wqtiqgyzayacwypugrik.supabase.co';
       const SB_KEY = 'sb_publishable_vPzmMtwGYn2JJq9bNqEWOA_BLPKrppF';
-      const DEFAULT_CREATOR_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
-      const VIP_SALT = 'dup_vip_shield_2026_x9';
 
       function escapeHtml(str) {
         if (str === null || str === undefined) return '';
         return String(str)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function computeVipSig(userId, vipUntil) {
-        if (!userId || !vipUntil) return '';
-        const raw = `${userId}:${vipUntil}:${VIP_SALT}`;
-        let h = 2166136261;
-        for (let i = 0; i < raw.length; i++) {
-          h ^= raw.charCodeAt(i);
-          h = Math.imul(h, 16777619);
-        }
-        return 'vs_' + (h >>> 0).toString(16);
-      }
-
-      function isUserTrulyVip(u) {
-        if (!u || !u.isVip || !u.vipUntil) return false;
-        if (Number(u.vipUntil) <= Date.now()) return false;
-        if (u.vipSig && u.vipSig !== computeVipSig(u.id, u.vipUntil)) return false;
-        return true;
-      }
-
-      function encodeKey(raw) {
-        if (!raw) return '';
-        try { return 'enc_' + btoa(raw.split('').reverse().join('')); } catch (e) { return raw; }
-      }
-
-      function decodeKey(stored) {
-        if (!stored) return '';
-        if (stored.startsWith('enc_')) {
-          try { return atob(stored.slice(4)).split('').reverse().join(''); } catch (e) { return ''; }
-        }
-        return stored;
+          .replace(/&/g, '&')
+          .replace(/</g, '<')
+          .replace(/>/g, '>')
+          .replace(/"/g, '"')
+          .replace(/'/g, ''');
       }
 
       const makeArtworkSvg = (title, subtitle, c1, c2) => {
@@ -760,7 +903,7 @@
         return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
       };
 
-      const INITIAL_CATALOG = [
+      const FALLBACK_CATALOG = [
         {
           id: 's1',
           title: 'A Herdeira de Ferro IA',
@@ -777,50 +920,39 @@
               title: 'Episódio 1 — O Retorno',
               duration: '03 min',
               isVip: false,
-              comingSoon: false,
               isVertical: false,
-              thumb: makeArtworkSvg('Episódio 01', '1ª TEMPORADA', '#1f0812', '#091926'),
-              videoUrl: ''
+              thumb: makeArtworkSvg('Episódio 01', '1ª TEMPORADA', '#1f0812', '#091926')
             }
           ]
         }
       ];
 
       const state = {
-        seriesList: JSON.parse(localStorage.getItem('dup_clean_series') || 'null') || INITIAL_CATALOG,
-        users: JSON.parse(localStorage.getItem('dup_clean_users') || '[]'),
-        coupons: JSON.parse(localStorage.getItem('dup_clean_coupons') || '[{"id":"c1","code":"VIP7DIAS","type":"days","value":7,"usesLeft":20},{"id":"c2","code":"PROMO490","type":"price","value":4.90,"usesLeft":50}]'),
-        reviews: JSON.parse(localStorage.getItem('dup_clean_reviews') || '[]'),
-        tickets: JSON.parse(localStorage.getItem('dup_clean_tickets') || '[]'),
-        supportWhatsapp: localStorage.getItem('dup_clean_wa') || '5575991227668',
-        basePrice: Number(localStorage.getItem('dup_clean_price')) || 9.90,
+        seriesList: FALLBACK_CATALOG,
+        allProfiles: [],
+        reviews: [],
+        tickets: [],
+        supportWhatsapp: '5575991227668',
+        officialInstagram: 'Essencia_da_vidah',
+        basePrice: 9.90,
+        appliedCouponCode: '',
         discountedPrice: null,
-        gatewayKey: decodeKey(sessionStorage.getItem('dup_session_gk') || localStorage.getItem('dup_mp_token_v10') || ''),
-        creatorHash: localStorage.getItem('dup_creator_hash') || DEFAULT_CREATOR_HASH,
-        currentUserId: localStorage.getItem('dup_clean_uid') || null,
+        sessionUser: null,
+        userProfile: null,
         selectedSeriesId: 's1',
         selectedSeason: 1,
         playerSeason: 1,
         selectedCategory: 'Todas',
         searchQuery: '',
-        creatorUnlocked: false,
         editingEpData: null,
         editingSerieId: null,
         verticalPlayer: false,
         activeSerieId: null,
         activeEpisode: null,
         pendingOtpEmail: '',
-        localOtpFallback: '',
         pixInterval: null,
         supabaseClient: null
       };
-
-      async function sha256(text) {
-        const msgBuffer = new TextEncoder().encode(String(text));
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-      }
 
       function toast(msg) {
         const el = document.getElementById('toast-box');
@@ -828,22 +960,24 @@
         el.textContent = '⚡ ' + msg;
         el.classList.remove('hidden');
         clearTimeout(window.__toastTimer);
-        window.__toastTimer = setTimeout(() => el.classList.add('hidden'), 3800);
+        window.__toastTimer = setTimeout(() => el.classList.add('hidden'), 4000);
       }
 
-      function getCurrentUser() {
-        const u = state.users.find((item) => item.id === state.currentUserId) || null;
-        if (u && u.isVip && !isUserTrulyVip(u)) {
-          u.isVip = false;
-          u.vipUntil = null;
-          u.vipSig = '';
-        }
-        return u;
+      // Validação de VIP e Admin baseada no perfil autenticado do banco de dados (RLS)
+      function isCurrentUserVip() {
+        if (!state.userProfile) return false;
+        if (state.userProfile.role === 'admin') return true;
+        if (!state.userProfile.vip_until) return false;
+        return new Date(state.userProfile.vip_until).getTime() > Date.now();
       }
 
-      function getDaysRemaining(vipUntil) {
-        if (!vipUntil) return 0;
-        const diff = vipUntil - Date.now();
+      function isCurrentUserAdmin() {
+        return Boolean(state.userProfile && state.userProfile.role === 'admin');
+      }
+
+      function getDaysRemaining(vipUntilIso) {
+        if (!vipUntilIso) return 0;
+        const diff = new Date(vipUntilIso).getTime() - Date.now();
         return diff > 0 ? Math.ceil(diff / 86400000) : 0;
       }
 
@@ -862,25 +996,18 @@
         });
       }
 
-      function grantVerifiedVip(userObj, days = 30) {
-        const until = Date.now() + Number(days) * 86400000;
-        userObj.isVip = true;
-        userObj.vipUntil = until;
-        userObj.vipSig = computeVipSig(userObj.id, until);
-      }
-
       function buildVideoEmbedHtml(rawUrl) {
         if (!rawUrl || !rawUrl.trim()) {
           return `<div class="w-full h-full flex flex-col items-center justify-center p-8 text-center space-y-3 bg-[#060810]">
             <div class="w-14 h-14 rounded-full bg-[#ff1722]/20 border border-[#ff1722]/40 flex items-center justify-center text-2xl">🎬</div>
-            <p class="text-base font-bold text-[#00d4ff]">Vídeo em processamento</p>
-            <p class="text-xs text-gray-400 max-w-md">Abra o Estúdio ADM, clique em "✏️ Editar Ep" neste episódio e cole o link do vídeo.</p>
+            <p class="text-base font-bold text-[#00d4ff]">Vídeo protegido ou em atualização</p>
+            <p class="text-xs text-gray-300 max-w-md">Verifique sua assinatura VIP ou aguarde a publicação do episódio.</p>
           </div>`;
         }
         let url = rawUrl.trim();
         const spinnerHtml = `<div id="vid-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-black z-0 pointer-events-none">
           <div class="w-10 h-10 border-4 border-[#00d4ff] border-t-transparent rounded-full animate-spin mb-2"></div>
-          <span class="text-[11px] font-bold text-gray-400">Carregando reprodutor...</span>
+          <span class="text-xs font-bold text-gray-300">Carregando reprodutor...</span>
         </div>`;
 
         const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -896,7 +1023,7 @@
         if (url.includes('dropbox.com')) url = url.replace('?dl=0', '?raw=1').replace('www.dropbox.com', 'dl.dropboxusercontent.com');
         if (url.includes('catbox.moe') && !url.includes('files.catbox.moe')) url = url.replace('catbox.moe/', 'files.catbox.moe/');
 
-        return `${spinnerHtml}<video id="native-video-el" src="${escapeHtml(url)}" controls autoplay playsinline preload="auto" referrerpolicy="no-referrer" controlsList="nodownload noplaybackrate" oncontextmenu="return false;" onloadeddata="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';" onended="window.app.stepEpisode(1)"></video>`;
+        return `${spinnerHtml}<video id="native-video-el" src="${escapeHtml(url)}" controls autoplay playsinline preload="auto" referrerpolicy="no-referrer" controlsList="nodownload noplaybackrate" onloadeddata="const s=document.getElementById('vid-loading'); if(s) s.style.display='none';" onended="window.app.stepEpisode(1)"></video>`;
       }
 
       function applyAspectClasses() {
@@ -920,53 +1047,167 @@
         const seasonPills = document.getElementById('player-season-pills');
         if (seasonPills) {
           seasonPills.innerHTML = seasons
-            .map((sNum) => `<button onclick="window.app.selectPlayerSeason(${sNum})" class="px-2.5 py-1 rounded-lg text-[11px] font-black ${state.playerSeason === sNum ? 'bg-[#00d4ff] text-[#040508]' : 'bg-white/5 text-gray-400'}">T${sNum}</button>`)
+            .map((sNum) => `<button onclick="window.app.selectPlayerSeason(${sNum})" class="px-2.5 py-1 rounded-lg text-xs font-black ${state.playerSeason === sNum ? 'bg-[#00d4ff] text-[#040508]' : 'bg-white/5 text-gray-300'}">T${sNum}</button>`)
             .join('');
         }
         const epsOfSeason = sortAllEpisodes(serie.episodes).filter((e) => (Number(e.season) || 1) === state.playerSeason);
         const strip = document.getElementById('player-ep-strip');
         if (strip) {
           strip.innerHTML = epsOfSeason
-            .map((item) => `<button onclick="window.app.playEpisode('${escapeHtml(serie.id)}','${escapeHtml(item.id)}')" class="px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap ${item.id === state.activeEpisode.id ? 'bg-[#ff1722] text-white' : 'bg-white/10 text-gray-300'}">Ep. ${Number(item.number) || 1} ${item.isVip ? '👑' : ''}</button>`)
+            .map((item) => `<button onclick="window.app.playEpisode('${escapeHtml(serie.id)}','${escapeHtml(item.id)}')" class="px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap ${item.id === state.activeEpisode.id ? 'bg-[#ff1722] text-white' : 'bg-white/10 text-gray-200'}">Ep. ${Number(item.number) || 1} ${item.isVip ? '👑' : ''}</button>`)
             .join('');
+        }
+      }
+
+      async function loadAuthenticatedProfile(authUser) {
+        if (!authUser || !state.supabaseClient) {
+          state.sessionUser = null;
+          state.userProfile = null;
+          renderAll();
+          return;
+        }
+        state.sessionUser = authUser;
+        const { data: prof } = await state.supabaseClient
+          .from('profiles')
+          .select('*')
+          .eq('id', authUser.id)
+          .single();
+
+        if (prof) {
+          state.userProfile = prof;
+        } else {
+          const fallbackProfile = {
+            id: authUser.id,
+            email: authUser.email,
+            name: authUser.user_metadata?.name || authUser.user_metadata?.full_name || (authUser.email || 'Membro').split('@')[0],
+            whatsapp: authUser.user_metadata?.whatsapp || '',
+            role: 'user',
+            vip_until: null
+          };
+          await state.supabaseClient.from('profiles').upsert(fallbackProfile);
+          state.userProfile = fallbackProfile;
+        }
+
+        if (isCurrentUserAdmin()) {
+          const { data: allProfs } = await state.supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
+          if (Array.isArray(allProfs)) state.allProfiles = allProfs;
+        }
+        await loadTickets();
+        renderAll();
+      }
+
+      async function loadCatalogAndSettings() {
+        if (!state.supabaseClient) return;
+        try {
+          const { data: cfg } = await state.supabaseClient.from('site_settings').select('*').eq('id', 1).single();
+          if (cfg) {
+            if (cfg.base_price) state.basePrice = Number(cfg.base_price);
+            if (cfg.support_whatsapp) state.supportWhatsapp = cfg.support_whatsapp;
+            if (cfg.official_instagram) state.officialInstagram = cfg.official_instagram;
+          }
+
+          const { data: sRows } = await state.supabaseClient.from('series').select('*').order('created_at', { ascending: false });
+          const { data: epRows } = await state.supabaseClient.from('episodes').select('*');
+
+          if (Array.isArray(sRows) && sRows.length > 0) {
+            state.seriesList = sRows.map((s) => ({
+              id: s.id,
+              title: s.title,
+              category: s.category,
+              synopsis: s.synopsis,
+              poster: s.poster,
+              banner: s.banner || s.poster,
+              isHeroLaunch: Boolean(s.is_hero),
+              episodes: (epRows || [])
+                .filter((e) => e.serie_id === s.id)
+                .map((e) => ({
+                  id: e.id,
+                  season: Number(e.season) || 1,
+                  number: Number(e.number) || 1,
+                  title: e.title,
+                  duration: e.duration || '04 min',
+                  isVip: Boolean(e.is_vip),
+                  isVertical: Boolean(e.is_vertical),
+                  thumb: e.thumb || s.poster
+                }))
+            }));
+            if (!state.seriesList.some((s) => s.id === state.selectedSeriesId)) {
+              state.selectedSeriesId = state.seriesList[0].id;
+            }
+          }
+
+          const { data: revRows } = await state.supabaseClient.from('reviews').select('*').order('created_at', { ascending: false }).limit(12);
+          if (Array.isArray(revRows)) state.reviews = revRows;
+        } catch (e) {}
+      }
+
+      async function loadTickets() {
+        if (!state.supabaseClient || !state.sessionUser) return;
+        try {
+          const { data: tRows } = await state.supabaseClient.from('tickets').select('*').order('created_at', { ascending: true });
+          if (Array.isArray(tRows)) state.tickets = tRows;
+        } catch (e) {}
+      }
+
+      async function initSupabase() {
+        if (!window.supabase) return;
+        try {
+          state.supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
+          await loadCatalogAndSettings();
+
+          const { data: sessionData } = await state.supabaseClient.auth.getSession();
+          if (sessionData?.session?.user) {
+            await loadAuthenticatedProfile(sessionData.session.user);
+          } else {
+            renderAll();
+          }
+
+          state.supabaseClient.auth.onAuthStateChange((_event, session) => {
+            if (session?.user) {
+              loadAuthenticatedProfile(session.user);
+            } else {
+              state.sessionUser = null;
+              state.userProfile = null;
+              renderAll();
+            }
+          });
+        } catch (e) {
+          renderAll();
         }
       }
 
       function renderSupportMessages() {
         const box = document.getElementById('support-messages-box');
         if (!box) return;
-        const user = getCurrentUser();
-        const myTickets = user
-          ? state.tickets.filter((t) => t.userId === user.id)
-          : state.tickets.filter((t) => t.userId === 'guest');
+        const user = state.userProfile;
 
         let html = `
           <div class="p-3 rounded-2xl bg-white/5 border border-white/10 text-gray-200">
             <span class="block text-[10px] font-black text-[#00d4ff] uppercase mb-0.5">🤖 Assistente Da Um Play IA</span>
-            Olá${user ? ', <b>' + escapeHtml(user.name.split(' ')[0]) + '</b>' : ''}! Bem-vindo ao suporte interno da plataforma. Escolha um tópico acima ou envie sua pergunta abaixo!
+            Olá${user ? ', <b>' + escapeHtml(user.name.split(' ')[0]) + '</b>' : ''}! Tire sua dúvida aqui no chat ou clique no botão verde do <b>WhatsApp</b> para falar diretamente conosco!
           </div>
         `;
 
-        myTickets.forEach((t) => {
+        state.tickets.forEach((t) => {
           html += `
             <div class="p-3 rounded-2xl bg-[#ff1722]/20 border border-[#ff1722]/40 text-white ml-6">
-              <span class="block text-[9px] text-gray-400 font-bold">${escapeHtml(t.time)} • Você</span>
+              <span class="block text-[10px] text-gray-300 font-bold">${escapeHtml(t.time)} • ${escapeHtml(t.user_name)}</span>
               ${escapeHtml(t.question)}
             </div>
           `;
-          if (t.autoReply) {
+          if (t.auto_reply) {
             html += `
               <div class="p-3 rounded-2xl bg-[#00d4ff]/15 border border-[#00d4ff]/30 text-gray-200 mr-6">
-                <span class="block text-[9px] text-[#00d4ff] font-black uppercase">⚡ Resposta Rápida</span>
-                ${escapeHtml(t.autoReply)}
+                <span class="block text-[10px] text-[#00d4ff] font-black uppercase">⚡ Resposta Rápida</span>
+                ${escapeHtml(t.auto_reply)}
               </div>
             `;
           }
-          if (t.adminReply) {
+          if (t.admin_reply) {
             html += `
               <div class="p-3 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-white mr-6">
-                <span class="block text-[9px] text-emerald-400 font-black uppercase">👨‍💻 Equipe de Suporte Oficial</span>
-                ${escapeHtml(t.adminReply)}
+                <span class="block text-[10px] text-emerald-400 font-black uppercase">👨‍💻 Equipe de Suporte Oficial</span>
+                ${escapeHtml(t.admin_reply)}
               </div>
             `;
           }
@@ -976,156 +1217,50 @@
         box.scrollTop = box.scrollHeight;
       }
 
-      async function initSupabase() {
-        if (!window.supabase) return;
-        try {
-          state.supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
-
-          // Captura login automático caso o usuário volte do Google OAuth ou Magic Link
-          state.supabaseClient.auth.onAuthStateChange((event, session) => {
-            if (session && session.user) {
-              const sUser = session.user;
-              const email = (sUser.email || '').toLowerCase();
-              let localUser = state.users.find((u) => u.email.toLowerCase() === email);
-              if (!localUser) {
-                localUser = {
-                  id: 'u_' + Date.now(),
-                  name: sUser.user_metadata?.full_name || email.split('@')[0],
-                  email,
-                  whatsapp: '',
-                  instagram: '',
-                  isVip: false,
-                  vipUntil: null,
-                  vipSig: ''
-                };
-                state.users.unshift(localUser);
-              }
-              state.currentUserId = localUser.id;
-              saveLocalState();
-              renderAll();
-            }
-          });
-
-          const { data, error } = await state.supabaseClient.from('app_state').select('*').eq('id', 1).single();
-          if (!error && data) {
-            if (Array.isArray(data.series_data) && data.series_data.length > 0) {
-              state.seriesList = data.series_data.map((s) => ({
-                ...s,
-                episodes: (s.episodes || []).map((ep) => ({
-                  ...ep,
-                  season: Number(ep.season) || 1
-                }))
-              }));
-            }
-            if (Array.isArray(data.users_data)) {
-              state.users = data.users_data.map((u) => {
-                if (u.isVip && u.vipUntil && !u.vipSig) {
-                  return { ...u, vipSig: computeVipSig(u.id, u.vipUntil) };
-                }
-                return u;
-              });
-            }
-            if (Array.isArray(data.coupons_data)) {
-              state.coupons = data.coupons_data.filter((c) => c.id !== '__SYS_CONFIG__');
-            }
-            if (data.settings_data && typeof data.settings_data === 'object') {
-              if (data.settings_data.supportWhatsapp) state.supportWhatsapp = data.settings_data.supportWhatsapp;
-              if (data.settings_data.basePrice) state.basePrice = Number(data.settings_data.basePrice);
-              if (data.settings_data.mpToken) state.gatewayKey = decodeKey(data.settings_data.mpToken);
-              if (data.settings_data.creatorHash) state.creatorHash = data.settings_data.creatorHash;
-              if (Array.isArray(data.settings_data.reviews)) state.reviews = data.settings_data.reviews;
-              if (Array.isArray(data.settings_data.tickets)) state.tickets = data.settings_data.tickets;
-            }
-            saveLocalState();
-            renderAll();
-          }
-        } catch (e) {}
-      }
-
-      async function syncCloud(isAdminAction = false) {
-        saveLocalState();
-        if (!state.supabaseClient) return;
-        try {
-          if (isAdminAction || state.creatorUnlocked) {
-            await state.supabaseClient.from('app_state').upsert({
-              id: 1,
-              series_data: state.seriesList,
-              users_data: state.users,
-              coupons_data: state.coupons,
-              settings_data: {
-                supportWhatsapp: state.supportWhatsapp,
-                basePrice: state.basePrice,
-                mpToken: encodeKey(state.gatewayKey),
-                creatorHash: state.creatorHash,
-                reviews: state.reviews,
-                tickets: state.tickets
-              },
-              updated_at: new Date().toISOString()
-            });
-          } else {
-            const { data: currentRemote } = await state.supabaseClient.from('app_state').select('settings_data').eq('id', 1).single();
-            const safeSettings = currentRemote?.settings_data || {};
-            safeSettings.reviews = state.reviews;
-            safeSettings.tickets = state.tickets;
-
-            await state.supabaseClient
-              .from('app_state')
-              .update({
-                users_data: state.users,
-                coupons_data: state.coupons,
-                settings_data: safeSettings,
-                updated_at: new Date().toISOString()
-              })
-              .eq('id', 1);
-          }
-        } catch (e) {}
-      }
-
-      function saveLocalState() {
-        localStorage.setItem('dup_clean_series', JSON.stringify(state.seriesList));
-        localStorage.setItem('dup_clean_users', JSON.stringify(state.users));
-        localStorage.setItem('dup_clean_coupons', JSON.stringify(state.coupons));
-        localStorage.setItem('dup_clean_reviews', JSON.stringify(state.reviews));
-        localStorage.setItem('dup_clean_tickets', JSON.stringify(state.tickets));
-        localStorage.setItem('dup_clean_wa', state.supportWhatsapp);
-        localStorage.setItem('dup_clean_price', String(state.basePrice));
-        localStorage.setItem('dup_creator_hash', state.creatorHash);
-        if (state.currentUserId) localStorage.setItem('dup_clean_uid', state.currentUserId);
-        else localStorage.removeItem('dup_clean_uid');
-      }
-
       function renderAll() {
-        const user = getCurrentUser();
+        const user = state.userProfile;
+        const vipActive = isCurrentUserVip();
+        const isAdmin = isCurrentUserAdmin();
         const priceFormatted = 'R$ ' + (state.discountedPrice || state.basePrice).toFixed(2).replace('.', ',');
 
         document.querySelectorAll('.vip-price-label').forEach((el) => (el.textContent = priceFormatted));
+
+        const cleanWa = (state.supportWhatsapp || '5575991227668').replace(/\D/g, '');
+        const cleanInsta = (state.officialInstagram || 'Essencia_da_vidah').replace(/^@/, '').trim();
+        const waUrl = `https://wa.me/${cleanWa}?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20na%20plataforma%20Da%20Um%20Play%20IA`;
+        const instaUrl = `https://instagram.com/${encodeURIComponent(cleanInsta)}`;
+
+        ['footer-wa-link', 'float-wa-btn', 'nav-wa-link'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.href = waUrl;
+        });
+        ['footer-insta-link', 'float-insta-btn', 'nav-insta-link'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.href = instaUrl;
+        });
 
         const headerActions = document.getElementById('header-actions');
         if (headerActions) {
           let html = '';
           if (!user) {
             html += `
-              <button onclick="window.app.openAuthModal('login')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15">Entrar</button>
-              <button onclick="window.app.openAuthModal('register')" class="btn-red-glow px-4 py-2 rounded-xl text-xs font-extrabold bg-[#ff1722] text-white shadow-lg">Ser Membro</button>
+              <button onclick="window.app.openAuthModal('login')" class="px-3 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15">Entrar</button>
+              <button onclick="window.app.openAuthModal('register')" class="btn-red-glow px-3.5 py-2 rounded-xl text-xs font-extrabold bg-[#ff1722] text-white shadow-lg">Ser Membro</button>
             `;
           } else {
-            const vipActive = isUserTrulyVip(user);
-            const daysLeft = getDaysRemaining(user.vipUntil);
+            const daysLeft = getDaysRemaining(user.vip_until);
             const memberBadge = vipActive
-              ? `<button onclick="window.app.openProfileModal()" class="px-3 py-1.5 rounded-full text-[11px] font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/50">👑 MEMBRO VIP (${daysLeft}d)</button>`
-              : `<button onclick="window.app.openVipCheckout()" class="px-3 py-1.5 rounded-xl text-[11px] font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white">👑 Virar VIP 30d</button>`;
+              ? `<button onclick="window.app.openProfileModal()" class="px-3 py-1.5 rounded-full text-xs font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/50">👑 VIP (${isAdmin ? 'ADM' : daysLeft + 'd'})</button>`
+              : `<button onclick="window.app.openVipCheckout()" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white">👑 VIP 30d</button>`;
 
             html += `
               ${memberBadge}
-              <button onclick="window.app.openProfileModal()" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-xs font-bold text-white flex items-center gap-1.5">
+              <button onclick="window.app.openProfileModal()" class="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-xs font-bold text-white flex items-center gap-1">
                 <span>👤</span>
-                <span>Meu Perfil</span>
+                <span class="hidden sm:inline">Meu Perfil</span>
               </button>
-              <button onclick="window.app.logout()" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-[#ff1722] text-xs font-bold text-gray-300 hover:text-white">Sair</button>
+              <button onclick="window.app.logout()" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-[#ff1722] text-xs font-bold text-gray-200 hover:text-white">Sair</button>
             `;
-          }
-          if (state.creatorUnlocked) {
-            html += `<button onclick="window.app.closeStudio()" class="px-3 py-1.5 rounded-xl bg-[#ff1722] text-white text-xs font-black">Fechar ADM</button>`;
           }
           headerActions.innerHTML = html;
         }
@@ -1146,7 +1281,7 @@
         const catBar = document.getElementById('categories-bar');
         if (catBar) {
           catBar.innerHTML = cats
-            .map((c) => `<button onclick="window.app.selectCategory('${escapeHtml(c)}')" class="px-4 py-1.5 rounded-full text-xs font-extrabold transition ${state.selectedCategory === c ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'}">${escapeHtml(c)}</button>`)
+            .map((c) => `<button onclick="window.app.selectCategory('${escapeHtml(c)}')" class="px-4 py-1.5 rounded-full text-xs font-extrabold transition ${state.selectedCategory === c ? 'bg-[#ff1722] text-white' : 'bg-white/5 text-gray-200 hover:bg-white/10'}">${escapeHtml(c)}</button>`)
             .join('');
         }
 
@@ -1163,8 +1298,8 @@
               const selected = s.id === state.selectedSeriesId;
               const sSeasons = getSeriesSeasons(s);
               const badgeText = sSeasons.length > 1 ? `${sSeasons.length} Temps • ${(s.episodes || []).length} Eps` : `${(s.episodes || []).length} Eps`;
-              const studioControls = state.creatorUnlocked
-                ? `<div onclick="event.stopPropagation()" class="p-2 bg-[#0b0e17] border-t border-white/10 flex items-center justify-between text-[10px]">
+              const studioControls = isAdmin
+                ? `<div onclick="event.stopPropagation()" class="p-2 bg-[#0b0e17] border-t border-white/10 flex items-center justify-between text-xs">
                     <button onclick="window.app.setHero('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold">${s.isHeroLaunch ? '⭐ Capa' : 'Destacar'}</button>
                     <button onclick="window.app.editSerie('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Editar</button>
                     <button onclick="window.app.deleteSerie('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-red-500/20 text-red-400 font-bold">Excluir</button>
@@ -1174,9 +1309,9 @@
                 <div class="aspect-[2/3] relative bg-[#0b0e17]">
                   <img src="${escapeHtml(s.poster)}" alt="${escapeHtml(s.title)}" loading="lazy" class="w-full h-full object-cover" />
                   <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-                  <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded bg-[#ff1722] text-[10px] font-black uppercase shadow">${badgeText}</span>
+                  <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded bg-[#ff1722] text-xs font-black uppercase shadow">${badgeText}</span>
                   <div class="absolute bottom-3 left-3 right-3">
-                    <p class="text-[10px] text-[#00d4ff] font-bold uppercase">${escapeHtml(s.category)}</p>
+                    <p class="text-xs text-[#00d4ff] font-bold uppercase">${escapeHtml(s.category)}</p>
                     <h3 class="font-display text-base font-black text-white leading-tight">${escapeHtml(s.title)}</h3>
                   </div>
                 </div>
@@ -1202,9 +1337,9 @@
               .map((sNum) => {
                 const countInSeason = (activeSerie.episodes || []).filter((e) => (Number(e.season) || 1) === sNum).length;
                 const isCurrent = state.selectedSeason === sNum;
-                return `<button onclick="window.app.selectSeason(${sNum})" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition flex items-center gap-2 ${isCurrent ? 'bg-gradient-to-r from-[#ff1722] to-[#d90f19] text-white shadow-lg' : 'bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10'}">
+                return `<button onclick="window.app.selectSeason(${sNum})" class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition flex items-center gap-2 ${isCurrent ? 'bg-gradient-to-r from-[#ff1722] to-[#d90f19] text-white shadow-lg' : 'bg-white/5 hover:bg-white/10 text-gray-200 border border-white/10'}">
                   <span>🎬 ${sNum}ª Temporada</span>
-                  <span class="px-2 py-0.5 rounded-full text-[10px] ${isCurrent ? 'bg-black/30 text-white' : 'bg-white/10 text-[#00d4ff]'}">${countInSeason} eps</span>
+                  <span class="px-2 py-0.5 rounded-full text-xs ${isCurrent ? 'bg-black/30 text-white' : 'bg-white/10 text-[#00d4ff]'}">${countInSeason} eps</span>
                 </button>`;
               })
               .join('');
@@ -1213,10 +1348,10 @@
           const epsOfSelectedSeason = sortAllEpisodes(activeSerie.episodes).filter((ep) => (Number(ep.season) || 1) === state.selectedSeason);
           document.getElementById('episodes-grid').innerHTML = epsOfSelectedSeason
             .map((ep) => {
-              const locked = ep.isVip && !isUserTrulyVip(user);
+              const locked = ep.isVip && !vipActive;
               const sNum = Number(ep.season) || 1;
-              const studioEpBtns = state.creatorUnlocked
-                ? `<div onclick="event.stopPropagation()" class="mt-3 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-[10px]">
+              const studioEpBtns = isAdmin
+                ? `<div onclick="event.stopPropagation()" class="mt-3 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-xs">
                     <button onclick="window.app.toggleEpVip('${escapeHtml(activeSerie.id)}','${escapeHtml(ep.id)}')" class="px-2 py-1 rounded bg-white/10 text-[#00d4ff] font-bold">${ep.isVip ? 'Mudar p/ Grátis' : 'Mudar p/ VIP'}</button>
                     <button onclick="window.app.editEp('${escapeHtml(activeSerie.id)}','${escapeHtml(ep.id)}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Editar Ep</button>
                     <button onclick="window.app.deleteEp('${escapeHtml(activeSerie.id)}','${escapeHtml(ep.id)}')" class="text-red-400 font-bold">Apagar</button>
@@ -1229,11 +1364,11 @@
                   <div class="absolute inset-0 bg-black/45 flex items-center justify-center">
                     <div class="w-12 h-12 rounded-full bg-[#ff1722] flex items-center justify-center font-bold shadow-lg text-base">${locked ? '🔒' : '▶'}</div>
                   </div>
-                  <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/80 text-[#00d4ff] text-[10px] font-black uppercase">T${sNum}:E${Number(ep.number) || 1}</span>
-                  <span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded text-[10px] font-black uppercase ${ep.isVip ? 'bg-[#00d4ff] text-[#040508]' : 'bg-emerald-500 text-black'}">${ep.isVip ? '🔒 VIP' : '🔓 GRÁTIS'}</span>
+                  <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-black/80 text-[#00d4ff] text-xs font-black uppercase">T${sNum}:E${Number(ep.number) || 1}</span>
+                  <span class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded text-xs font-black uppercase ${ep.isVip ? 'bg-[#00d4ff] text-[#040508]' : 'bg-emerald-500 text-black'}">${ep.isVip ? '🔒 VIP' : '🔓 GRÁTIS'}</span>
                 </div>
                 <div class="p-4">
-                  <div class="flex items-center justify-between text-[11px] text-gray-400 mb-1">
+                  <div class="flex items-center justify-between text-xs text-gray-300 mb-1">
                     <span>${sNum}ª Temp • Episódio ${Number(ep.number) || 1} ${ep.isVertical ? '• 📱 Vertical' : ''}</span>
                     <span>${escapeHtml(ep.duration || '03 min')}</span>
                   </div>
@@ -1248,8 +1383,8 @@
         const revBox = document.getElementById('reviews-list');
         if (revBox) {
           if (state.reviews.length === 0) {
-            revBox.innerHTML = `<div class="col-span-3 p-6 rounded-2xl bg-[#040508] border border-white/10 text-center text-gray-400">
-              Seja o primeiro membro oficial a comentar no mural!
+            revBox.innerHTML = `<div class="col-span-3 p-6 rounded-2xl bg-[#040508] border border-white/10 text-center text-gray-300">
+              Seja o primeiro membro verificado a comentar no mural!
             </div>`;
           } else {
             revBox.innerHTML = state.reviews
@@ -1257,12 +1392,11 @@
               .map((r) => `<div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-amber-400 font-bold">${'★'.repeat(Math.min(5, Math.max(1, Number(r.stars) || 5)))}</span>
-                  <span class="px-2 py-0.5 rounded bg-[#00d4ff]/15 text-[#00d4ff] text-[9px] font-black uppercase">${r.isVip ? '👑 Membro VIP' : '✓ Membro'}</span>
+                  <span class="px-2 py-0.5 rounded bg-[#00d4ff]/15 text-[#00d4ff] text-xs font-black uppercase">${r.is_vip ? '👑 Membro VIP' : '✓ Membro'}</span>
                 </div>
-                <p class="text-gray-300 leading-relaxed">"${escapeHtml(r.text)}"</p>
-                <div class="flex items-center justify-between text-[11px] pt-1 border-t border-white/5">
-                  <span class="text-white font-bold">${escapeHtml(r.author)}</span>
-                  ${r.instagram ? `<span class="text-[#00d4ff] font-bold">${escapeHtml(r.instagram)}</span>` : ''}
+                <p class="text-gray-200 leading-relaxed">"${escapeHtml(r.text)}"</p>
+                <div class="flex items-center justify-between text-xs pt-1 border-t border-white/5">
+                  <span class="text-white font-bold">— ${escapeHtml(r.author)}</span>
                 </div>
               </div>`)
               .join('');
@@ -1270,12 +1404,18 @@
         }
 
         renderSupportMessages();
-        if (state.creatorUnlocked) renderCreatorStudio();
+        const studioContainer = document.getElementById('creator-studio-container');
+        if (isAdmin) {
+          renderCreatorStudio();
+        } else if (studioContainer) {
+          studioContainer.classList.add('hidden');
+          studioContainer.innerHTML = '';
+        }
       }
 
       function renderCreatorStudio() {
         const container = document.getElementById('creator-studio-container');
-        if (!container) return;
+        if (!container || !isCurrentUserAdmin()) return;
         container.classList.remove('hidden');
         const editing = state.editingEpData;
         const editingSerie = state.seriesList.find((x) => x.id === state.editingSerieId) || null;
@@ -1285,26 +1425,32 @@
             <div class="max-w-6xl mx-auto space-y-6">
               <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
                 <div>
-                  <h2 class="font-display text-lg font-black text-[#00d4ff] uppercase">🎬 Estúdio Master ADM — Séries, Membros & Suporte Interno</h2>
-                  <p class="text-xs text-gray-400">Gerencie séries, temporadas, chave PIX, membros VIP e responda dúvidas do chat interno.</p>
+                  <h2 class="font-display text-lg font-black text-[#00d4ff] uppercase">🛡️ Estúdio ADM Blindado (Autenticado via RLS)</h2>
+                  <p class="text-xs text-gray-300">Seu Access Token do Mercado Pago agora fica protegido nas Variáveis de Ambiente da Vercel (MP_ACCESS_TOKEN).</p>
                 </div>
               </div>
 
               <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <!-- 1. SÉRIE -->
                 <form onsubmit="window.app.createSerie(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2.5">
-                  <h3 class="text-xs font-black uppercase text-[#00d4ff]">${editingSerie ? '✏️ Editando Série' : '1. Nova Série'}</h3>
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-black uppercase text-[#00d4ff]">${editingSerie ? '✏️ Editando Série' : '1. Nova Série'}</h3>
+                    ${editingSerie ? '<button type="button" onclick="window.app.cancelEditSerie()" class="text-xs text-red-400 font-bold">Cancelar</button>' : ''}
+                  </div>
                   <input type="text" id="ns-title" required value="${editingSerie ? escapeHtml(editingSerie.title) : ''}" placeholder="Título da Série" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                   <input type="text" id="ns-cat" value="${editingSerie ? escapeHtml(editingSerie.category) : 'Mini Novelinha IA'}" placeholder="Categoria" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                   <textarea id="ns-desc" rows="2" placeholder="Sinopse..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white">${editingSerie ? escapeHtml(editingSerie.synopsis || '') : ''}</textarea>
-                  <input type="file" accept="image/*" onchange="window.app.uploadMedia(this.files[0], 'ns-poster')" class="w-full text-[11px]" />
+                  <input type="file" accept="image/*" onchange="window.app.uploadMedia(this.files[0], 'ns-poster')" class="w-full text-xs" />
                   <input type="text" id="ns-poster" value="${editingSerie ? escapeHtml(editingSerie.poster || '') : ''}" placeholder="URL da Capa" class="w-full px-2.5 py-1.5 rounded bg-[#0b0e17] border border-white/10 text-xs text-white" />
                   <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">${editingSerie ? '💾 Salvar' : '+ Publicar Série'}</button>
                 </form>
 
                 <!-- 2. EPISÓDIO / TEMPORADA -->
                 <form onsubmit="window.app.createEpisode(event)" class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2.5">
-                  <h3 class="text-xs font-black uppercase text-[#ff1722]">${editing ? `✏️ Editando T${editing.season}:E${editing.number}` : '2. Episódio / Temporada'}</h3>
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-black uppercase text-[#ff1722]">${editing ? `✏️ Editando T${editing.season}:E${editing.number}` : '2. Episódio / Temporada'}</h3>
+                    ${editing ? '<button type="button" onclick="window.app.cancelEditEp()" class="text-xs text-red-400 font-bold">Cancelar</button>' : ''}
+                  </div>
                   <select id="ne-serie" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white">
                     ${state.seriesList.map((s) => `<option value="${escapeHtml(s.id)}" ${(editing ? editing.serieId : state.selectedSeriesId) === s.id ? 'selected' : ''}>${escapeHtml(s.title)}</option>`).join('')}
                   </select>
@@ -1313,40 +1459,47 @@
                     <input type="number" min="1" id="ne-num" value="${editing ? editing.number : 1}" placeholder="Nº Ep" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white font-bold" />
                   </div>
                   <input type="text" id="ne-title" required value="${editing ? escapeHtml(editing.title) : ''}" placeholder="Título do Episódio" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                  <input type="text" id="ne-video" required value="${editing ? escapeHtml(editing.videoUrl) : ''}" placeholder="Link YouTube Não Listado / Drive / MP4" class="w-full px-2.5 py-2 rounded bg-[#0b0e17] border border-white/15 text-xs text-emerald-400" />
-                  <div class="flex items-center justify-between text-[11px] text-gray-300">
+                  <input type="text" id="ne-video" required value="${editing ? escapeHtml(editing.videoUrl || '') : ''}" placeholder="Link Protegido do Vídeo (YouTube/Drive/MP4)" class="w-full px-2.5 py-2 rounded bg-[#0b0e17] border border-white/15 text-xs text-emerald-400" />
+                  <input type="file" accept="video/*" onchange="window.app.uploadMedia(this.files[0], 'ne-video')" class="w-full text-xs" />
+                  <div class="flex items-center justify-between text-xs text-gray-200">
                     <label><input type="checkbox" id="ne-vip" ${editing ? (editing.isVip ? 'checked' : '') : 'checked'} /> 🔒 VIP</label>
                     <label><input type="checkbox" id="ne-vert" ${editing && editing.isVertical ? 'checked' : ''} /> 📱 Vertical</label>
                   </div>
                   <button type="submit" class="btn-red-glow w-full py-2.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">${editing ? '💾 Salvar' : '+ Publicar Ep'}</button>
                 </form>
 
-                <!-- 3. PIX & MEMBROS -->
-                <div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2.5">
-                  <h3 class="text-xs font-black uppercase text-[#00d4ff]">3. PIX & Membros (${state.users.length})</h3>
-                  <input type="password" id="cfg-token" value="${escapeHtml(state.gatewayKey)}" placeholder="Token Mercado Pago APP_USR-..." class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-emerald-400 font-mono" />
-                  <input type="number" step="0.10" id="cfg-price" value="${state.basePrice}" placeholder="Valor VIP 30d" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                  <button onclick="window.app.saveConfig()" class="w-full py-2 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">💾 Salvar PIX</button>
-                  <div class="max-h-28 overflow-y-auto divide-y divide-white/10 text-[10px] pt-1">
-                    ${state.users.map((u) => `<div class="py-1.5 flex items-center justify-between">
-                      <span class="truncate">${escapeHtml(u.name)} ${u.instagram ? '(' + escapeHtml(u.instagram) + ')' : ''}</span>
-                      <button onclick="window.app.toggleUserVip('${escapeHtml(u.id)}')" class="px-2 py-0.5 rounded bg-white/10 text-[#00d4ff] font-bold">${isUserTrulyVip(u) ? '👑 VIP' : '+30d'}</button>
-                    </div>`).join('')}
+                <!-- 3. CONFIGURAÇÕES & MEMBROS -->
+                <div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
+                  <h3 class="text-xs font-black uppercase text-[#00d4ff]">3. Preço, Redes & Membros (${state.allProfiles.length})</h3>
+                  <div class="grid grid-cols-2 gap-1.5">
+                    <input type="number" step="0.10" id="cfg-price" value="${state.basePrice}" placeholder="Valor VIP" class="w-full px-2.5 py-1.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                    <input type="text" id="cfg-wa" value="${escapeHtml(state.supportWhatsapp)}" placeholder="WhatsApp Suporte" class="w-full px-2.5 py-1.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
+                  </div>
+                  <input type="text" id="cfg-insta" value="${escapeHtml(state.officialInstagram)}" placeholder="Instagram da Plataforma" class="w-full px-3 py-1.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-pink-400" />
+                  <button onclick="window.app.saveConfig()" class="w-full py-2 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">💾 Salvar Configurações</button>
+                  <div class="max-h-28 overflow-y-auto divide-y divide-white/10 text-xs pt-1">
+                    ${state.allProfiles.map((u) => {
+                      const uVip = u.vip_until && new Date(u.vip_until).getTime() > Date.now();
+                      return `<div class="py-1.5 flex items-center justify-between">
+                        <span class="truncate">${escapeHtml(u.name || u.email)}</span>
+                        <button onclick="window.app.toggleUserVip('${escapeHtml(u.id)}', ${uVip})" class="px-2 py-0.5 rounded bg-white/10 text-[#00d4ff] font-bold">${uVip ? '👑 VIP' : '+30d'}</button>
+                      </div>`;
+                    }).join('')}
                   </div>
                 </div>
 
-                <!-- 4. SUPORTE INTERNO DA PLATAFORMA -->
+                <!-- 4. SUPORTE INTERNO -->
                 <div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2.5">
-                  <h3 class="text-xs font-black uppercase text-emerald-400">4. Chamados do Chat Interno (${state.tickets.length})</h3>
-                  <div class="max-h-48 overflow-y-auto space-y-2 text-[11px]">
-                    ${state.tickets.length === 0 ? '<p class="text-gray-500">Nenhuma dúvida enviada ainda.</p>' : state.tickets.slice(0, 8).map((t) => `
+                  <h3 class="text-xs font-black uppercase text-emerald-400">4. Chamados do Chat (${state.tickets.length})</h3>
+                  <div class="max-h-48 overflow-y-auto space-y-2 text-xs">
+                    ${state.tickets.length === 0 ? '<p class="text-gray-400">Nenhuma dúvida enviada ainda.</p>' : state.tickets.slice(0, 8).map((t) => `
                       <div class="p-2 rounded-xl bg-[#0b0e17] border border-white/10 space-y-1">
-                        <div class="font-bold text-[#00d4ff]">${escapeHtml(t.userName)}:</div>
-                        <p class="text-gray-300">"${escapeHtml(t.question)}"</p>
-                        ${t.adminReply ? `<p class="text-emerald-400">✓ Respondido: ${escapeHtml(t.adminReply)}</p>` : `
+                        <div class="font-bold text-[#00d4ff]">${escapeHtml(t.user_name)}:</div>
+                        <p class="text-gray-200">"${escapeHtml(t.question)}"</p>
+                        ${t.admin_reply ? `<p class="text-emerald-400">✓ Respondido: ${escapeHtml(t.admin_reply)}</p>` : `
                           <div class="flex gap-1 pt-1">
-                            <input type="text" id="rep-${escapeHtml(t.id)}" placeholder="Sua resposta..." class="flex-1 px-2 py-1 rounded bg-black text-[10px] text-white" />
-                            <button onclick="window.app.replyTicket('${escapeHtml(t.id)}')" class="px-2 py-1 rounded bg-emerald-500 text-black font-black text-[10px]">Enviar</button>
+                            <input type="text" id="rep-${escapeHtml(t.id)}" placeholder="Sua resposta..." class="flex-1 px-2 py-1 rounded bg-black text-xs text-white" />
+                            <button onclick="window.app.replyTicket('${escapeHtml(t.id)}')" class="px-2 py-1 rounded bg-emerald-500 text-black font-black text-xs">Enviar</button>
                           </div>
                         `}
                       </div>
@@ -1372,12 +1525,29 @@
         selectSeason(sNum) { state.selectedSeason = Number(sNum) || 1; renderAll(); },
         selectPlayerSeason(sNum) { state.playerSeason = Number(sNum) || 1; renderPlayerBottomStrip(); },
 
-        // LOGIN COM GOOGLE OFICIAL
-        async loginWithGoogle() {
-          if (!state.supabaseClient) {
-            toast('Conectando ao servidor Google...');
-            return;
+        togglePassVisibility(inputId) {
+          const inp = document.getElementById(inputId);
+          if (inp) inp.type = inp.type === 'password' ? 'text' : 'password';
+        },
+
+        openLegalModal(type) {
+          const titleEl = document.getElementById('legal-modal-title');
+          const bodyEl = document.getElementById('legal-modal-body');
+          if (type === 'terms') {
+            titleEl.textContent = 'Termos de Uso — Da Um Play IA';
+            bodyEl.innerHTML = `<p>1. O Passe VIP Mensal concede acesso pessoal e intransferível por 30 dias corridos ao catálogo de séries e mini novelinhas da plataforma Da Um Play IA, sem renovação automática.</p><p>2. Todas as obras disponibilizadas são produções originais criadas com recursos de Inteligência Artificial e protegidas por direitos autorais. É vedada a cópia ou redistribuição comercial.</p>`;
+          } else if (type === 'privacy') {
+            titleEl.textContent = 'Política de Privacidade (LGPD)';
+            bodyEl.innerHTML = `<p>Em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), coletamos apenas Nome, E-mail e WhatsApp (opcional) com a finalidade exclusiva de autenticação da sua conta de membro e liberação automática da assinatura VIP via PIX.</p><p>Seus dados são armazenados com criptografia e segurança RLS e você pode solicitar a exclusão da sua conta a qualquer momento pelos canais oficiais de suporte.</p>`;
+          } else {
+            titleEl.textContent = 'Política de Cancelamento e Reembolso';
+            bodyEl.innerHTML = `<p>Em respeito ao Art. 49 do Código de Defesa do Consumidor (CDC), garantimos o direito de arrependimento e reembolso integral em até 7 (sete) dias corridos após a confirmação do pagamento, bastando solicitar pelo nosso Suporte Oficial no WhatsApp.</p>`;
           }
+          document.getElementById('legal-modal').classList.remove('hidden');
+        },
+
+        async loginWithGoogle() {
+          if (!state.supabaseClient) return;
           try {
             const { error } = await state.supabaseClient.auth.signInWithOAuth({
               provider: 'google',
@@ -1385,11 +1555,10 @@
             });
             if (error) throw error;
           } catch (e) {
-            toast('Para usar o botão Google, ative a chave Google no menu Authentication -> Providers do seu Supabase.');
+            toast('Ative o provedor Google em Authentication -> Providers no Supabase.');
           }
         },
 
-        // ENVIAR CÓDIGO DE ACESSO POR E-MAIL (OTP)
         async sendEmailOtpCode() {
           const email = document.getElementById('otp-email-input').value.trim().toLowerCase();
           if (!email || !email.includes('@')) {
@@ -1398,27 +1567,22 @@
           }
           state.pendingOtpEmail = email;
           document.getElementById('otp-verify-box').classList.remove('hidden');
-
-          if (state.supabaseClient) {
-            try {
-              const { error } = await state.supabaseClient.auth.signInWithOtp({
-                email,
-                options: { shouldCreateUser: true }
-              });
-              if (!error) {
-                toast('📩 Código enviado para ' + email + '! Verifique sua Caixa de Entrada e Spam.');
-                return;
-              }
-            } catch (e) {}
+          try {
+            const { error } = await state.supabaseClient.auth.signInWithOtp({
+              email,
+              options: { shouldCreateUser: true }
+            });
+            if (error) throw error;
+            toast('📩 Código enviado para ' + email + '! Verifique sua Caixa de Entrada.');
+          } catch (e) {
+            toast('Erro ao enviar código. Verifique o e-mail informado.');
           }
-          toast('📩 Solicitação enviada! Verifique seu e-mail.');
         },
 
-        // VALIDAR CÓDIGO DE 6 DÍGITOS DO E-MAIL
         async verifyEmailOtpCode() {
           const code = document.getElementById('otp-code-digits').value.trim();
           if (!code || code.length < 6) {
-            toast('Digite os 6 números do código que chegou no seu e-mail.');
+            toast('Digite os 6 números do código enviado ao seu e-mail.');
             return;
           }
           try {
@@ -1428,53 +1592,34 @@
               type: 'email'
             });
             if (error) throw error;
-            if (data) {
-              let user = state.users.find((u) => u.email.toLowerCase() === state.pendingOtpEmail);
-              if (!user) {
-                user = {
-                  id: 'u_' + Date.now(),
-                  name: state.pendingOtpEmail.split('@')[0],
-                  email: state.pendingOtpEmail,
-                  whatsapp: '',
-                  instagram: '',
-                  isVip: false,
-                  vipUntil: null,
-                  vipSig: ''
-                };
-                state.users.unshift(user);
-              }
-              state.currentUserId = user.id;
+            if (data?.user) {
+              await loadAuthenticatedProfile(data.user);
               this.closeModals();
-              syncCloud(false);
-              renderAll();
-              toast('🎉 Acesso confirmado via código de e-mail!');
+              toast('🎉 Acesso confirmado!');
             }
           } catch (e) {
-            toast('Código inválido ou expirado. Solicite um novo código.');
+            toast('Código inválido ou expirado.');
           }
         },
 
-        // PERFIL DO USUÁRIO (EDITAR PERFIL, INSTAGRAM E TROCAR SENHA)
         openProfileModal() {
-          const user = getCurrentUser();
+          const user = state.userProfile;
           if (!user) {
             this.openAuthModal('login');
             return;
           }
-          const vipActive = isUserTrulyVip(user);
-          const days = getDaysRemaining(user.vipUntil);
+          const vipActive = isCurrentUserVip();
+          const days = getDaysRemaining(user.vip_until);
           const pct = vipActive ? Math.min(100, Math.round((days / 30) * 100)) : 0;
 
           document.getElementById('prof-avatar').textContent = (user.name || 'M').charAt(0).toUpperCase();
           document.getElementById('prof-display-name').textContent = user.name;
           document.getElementById('prof-display-email').textContent = user.email;
-          document.getElementById('prof-display-insta').textContent = user.instagram ? '📸 ' + user.instagram : '📸 Adicione seu @Instagram abaixo';
-          document.getElementById('prof-vip-badge').textContent = vipActive ? `👑 VIP MENSAL (${days} DIAS)` : 'Membro Grátis';
+          document.getElementById('prof-vip-badge').textContent = vipActive ? `👑 VIP ATIVO (${days} DIAS)` : 'Membro Grátis';
           document.getElementById('prof-vip-days').textContent = vipActive ? `${days} de 30 dias ativos` : 'Plano Grátis';
           document.getElementById('prof-vip-bar').style.width = pct + '%';
 
           document.getElementById('edit-prof-name').value = user.name || '';
-          document.getElementById('edit-prof-insta').value = user.instagram || '';
           document.getElementById('edit-prof-phone').value = user.whatsapp || '';
 
           this.switchProfileTab('edit');
@@ -1487,42 +1632,42 @@
           document.getElementById('btn-prof-tab-edit').className = `flex-1 py-2 rounded-lg text-xs font-black uppercase ${isEdit ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'}`;
           document.getElementById('btn-prof-tab-pass').className = `flex-1 py-2 rounded-lg text-xs font-black uppercase ${!isEdit ? 'bg-[#ff1722] text-white' : 'text-gray-400'}`;
         },
-        saveProfileChanges(e) {
+        async saveProfileChanges(e) {
           e.preventDefault();
-          const user = getCurrentUser();
-          if (!user) return;
+          if (!state.userProfile || !state.supabaseClient) return;
           const name = document.getElementById('edit-prof-name').value.trim();
-          let insta = document.getElementById('edit-prof-insta').value.trim();
-          const phone = document.getElementById('edit-prof-phone').value.trim();
-          if (insta && !insta.startsWith('@')) insta = '@' + insta;
+          const whatsapp = document.getElementById('edit-prof-phone').value.trim();
+          const { error } = await state.supabaseClient
+            .from('profiles')
+            .update({ name, whatsapp })
+            .eq('id', state.userProfile.id);
 
-          user.name = name || user.name;
-          user.instagram = insta;
-          user.whatsapp = phone;
-          syncCloud(false);
-          renderAll();
-          this.openProfileModal();
-          toast('✅ Seu perfil e @Instagram foram atualizados!');
+          if (!error) {
+            state.userProfile.name = name;
+            state.userProfile.whatsapp = whatsapp;
+            renderAll();
+            this.openProfileModal();
+            toast('✅ Perfil atualizado com segurança!');
+          }
         },
         async changeUserPassword(e) {
           e.preventDefault();
-          const user = getCurrentUser();
-          if (!user) return;
           const p1 = document.getElementById('new-user-pass').value;
           const p2 = document.getElementById('confirm-user-pass').value;
           if (p1 !== p2) {
             toast('❌ As duas senhas digitadas não conferem.');
             return;
           }
-          user.passwordHash = await sha256(p1);
-          delete user.password;
+          const { error } = await state.supabaseClient.auth.updateUser({ password: p1 });
+          if (error) {
+            toast('❌ Erro ao atualizar senha: ' + error.message);
+            return;
+          }
           document.getElementById('new-user-pass').value = '';
           document.getElementById('confirm-user-pass').value = '';
-          syncCloud(false);
-          toast('🔒 Sua senha foi alterada com sucesso!');
+          toast('🔒 Sua senha foi alterada com sucesso no Supabase Auth!');
         },
 
-        // CHAT DE SUPORTE INTERNO NA PLATAFORMA
         toggleSupportChat() {
           const win = document.getElementById('support-chat-window');
           if (win) {
@@ -1534,49 +1679,53 @@
           document.getElementById('support-input-text').value = questionText;
           this.submitSupportMessage(new Event('submit'));
         },
-        submitSupportMessage(e) {
+        async submitSupportMessage(e) {
           if (e && e.preventDefault) e.preventDefault();
+          if (!state.sessionUser) {
+            toast('Faça login para enviar uma mensagem no suporte interno.');
+            this.openAuthModal('login');
+            return;
+          }
           const input = document.getElementById('support-input-text');
           const q = input.value.trim();
           if (!q) return;
-          const user = getCurrentUser();
 
-          let autoReply = 'Recebemos sua mensagem aqui na plataforma! Nossa equipe já foi notificada e responderá neste chat.';
+          let autoReply = 'Recebemos sua mensagem! Nossa equipe responderá neste chat ou pelo botão verde do WhatsApp.';
           const qLow = q.toLowerCase();
           if (qLow.includes('vip') || qLow.includes('30 dias')) {
-            autoReply = 'O Plano VIP Mensal garante 30 dias corridos de acesso ilimitado a todas as séries e temporadas por pagamento único via PIX (sem renovação automática).';
+            autoReply = 'O Plano VIP Mensal garante 30 dias corridos de acesso ilimitado a todas as séries e temporadas por pagamento único via PIX.';
           } else if (qLow.includes('pix') || qLow.includes('libera')) {
-            autoReply = 'Assim que você paga o QR Code ou PIX Copia e Cola, o sistema reconhece automaticamente em cerca de 3 segundos e ativa seu selo 👑 MEMBRO VIP!';
-          } else if (qLow.includes('perfil') || qLow.includes('senha') || qLow.includes('instagram')) {
-            autoReply = 'Para editar seu nome, colocar seu @Instagram ou trocar a senha, clique no botão "👤 Meu Perfil" no topo direito da plataforma.';
+            autoReply = 'Assim que o pagamento PIX é compensado pelo Mercado Pago, nosso servidor libera automaticamente seu acesso VIP no banco de dados!';
           }
 
           const now = new Date();
           const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-          state.tickets.push({
+          const newTk = {
             id: 'tk_' + Date.now(),
-            userId: user ? user.id : 'guest',
-            userName: user ? user.name : 'Visitante',
+            user_id: state.sessionUser.id,
+            user_name: state.userProfile?.name || 'Membro',
             question: q,
-            autoReply,
-            adminReply: '',
+            auto_reply: autoReply,
+            admin_reply: '',
             time: timeStr
-          });
+          };
 
           input.value = '';
-          syncCloud(false);
+          await state.supabaseClient.from('tickets').insert(newTk);
+          await loadTickets();
           renderAll();
         },
-        replyTicket(ticketId) {
+        async replyTicket(ticketId) {
+          if (!isCurrentUserAdmin()) return;
           const inp = document.getElementById('rep-' + ticketId);
           if (!inp || !inp.value.trim()) return;
-          const tk = state.tickets.find((t) => t.id === ticketId);
-          if (tk) {
-            tk.adminReply = inp.value.trim();
-            syncCloud(true);
-            renderAll();
-            toast('Resposta enviada para o chat do membro!');
-          }
+          await state.supabaseClient
+            .from('tickets')
+            .update({ admin_reply: inp.value.trim() })
+            .eq('id', ticketId);
+          await loadTickets();
+          renderAll();
+          toast('Resposta enviada!');
         },
 
         playHeroFirstEp() {
@@ -1586,22 +1735,32 @@
             this.playEpisode(hero.id, sorted[0].id);
           }
         },
-        playEpisode(serieId, epId) {
+        async playEpisode(serieId, epId) {
           const serie = state.seriesList.find((s) => s.id === serieId);
           const allEps = sortAllEpisodes(serie?.episodes || []);
           const epIndex = allEps.findIndex((e) => e.id === epId);
           const ep = allEps[epIndex];
           if (!ep) return;
 
-          const user = getCurrentUser();
-          if (!user && !state.creatorUnlocked) {
-            toast('Entre ou crie sua conta de Membro para assistir!');
-            this.openAuthModal('register');
+          if (!state.sessionUser) {
+            toast('Entre na sua conta de Membro para assistir!');
+            this.openAuthModal('login');
             return;
           }
-          if (ep.isVip && !state.creatorUnlocked && !isUserTrulyVip(user)) {
+          if (ep.isVip && !isCurrentUserVip()) {
             this.openVipCheckout();
             return;
+          }
+
+          // Busca o link do vídeo na tabela protegida por RLS no servidor Supabase
+          let videoUrl = ep.videoUrl || '';
+          if (state.supabaseClient) {
+            const { data: vidRow } = await state.supabaseClient
+              .from('episode_videos')
+              .select('video_url')
+              .eq('episode_id', ep.id)
+              .single();
+            if (vidRow?.video_url) videoUrl = vidRow.video_url;
           }
 
           const sNum = Number(ep.season) || 1;
@@ -1614,7 +1773,7 @@
 
           document.getElementById('player-ep-label').textContent = `${serie.title} • ${sNum}ª TEMPORADA • EP. ${ep.number}`;
           document.getElementById('player-ep-title').textContent = ep.title;
-          document.getElementById('player-stage').innerHTML = buildVideoEmbedHtml(ep.videoUrl);
+          document.getElementById('player-stage').innerHTML = buildVideoEmbedHtml(videoUrl);
           document.getElementById('player-modal').classList.remove('hidden');
           document.body.style.overflow = 'hidden';
 
@@ -1658,209 +1817,207 @@
           document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
           document.getElementById('otp-form').classList.toggle('hidden', mode !== 'otp');
           document.getElementById('register-form').classList.toggle('hidden', mode !== 'register');
-          document.getElementById('tab-login-btn').className = `py-2 rounded-lg text-[11px] font-black uppercase ${mode === 'login' ? 'bg-[#ff1722] text-white' : 'text-gray-400'}`;
-          document.getElementById('tab-otp-btn').className = `py-2 rounded-lg text-[11px] font-black uppercase ${mode === 'otp' ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'}`;
-          document.getElementById('tab-reg-btn').className = `py-2 rounded-lg text-[11px] font-black uppercase ${mode === 'register' ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'}`;
+          document.getElementById('tab-login-btn').className = `py-2 rounded-lg text-xs font-black uppercase ${mode === 'login' ? 'bg-[#ff1722] text-white' : 'text-gray-300'}`;
+          document.getElementById('tab-otp-btn').className = `py-2 rounded-lg text-xs font-black uppercase ${mode === 'otp' ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-300'}`;
+          document.getElementById('tab-reg-btn').className = `py-2 rounded-lg text-xs font-black uppercase ${mode === 'register' ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-300'}`;
+
+          const titleEl = document.getElementById('auth-heading-title');
+          const subEl = document.getElementById('auth-heading-sub');
+          const footerQ = document.getElementById('auth-footer-question');
+          const footerBtn = document.getElementById('auth-footer-switch');
+
+          if (mode === 'register') {
+            if (titleEl) titleEl.textContent = 'Crie sua conta';
+            if (subEl) subEl.textContent = 'Cadastre-se para começar';
+            if (footerQ) footerQ.textContent = 'Já tem conta?';
+            if (footerBtn) {
+              footerBtn.textContent = 'Entrar';
+              footerBtn.setAttribute('onclick', "window.app.switchAuthTab('login')");
+            }
+          } else {
+            if (titleEl) titleEl.textContent = mode === 'otp' ? 'Acesso Rápido' : 'Bem-vindo de volta';
+            if (subEl) subEl.textContent = mode === 'otp' ? 'Receba seu código por e-mail' : 'Acesse sua conta segura';
+            if (footerQ) footerQ.textContent = 'Não tem conta?';
+            if (footerBtn) {
+              footerBtn.textContent = 'Criar conta';
+              footerBtn.setAttribute('onclick', "window.app.switchAuthTab('register')");
+            }
+          }
         },
         closeModals() {
-          ['auth-modal', 'vip-modal', 'profile-modal'].forEach((id) => document.getElementById(id)?.classList.add('hidden'));
+          ['auth-modal', 'vip-modal', 'profile-modal', 'legal-modal'].forEach((id) => document.getElementById(id)?.classList.add('hidden'));
           if (state.pixInterval) clearInterval(state.pixInterval);
         },
         async handleLogin(e) {
           e.preventDefault();
           const email = document.getElementById('login-email').value.trim().toLowerCase();
-          const pass = document.getElementById('login-pass').value;
-          const hashedInput = await sha256(pass);
+          const password = document.getElementById('login-pass').value;
+          const err = document.getElementById('auth-error-msg');
+          err.classList.add('hidden');
 
-          if (email === 'admin' || email === 'adm') {
-            if (hashedInput === state.creatorHash) {
-              state.creatorUnlocked = true;
-              this.closeModals();
-              renderAll();
-              toast('Estúdio Master ADM Liberado');
-              return;
-            }
-          }
-
-          const found = state.users.find((u) => u.email.toLowerCase() === email && (u.passwordHash === hashedInput || u.password === pass));
-          if (!found) {
-            const err = document.getElementById('auth-error-msg');
+          const { data, error } = await state.supabaseClient.auth.signInWithPassword({ email, password });
+          if (error || !data?.user) {
             err.textContent = 'E-mail ou senha incorretos.';
             err.classList.remove('hidden');
             return;
           }
-          if (!found.passwordHash) { found.passwordHash = hashedInput; delete found.password; }
-          state.currentUserId = found.id;
+          await loadAuthenticatedProfile(data.user);
           this.closeModals();
-          syncCloud(false);
-          renderAll();
-          toast('Bem-vindo de volta, ' + found.name);
+          toast('Bem-vindo de volta!');
         },
         async handleRegister(e) {
           e.preventDefault();
           const name = document.getElementById('reg-name').value.trim();
           const email = document.getElementById('reg-email').value.trim().toLowerCase();
-          const phone = document.getElementById('reg-phone').value.trim();
-          let insta = document.getElementById('reg-insta').value.trim();
+          const whatsapp = document.getElementById('reg-phone').value.trim();
           const password = document.getElementById('reg-pass').value;
 
-          if (insta && !insta.startsWith('@')) insta = '@' + insta;
-          if (email === 'admin' || email === 'adm') { toast('E-mail reservado.'); return; }
-          if (state.users.some((u) => u.email.toLowerCase() === email)) {
-            toast('Este e-mail já é membro! Faça login.');
-            this.switchAuthTab('login');
+          const { data, error } = await state.supabaseClient.auth.signUp({
+            email,
+            password,
+            options: { data: { name, whatsapp } }
+          });
+
+          if (error) {
+            toast('Erro no cadastro: ' + error.message);
             return;
           }
-
-          const passwordHash = await sha256(password);
-          const nu = {
-            id: 'u_' + Date.now(),
-            name,
-            email,
-            whatsapp: phone,
-            instagram: insta,
-            passwordHash,
-            isVip: false,
-            vipUntil: null,
-            vipSig: ''
-          };
-          state.users.unshift(nu);
-          state.currentUserId = nu.id;
-          this.closeModals();
-          syncCloud(false);
-          renderAll();
-          toast('🎉 Parabéns! Agora você é um Membro Oficial!');
+          if (data?.user) {
+            await loadAuthenticatedProfile(data.user);
+            this.closeModals();
+            toast('🎉 Conta criada com sucesso!');
+          }
         },
-        logout() {
-          state.currentUserId = null;
-          if (state.supabaseClient) state.supabaseClient.auth.signOut().catch(() => {});
-          saveLocalState();
+        async logout() {
+          if (state.supabaseClient) await state.supabaseClient.auth.signOut().catch(() => {});
+          state.sessionUser = null;
+          state.userProfile = null;
           renderAll();
           toast('Sessão encerrada.');
         },
         toggleInlineCoupon() { document.getElementById('inline-coupon-box')?.classList.toggle('hidden'); },
         handleCoupon(e) {
           e.preventDefault();
-          const user = getCurrentUser();
-          if (!user) { this.closeModals(); this.openAuthModal('register'); return; }
           const code = document.getElementById('coupon-code-input').value.trim().toUpperCase();
-          const found = state.coupons.find((c) => c.code === code && c.usesLeft > 0);
-          if (!found) {
-            document.getElementById('coupon-feedback').textContent = '❌ Cupom inválido ou esgotado.';
-            return;
-          }
-          found.usesLeft -= 1;
-          if (found.type === 'price') {
-            state.discountedPrice = Number(found.value);
-            document.getElementById('coupon-feedback').textContent = `✅ Cupom aplicado! Novo valor: R$ ${Number(found.value).toFixed(2).replace('.', ',')}`;
-            this.openVipCheckout();
-            return;
-          }
-          grantVerifiedVip(user, Number(found.value));
-          syncCloud(false);
-          renderAll();
-          this.closeModals();
-          toast(`🎉 Cupom ativado! +${found.value} dias de VIP liberados!`);
+          if (!code) return;
+          state.appliedCouponCode = code;
+          document.getElementById('coupon-feedback').textContent = `⏳ Validando cupom "${code}" no servidor...`;
+          this.openVipCheckout();
         },
         async openVipCheckout() {
-          const user = getCurrentUser();
-          if (!user && !state.creatorUnlocked) { this.openAuthModal('register'); return; }
+          if (!state.sessionUser) {
+            this.openAuthModal('register');
+            return;
+          }
           const amount = Number(state.discountedPrice || state.basePrice || 9.90);
           document.getElementById('vip-modal-price').textContent = 'R$ ' + amount.toFixed(2).replace('.', ',');
           const box = document.getElementById('pix-container');
-          box.innerHTML = `<p class="text-xs text-[#00d4ff] font-bold animate-pulse py-6">Gerando QR Code PIX para 30 Dias VIP...</p>`;
+          box.innerHTML = `<p class="text-xs text-[#00d4ff] font-bold animate-pulse py-6">Gerando QR Code PIX Oficial...</p>`;
           document.getElementById('vip-modal').classList.remove('hidden');
 
           try {
+            const { data: sessionData } = await state.supabaseClient.auth.getSession();
+            const jwt = sessionData?.session?.access_token || '';
+
+            // Envia o e-mail REAL do usuário autenticado e o token JWT (Sem expor mpToken no navegador!)
             const res = await fetch('/api/criar-pix', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
+              },
               body: JSON.stringify({
-                email: `assinante.${Date.now()}@daumplayia.com`,
-                name: user?.name || 'Membro VIP',
-                userId: user?.id || 'vip',
-                mpToken: state.gatewayKey.trim(),
-                customAmount: amount
+                email: state.sessionUser.email,
+                name: state.userProfile?.name || 'Membro VIP',
+                userId: state.sessionUser.id,
+                couponCode: state.appliedCouponCode || undefined
               })
             });
             const data = await res.json();
             if (res.ok && data.paymentId) {
+              if (data.amount) {
+                document.getElementById('vip-modal-price').textContent = 'R$ ' + Number(data.amount).toFixed(2).replace('.', ',');
+              }
               const safeQr = escapeHtml(data.qrCode);
               box.innerHTML = `
                 <div class="bg-white p-3 rounded-2xl w-48 h-48 mx-auto shadow-xl">
                   <img src="data:image/png;base64,${escapeHtml(data.qrCodeBase64)}" alt="QR Code PIX" class="w-full h-full object-contain" />
                 </div>
-                <input type="text" readonly value="${safeQr}" class="w-full px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-[10px] text-gray-400 font-mono text-center" />
+                <input type="text" readonly value="${safeQr}" class="w-full px-3 py-2 rounded-xl bg-[#040508] border border-white/15 text-xs text-gray-300 font-mono text-center" />
                 <button onclick="window.app.copyPix('${safeQr}')" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase shadow-lg">
                   📋 Copiar Código PIX (Copia e Cola)
                 </button>
-                <p class="text-[11px] text-emerald-400 font-bold">⚡ Liberação automática de 30 dias VIP após pagar!</p>
+                <p class="text-xs text-emerald-400 font-bold">⚡ Aguardando confirmação do servidor...</p>
               `;
+
               if (state.pixInterval) clearInterval(state.pixInterval);
               state.pixInterval = setInterval(async () => {
                 try {
-                  const vr = await fetch(`/api/verificar-pix?paymentId=${encodeURIComponent(data.paymentId)}&mpToken=${encodeURIComponent(state.gatewayKey.trim())}`);
+                  // Consulta status no servidor ou recarrega perfil atualizado pelo Webhook
+                  const statusUrl = `/api/status-pix?paymentId=${encodeURIComponent(data.paymentId)}`;
+                  const vr = await fetch(statusUrl, {
+                    headers: { 'Authorization': `Bearer ${jwt}` }
+                  }).catch(() => fetch(`/api/verificar-pix?paymentId=${encodeURIComponent(data.paymentId)}`));
+
                   const vd = await vr.json();
-                  if (vd.status === 'approved') {
+                  await loadAuthenticatedProfile(state.sessionUser);
+
+                  if (vd.status === 'approved' || isCurrentUserVip()) {
                     clearInterval(state.pixInterval);
-                    if (user) {
-                      grantVerifiedVip(user, 30);
-                      syncCloud(false);
-                      renderAll();
-                    }
                     this.closeModals();
-                    toast('🎉 Pagamento Aprovado! Seus 30 dias de Membro VIP estão ativos!');
+                    renderAll();
+                    toast('🎉 Pagamento Confirmado pelo Servidor! Seus 30 dias VIP estão ativos!');
                   }
                 } catch (e) {}
-              }, 3500);
+              }, 4000);
             } else {
-              box.innerHTML = `<p class="text-xs text-amber-300 font-bold py-4">Configure sua chave PIX no Estúdio ADM ou chame no Suporte Interno.</p>`;
+              box.innerHTML = `<p class="text-xs text-amber-300 font-bold py-4">${escapeHtml(data.error || 'Chame nosso Suporte Oficial no WhatsApp para ativar seu acesso.')}</p>`;
             }
           } catch (e) {
             box.innerHTML = `<p class="text-xs text-red-400 font-bold py-4">Erro ao conectar com o servidor PIX.</p>`;
           }
         },
         copyPix(code) {
-          if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(code);
+          try {
+            if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(code);
+            else document.execCommand('copy');
+          } catch (e) {}
           toast('Código PIX copiado! Cole no app do seu banco.');
         },
         openReviewForm() {
-          const user = getCurrentUser();
-          if (!user) {
+          if (!state.sessionUser) {
             toast('Entre na sua conta de Membro para comentar no mural!');
             this.openAuthModal('login');
             return;
           }
           document.getElementById('review-form').classList.toggle('hidden');
         },
-        submitRealReview(e) {
+        async submitRealReview(e) {
           e.preventDefault();
-          const user = getCurrentUser();
-          if (!user) return;
-          const stars = document.getElementById('review-stars').value;
+          if (!state.sessionUser) return;
+          const stars = Number(document.getElementById('review-stars').value) || 5;
           const text = document.getElementById('review-text').value.trim();
           if (!text) return;
-          state.reviews.unshift({
+
+          const newRev = {
             id: 'rev_' + Date.now(),
-            author: user.name,
-            instagram: user.instagram || '',
-            isVip: isUserTrulyVip(user),
-            stars: Number(stars),
+            user_id: state.sessionUser.id,
+            author: state.userProfile?.name || 'Membro',
+            is_vip: isCurrentUserVip(),
+            stars,
             text
-          });
-          document.getElementById('review-text').value = '';
-          document.getElementById('review-form').classList.add('hidden');
-          syncCloud(false);
-          renderAll();
-          toast('Seu comentário de Membro foi publicado!');
-        },
-        closeStudio() {
-          state.creatorUnlocked = false;
-          document.getElementById('creator-studio-container').classList.add('hidden');
-          renderAll();
+          };
+          const { error } = await state.supabaseClient.from('reviews').insert(newRev);
+          if (!error) {
+            state.reviews.unshift(newRev);
+            document.getElementById('review-text').value = '';
+            document.getElementById('review-form').classList.add('hidden');
+            renderAll();
+            toast('Seu comentário foi publicado!');
+          }
         },
         async uploadMedia(file, targetInputId) {
-          if (!file) return;
+          if (!file || !isCurrentUserAdmin()) return;
           if (file.size > 50 * 1024 * 1024) {
             toast('Acima de 50MB! Use link do YouTube Não Listado ou Google Drive Público.');
             return;
@@ -1878,39 +2035,59 @@
             toast('Erro no upload. Cole a URL diretamente.');
           }
         },
-        createSerie(e) {
+        async createSerie(e) {
           e.preventDefault();
+          if (!isCurrentUserAdmin()) return;
           const title = document.getElementById('ns-title').value.trim();
           const category = document.getElementById('ns-cat').value.trim();
           const synopsis = document.getElementById('ns-desc').value.trim();
           const poster = document.getElementById('ns-poster').value.trim() || makeArtworkSvg(title, category, '#2b0610', '#061524');
-          if (state.editingSerieId) {
-            state.seriesList = state.seriesList.map((s) => s.id === state.editingSerieId ? { ...s, title, category, synopsis, poster, banner: poster } : s);
-            state.editingSerieId = null;
-          } else {
-            const created = { id: 's_' + Date.now(), title, category, synopsis, poster, banner: poster, isHeroLaunch: false, episodes: [] };
-            state.seriesList.unshift(created);
-            state.selectedSeriesId = created.id;
-          }
-          syncCloud(true);
+
+          const serieId = state.editingSerieId || 's_' + Date.now();
+          await state.supabaseClient.from('series').upsert({
+            id: serieId,
+            title,
+            category,
+            synopsis,
+            poster,
+            banner: poster
+          });
+          state.editingSerieId = null;
+          state.selectedSeriesId = serieId;
+          await loadCatalogAndSettings();
           renderAll();
-          toast('Série salva!');
+          toast('Série salva no banco protegido!');
         },
         editSerie(id) {
+          if (!isCurrentUserAdmin()) return;
           state.editingSerieId = id;
           renderCreatorStudio();
           document.getElementById('creator-studio-container')?.scrollIntoView({ behavior: 'smooth' });
         },
-        editEp(serieId, epId) {
+        cancelEditSerie() {
+          state.editingSerieId = null;
+          renderCreatorStudio();
+        },
+        async editEp(serieId, epId) {
+          if (!isCurrentUserAdmin()) return;
           const serie = state.seriesList.find((s) => s.id === serieId);
           const ep = serie?.episodes?.find((e) => e.id === epId);
           if (!ep) return;
-          state.editingEpData = { serieId, epId: ep.id, season: Number(ep.season) || 1, number: ep.number, title: ep.title, videoUrl: ep.videoUrl, isVip: ep.isVip, isVertical: Boolean(ep.isVertical) };
+          let videoUrl = '';
+          const { data: vidRow } = await state.supabaseClient.from('episode_videos').select('video_url').eq('episode_id', ep.id).single();
+          if (vidRow?.video_url) videoUrl = vidRow.video_url;
+
+          state.editingEpData = { serieId, epId: ep.id, season: Number(ep.season) || 1, number: ep.number, title: ep.title, videoUrl, isVip: ep.isVip, isVertical: Boolean(ep.isVertical) };
           renderCreatorStudio();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
-        createEpisode(e) {
+        cancelEditEp() {
+          state.editingEpData = null;
+          renderCreatorStudio();
+        },
+        async createEpisode(e) {
           e.preventDefault();
+          if (!isCurrentUserAdmin()) return;
           const serieId = document.getElementById('ne-serie').value;
           const season = Number(document.getElementById('ne-season').value) || 1;
           const number = Number(document.getElementById('ne-num').value) || 1;
@@ -1919,60 +2096,82 @@
           const isVip = document.getElementById('ne-vip').checked;
           const isVertical = document.getElementById('ne-vert').checked;
           const serie = state.seriesList.find((s) => s.id === serieId);
-          if (!serie) return;
-          if (state.editingEpData) {
-            const ep = serie.episodes.find((item) => item.id === state.editingEpData.epId);
-            if (ep) { ep.season = season; ep.number = number; ep.title = title; ep.videoUrl = videoUrl; ep.isVip = isVip; ep.isVertical = isVertical; }
-            state.editingEpData = null;
-          } else {
-            serie.episodes.push({ id: 'ep_' + Date.now(), season, number, title, duration: '04 min', isVip, comingSoon: false, isVertical, thumb: serie.poster, videoUrl });
-          }
-          state.selectedSeriesId = serie.id;
+
+          const epId = state.editingEpData ? state.editingEpData.epId : 'ep_' + Date.now();
+          await state.supabaseClient.from('episodes').upsert({
+            id: epId,
+            serie_id: serieId,
+            season,
+            number,
+            title,
+            duration: '04 min',
+            is_vip: isVip,
+            is_vertical: isVertical,
+            thumb: serie?.poster || ''
+          });
+          await state.supabaseClient.from('episode_videos').upsert({
+            episode_id: epId,
+            video_url: videoUrl
+          });
+
+          state.editingEpData = null;
+          state.selectedSeriesId = serieId;
           state.selectedSeason = season;
-          syncCloud(true);
+          await loadCatalogAndSettings();
           renderAll();
-          toast('Episódio salvo!');
+          toast('Episódio e link protegido salvos!');
         },
-        saveConfig() {
-          const tk = document.getElementById('cfg-token').value.trim();
+        async saveConfig() {
+          if (!isCurrentUserAdmin()) return;
           const pr = Number(document.getElementById('cfg-price').value) || 9.90;
-          state.gatewayKey = tk;
-          state.basePrice = pr;
-          sessionStorage.setItem('dup_session_gk', encodeKey(tk));
-          localStorage.setItem('dup_mp_token_v10', encodeKey(tk));
-          syncCloud(true);
+          const wa = document.getElementById('cfg-wa').value.trim() || '5575991227668';
+          const insta = document.getElementById('cfg-insta').value.trim().replace(/^@/, '') || 'Essencia_da_vidah';
+          await state.supabaseClient.from('site_settings').upsert({
+            id: 1,
+            base_price: pr,
+            support_whatsapp: wa,
+            official_instagram: insta
+          });
+          await loadCatalogAndSettings();
           renderAll();
-          toast('Configurações salvas!');
+          toast('Configurações salvas no servidor!');
         },
-        setHero(id) { state.seriesList.forEach((s) => (s.isHeroLaunch = s.id === id)); syncCloud(true); renderAll(); },
-        deleteSerie(id) {
-          if (state.seriesList.length <= 1) return;
-          state.seriesList = state.seriesList.filter((s) => s.id !== id);
-          state.selectedSeriesId = state.seriesList[0].id;
-          syncCloud(true);
+        async setHero(id) {
+          if (!isCurrentUserAdmin()) return;
+          await state.supabaseClient.from('series').update({ is_hero: false }).neq('id', id);
+          await state.supabaseClient.from('series').update({ is_hero: true }).eq('id', id);
+          await loadCatalogAndSettings();
           renderAll();
         },
-        toggleEpVip(sId, epId) {
+        async deleteSerie(id) {
+          if (!isCurrentUserAdmin() || state.seriesList.length <= 1) return;
+          await state.supabaseClient.from('series').delete().eq('id', id);
+          await loadCatalogAndSettings();
+          renderAll();
+        },
+        async toggleEpVip(sId, epId) {
+          if (!isCurrentUserAdmin()) return;
           const s = state.seriesList.find((item) => item.id === sId);
           const ep = s?.episodes?.find((item) => item.id === epId);
-          if (ep) ep.isVip = !ep.isVip;
-          syncCloud(true);
+          if (!ep) return;
+          await state.supabaseClient.from('episodes').update({ is_vip: !ep.isVip }).eq('id', epId);
+          await loadCatalogAndSettings();
           renderAll();
         },
-        deleteEp(sId, epId) {
-          const s = state.seriesList.find((item) => item.id === sId);
-          if (s) s.episodes = s.episodes.filter((item) => item.id !== epId);
-          syncCloud(true);
+        async deleteEp(_sId, epId) {
+          if (!isCurrentUserAdmin()) return;
+          await state.supabaseClient.from('episodes').delete().eq('id', epId);
+          await loadCatalogAndSettings();
           renderAll();
         },
-        toggleUserVip(uId) {
-          const u = state.users.find((item) => item.id === uId);
-          if (u) {
-            if (isUserTrulyVip(u)) { u.isVip = false; u.vipUntil = null; u.vipSig = ''; }
-            else grantVerifiedVip(u, 30);
-            syncCloud(true);
-            renderAll();
-          }
+        async toggleUserVip(uId, currentlyVip) {
+          if (!isCurrentUserAdmin()) return;
+          const nextUntil = currentlyVip ? null : new Date(Date.now() + 30 * 86400000).toISOString();
+          await state.supabaseClient.from('profiles').update({ vip_until: nextUntil }).eq('id', uId);
+          const { data: allProfs } = await state.supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
+          if (Array.isArray(allProfs)) state.allProfiles = allProfs;
+          renderAll();
+          toast('Status VIP atualizado no banco!');
         }
       };
 
