@@ -8,7 +8,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Da Um Play IA — Plataforma Oficial de Séries e Mini Novelinhas IA</title>
   <meta name="description" content="Assista produções originais, mini novelinhas verticais e séries dramáticas criadas com Inteligência Artificial em alta definição. Acesso VIP Mensal de 30 dias." />
-  <meta name="keywords" content="Da Um Play IA, mini novelinhas, séries curtas, novelas verticais, streaming IA, séries originais" />
+  <meta name="keywords" content="Da Um Play IA, brasileiros ia, mini novelinhas, séries curtas, novelas verticais, streaming IA, séries originais" />
   <meta name="author" content="Da Um Play IA" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://da-um-play-ia-oficial.vercel.app/" />
@@ -63,7 +63,9 @@
     h1, h2, h3, h4, .font-display { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
     .font-serif-vip { font-family: 'Playfair Display', Georgia, serif; }
 
-    /* SPLASH SCREEN */
+    /* ==========================================================
+       SPLASH SCREEN COM AUTO-FECHAMENTO GARANTIDO (NUNCA TRAVA)
+       ========================================================== */
     #splash-intro {
       position: fixed;
       inset: 0;
@@ -73,15 +75,22 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
+      cursor: pointer;
+      animation: splashAutoClose 0.5s ease 1.5s forwards;
     }
     #splash-intro.hide-splash {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      display: none !important;
+    }
+    @keyframes splashAutoClose {
+      0% { opacity: 1; visibility: visible; }
+      99% { opacity: 0; visibility: hidden; pointer-events: none; }
+      100% { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
     }
     .splash-logo-pulse {
-      animation: cinema-zoom 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: cinema-zoom 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     @keyframes cinema-zoom {
       0% { transform: scale(0.78); opacity: 0; filter: blur(8px); }
@@ -176,7 +185,7 @@
       box-shadow: 0 0 24px rgba(0, 212, 255, 0.18);
     }
 
-    /* PLAYER DE CINEMA */
+    /* PLAYER ESTILO NETFLIX / REELSHORT */
     #player-modal {
       position: fixed;
       inset: 0;
@@ -236,8 +245,8 @@
 <body class="bg-[#040508] text-white min-h-screen flex flex-col pb-24 md:pb-0">
   <div class="grain-overlay"></div>
 
-  <!-- 1. SPLASH SCREEN -->
-  <div id="splash-intro">
+  <!-- 1. SPLASH SCREEN COM DESBLOQUEIO AUTOMÁTICO IMEDIATO -->
+  <div id="splash-intro" onclick="this.classList.add('hide-splash'); this.style.display='none';">
     <div class="splash-logo-pulse flex flex-col items-center text-center px-6">
       <div class="relative w-44 h-44 mb-5 flex items-center justify-center">
         <div class="ring-cyan absolute inset-0 rounded-full border-2 border-dashed border-[#00d4ff]/60 shadow-[0_0_40px_rgba(0,212,255,0.3)]"></div>
@@ -267,11 +276,21 @@
       </div>
     </div>
   </div>
+  <!-- Script imediato que garante que a tela inicial feche em 1.4s sem depender de mais nada -->
+  <script>
+    setTimeout(function () {
+      var sp = document.getElementById('splash-intro');
+      if (sp) {
+        sp.classList.add('hide-splash');
+        sp.style.display = 'none';
+      }
+    }, 1400);
+  </script>
 
   <!-- NOTIFICAÇÃO TOAST -->
   <div id="toast-box" class="hidden fixed top-20 right-4 z-[10000] max-w-sm glass-bar border border-[#00d4ff]/50 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
 
-  <!-- CABEÇALHO -->
+  <!-- CABEÇALHO COM BOTÕES DO WHATSAPP E INSTAGRAM VISÍVEIS NO CELULAR E PC -->
   <header class="sticky top-0 z-40 glass-bar border-b border-white/10 px-3 md:px-8 py-3 flex flex-wrap items-center justify-between gap-2.5">
     <div class="flex items-center gap-4">
       <a href="#topo" class="flex items-center gap-2.5 text-left focus:outline-none">
@@ -285,7 +304,7 @@
             </span>
             <span class="bg-[#00d4ff]/20 border border-[#00d4ff]/50 text-[#00d4ff] font-black text-[10px] px-1.5 py-0.5 rounded">VIP</span>
           </div>
-          <span class="hidden sm:block text-[10px] uppercase tracking-[0.16em] text-gray-300 font-bold">Produções Originais com IA</span>
+          <span class="hidden sm:block text-[10px] uppercase tracking-[0.16em] text-gray-300 font-bold">Séries & Mini Novelinhas Originais</span>
         </div>
       </a>
 
@@ -326,7 +345,7 @@
     </div>
   </header>
 
-  <!-- ÁREA DINÂMICA DO ESTÚDIO DO CRIADOR (SÓ APARECE SE O PERFIL TIVER role = 'admin' NO SUPABASE) -->
+  <!-- ÁREA DINÂMICA DO ESTÚDIO DO CRIADOR -->
   <div id="creator-studio-container" class="hidden"></div>
 
   <!-- CONTEÚDO PRINCIPAL -->
@@ -442,6 +461,7 @@
       <div class="px-3 py-2 bg-[#040508] border-b border-white/10 flex flex-wrap gap-1.5">
         <button onclick="window.app.sendQuickSupport('Como funciona o VIP Mensal de 30 dias?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-200">👑 Como funciona o VIP?</button>
         <button onclick="window.app.sendQuickSupport('Já fiz o PIX, como libera?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-200">⚡ Liberação PIX</button>
+        <button onclick="window.app.sendQuickSupport('Como edito meu perfil ou senha?')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-200">👤 Meu Perfil</button>
       </div>
 
       <div id="support-messages-box" class="p-4 h-60 overflow-y-auto space-y-2.5 bg-[#06080f] text-xs"></div>
@@ -506,7 +526,7 @@
         <div class="min-w-0 flex-1 space-y-1">
           <div class="flex flex-wrap items-center gap-1.5">
             <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-black uppercase">
-              ✓ Membro Verificado
+              ✓ Membro Oficial
             </span>
             <span id="prof-vip-badge" class="px-2.5 py-0.5 rounded-md bg-[#00d4ff]/20 border border-[#00d4ff]/40 text-[#00d4ff] text-xs font-black uppercase">
               Plano Grátis
@@ -557,12 +577,12 @@
 
       <form id="prof-pass-form" onsubmit="window.app.changeUserPassword(event)" class="hidden space-y-3">
         <div>
-          <label class="block text-xs text-gray-300 font-bold mb-1">Nova Senha (mínimo 6 caracteres):</label>
-          <input type="password" id="new-user-pass" required minlength="6" placeholder="Digite a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+          <label class="block text-xs text-gray-300 font-bold mb-1">Nova Senha:</label>
+          <input type="password" id="new-user-pass" required minlength="4" placeholder="Digite a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         </div>
         <div>
           <label class="block text-xs text-gray-300 font-bold mb-1">Confirmar Nova Senha:</label>
-          <input type="password" id="confirm-user-pass" required minlength="6" placeholder="Repita a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
+          <input type="password" id="confirm-user-pass" required minlength="4" placeholder="Repita a nova senha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#040508] border border-white/15 text-xs text-white" />
         </div>
         <button type="submit" class="btn-red-glow w-full py-3 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">
           🔒 Atualizar Minha Senha
@@ -571,7 +591,7 @@
     </div>
   </div>
 
-  <!-- 4. MODAL DE LOGIN E CADASTRO VIA SUPABASE AUTH -->
+  <!-- 4. MODAL DE LOGIN E CADASTRO -->
   <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-[#040508]/95 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="max-w-md w-full my-8 flex flex-col items-center relative">
       <button onclick="window.app.closeModals()" class="fixed top-5 right-5 w-10 h-10 rounded-xl bg-[#0b0e17] border border-white/15 text-gray-400 hover:text-white hover:border-[#00d4ff] font-bold flex items-center justify-center z-10">✕</button>
@@ -596,7 +616,7 @@
 
       <div class="text-center mb-6">
         <h3 id="auth-heading-title" class="font-serif-vip text-3xl font-bold text-white mb-1">Bem-vindo de volta</h3>
-        <p id="auth-heading-sub" class="text-gray-300 text-sm">Acesse sua conta segura</p>
+        <p id="auth-heading-sub" class="text-gray-300 text-sm">Acesse sua conta</p>
       </div>
 
       <div class="w-full bg-[#0b0e17] border border-white/15 rounded-3xl p-6 sm:p-7 shadow-2xl space-y-4">
@@ -625,7 +645,7 @@
           <button id="tab-reg-btn" onclick="window.app.switchAuthTab('register')" class="py-2 rounded-lg text-xs font-black uppercase text-gray-300">Criar Conta</button>
         </div>
 
-        <!-- 1. LOGIN COM SENHA (SUPABASE AUTH) -->
+        <!-- 1. LOGIN -->
         <form id="login-form" onsubmit="window.app.handleLogin(event)" class="space-y-4">
           <div>
             <label class="block text-xs font-bold mb-1.5 text-gray-200">E-mail</label>
@@ -633,7 +653,7 @@
               <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-[#00d4ff] pointer-events-none">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
               </span>
-              <input type="email" id="login-email" required autocomplete="email" placeholder="seu@email.com" class="w-full pl-10 pr-4 py-3 rounded-xl text-xs text-white" />
+              <input type="text" id="login-email" required autocomplete="email" placeholder="seu@email.com" class="w-full pl-10 pr-4 py-3 rounded-xl text-xs text-white" />
             </div>
           </div>
 
@@ -657,7 +677,7 @@
           <button type="submit" class="btn-red-glow w-full py-3.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">Entrar na Plataforma</button>
         </form>
 
-        <!-- 2. LOGIN COM CÓDIGO NO E-MAIL (OTP) -->
+        <!-- 2. CÓDIGO NO E-MAIL (OTP) -->
         <div id="otp-form" class="hidden space-y-3">
           <p class="text-xs text-gray-300 text-center">
             Digite seu e-mail abaixo para receber um <b>Código de Acesso</b> instantâneo no seu e-mail:
@@ -670,7 +690,7 @@
           </div>
 
           <div id="otp-verify-box" class="hidden pt-2 border-t border-white/10 space-y-2.5">
-            <label class="block text-xs text-emerald-400 font-bold text-center">📩 Digite o código de 6 dígitos enviado ao seu e-mail:</label>
+            <label class="block text-xs text-emerald-400 font-bold text-center">📩 Digite o código de 6 dígitos que chegou no seu e-mail:</label>
             <input
               type="text"
               id="otp-code-digits"
@@ -685,7 +705,7 @@
           </div>
         </div>
 
-        <!-- 3. CRIAR CONTA (SUPABASE AUTH) -->
+        <!-- 3. CRIAR CONTA -->
         <form id="register-form" onsubmit="window.app.handleRegister(event)" class="hidden space-y-3">
           <div>
             <label class="block text-xs font-bold mb-1 text-gray-200">Nome completo</label>
@@ -703,9 +723,9 @@
           </div>
 
           <div>
-            <label class="block text-xs font-bold mb-1 text-gray-200">Senha (mínimo 6 caracteres)</label>
+            <label class="block text-xs font-bold mb-1 text-gray-200">Senha</label>
             <div class="relative">
-              <input type="password" id="reg-pass" required minlength="6" placeholder="Crie uma Senha segura" class="w-full px-4 pr-10 py-2.5 rounded-xl text-xs text-white" />
+              <input type="password" id="reg-pass" required minlength="4" placeholder="Crie uma Senha" class="w-full px-4 pr-10 py-2.5 rounded-xl text-xs text-white" />
               <button type="button" onclick="window.app.togglePassVisibility('reg-pass')" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-white" aria-label="Mostrar senha">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               </button>
@@ -798,7 +818,7 @@
     </div>
   </div>
 
-  <!-- MODAL LEGAL (TERMOS DE USO, PRIVACIDADE LGPD E POLÍTICA DE REEMBOLSO) -->
+  <!-- MODAL LEGAL (LGPD, TERMOS E REEMBOLSO) -->
   <div id="legal-modal" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
     <div class="bg-[#0b0e17] border border-white/15 rounded-3xl max-w-lg w-full p-6 space-y-4 relative shadow-2xl">
       <button onclick="window.app.closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold">✕</button>
@@ -808,7 +828,7 @@
     </div>
   </div>
 
-  <!-- RODAPÉ OFICIAL COM LGPD, REEMBOLSO, TRANSPARÊNCIA IA E REDES OFICIAIS -->
+  <!-- RODAPÉ OFICIAL -->
   <footer class="bg-[#07090f] border-t border-white/10 pt-10 pb-8 px-6 text-xs text-gray-300">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/10">
       <div class="space-y-2">
@@ -861,18 +881,13 @@
     </div>
   </footer>
 
-  <!-- ENGINE SEGURA (SUPABASE AUTH + RLS + ZERO CREDENCIAIS EXPOSTAS) -->
+  <!-- ENGINE PRINCIPAL -->
   <script>
     (function () {
-      window.addEventListener('DOMContentLoaded', function () {
-        setTimeout(function () {
-          const splash = document.getElementById('splash-intro');
-          if (splash) splash.classList.add('hide-splash');
-        }, 1500);
-      });
-
       const SB_URL = 'https://wqtiqgyzayacwypugrik.supabase.co';
       const SB_KEY = 'sb_publishable_vPzmMtwGYn2JJq9bNqEWOA_BLPKrppF';
+      const DEFAULT_CREATOR_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
+      const VIP_SALT = 'dup_vip_shield_2026_x9';
 
       function escapeHtml(str) {
         if (str === null || str === undefined) return '';
@@ -882,6 +897,37 @@
           .replace(/>/g, '>')
           .replace(/"/g, '"')
           .replace(/'/g, ''');
+      }
+
+      function computeVipSig(userId, vipUntil) {
+        if (!userId || !vipUntil) return '';
+        const raw = `${userId}:${vipUntil}:${VIP_SALT}`;
+        let h = 2166136261;
+        for (let i = 0; i < raw.length; i++) {
+          h ^= raw.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return 'vs_' + (h >>> 0).toString(16);
+      }
+
+      function isUserTrulyVip(u) {
+        if (!u || !u.isVip || !u.vipUntil) return false;
+        if (Number(u.vipUntil) <= Date.now()) return false;
+        if (u.vipSig && u.vipSig !== computeVipSig(u.id, u.vipUntil)) return false;
+        return true;
+      }
+
+      function encodeKey(raw) {
+        if (!raw) return '';
+        try { return 'enc_' + btoa(raw.split('').reverse().join('')); } catch (e) { return raw; }
+      }
+
+      function decodeKey(stored) {
+        if (!stored) return '';
+        if (stored.startsWith('enc_')) {
+          try { return atob(stored.slice(4)).split('').reverse().join(''); } catch (e) { return ''; }
+        }
+        return stored;
       }
 
       const makeArtworkSvg = (title, subtitle, c1, c2) => {
@@ -903,7 +949,7 @@
         return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
       };
 
-      const FALLBACK_CATALOG = [
+      const INITIAL_CATALOG = [
         {
           id: 's1',
           title: 'A Herdeira de Ferro IA',
@@ -920,30 +966,34 @@
               title: 'Episódio 1 — O Retorno',
               duration: '03 min',
               isVip: false,
+              comingSoon: false,
               isVertical: false,
-              thumb: makeArtworkSvg('Episódio 01', '1ª TEMPORADA', '#1f0812', '#091926')
+              thumb: makeArtworkSvg('Episódio 01', '1ª TEMPORADA', '#1f0812', '#091926'),
+              videoUrl: ''
             }
           ]
         }
       ];
 
       const state = {
-        seriesList: FALLBACK_CATALOG,
-        allProfiles: [],
-        reviews: [],
-        tickets: [],
-        supportWhatsapp: '5575991227668',
-        officialInstagram: 'Essencia_da_vidah',
-        basePrice: 9.90,
-        appliedCouponCode: '',
+        seriesList: (function(){ try { return JSON.parse(localStorage.getItem('dup_clean_series') || 'null'); } catch(e){ return null; } })() || INITIAL_CATALOG,
+        users: (function(){ try { return JSON.parse(localStorage.getItem('dup_clean_users') || '[]'); } catch(e){ return []; } })(),
+        coupons: (function(){ try { return JSON.parse(localStorage.getItem('dup_clean_coupons') || '[{"id":"c1","code":"VIP7DIAS","type":"days","value":7,"usesLeft":20},{"id":"c2","code":"PROMO490","type":"price","value":4.90,"usesLeft":50}]'); } catch(e){ return []; } })(),
+        reviews: (function(){ try { return JSON.parse(localStorage.getItem('dup_clean_reviews') || '[]'); } catch(e){ return []; } })(),
+        tickets: (function(){ try { return JSON.parse(localStorage.getItem('dup_clean_tickets') || '[]'); } catch(e){ return []; } })(),
+        supportWhatsapp: (function(){ try { return localStorage.getItem('dup_clean_wa') || '5575991227668'; } catch(e){ return '5575991227668'; } })(),
+        officialInstagram: (function(){ try { return localStorage.getItem('dup_clean_insta') || 'Essencia_da_vidah'; } catch(e){ return 'Essencia_da_vidah'; } })(),
+        basePrice: (function(){ try { return Number(localStorage.getItem('dup_clean_price')) || 9.90; } catch(e){ return 9.90; } })(),
         discountedPrice: null,
-        sessionUser: null,
-        userProfile: null,
+        gatewayKey: (function(){ try { return decodeKey(sessionStorage.getItem('dup_session_gk') || localStorage.getItem('dup_mp_token_v10') || ''); } catch(e){ return ''; } })(),
+        creatorHash: (function(){ try { return localStorage.getItem('dup_creator_hash') || DEFAULT_CREATOR_HASH; } catch(e){ return DEFAULT_CREATOR_HASH; } })(),
+        currentUserId: (function(){ try { return localStorage.getItem('dup_clean_uid') || null; } catch(e){ return null; } })(),
         selectedSeriesId: 's1',
         selectedSeason: 1,
         playerSeason: 1,
         selectedCategory: 'Todas',
         searchQuery: '',
+        creatorUnlocked: false,
         editingEpData: null,
         editingSerieId: null,
         verticalPlayer: false,
@@ -954,30 +1004,35 @@
         supabaseClient: null
       };
 
+      async function sha256(text) {
+        const msgBuffer = new TextEncoder().encode(String(text));
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+      }
+
       function toast(msg) {
         const el = document.getElementById('toast-box');
         if (!el) return;
         el.textContent = '⚡ ' + msg;
         el.classList.remove('hidden');
         clearTimeout(window.__toastTimer);
-        window.__toastTimer = setTimeout(() => el.classList.add('hidden'), 4000);
+        window.__toastTimer = setTimeout(() => el.classList.add('hidden'), 3800);
       }
 
-      // Validação de VIP e Admin baseada no perfil autenticado do banco de dados (RLS)
-      function isCurrentUserVip() {
-        if (!state.userProfile) return false;
-        if (state.userProfile.role === 'admin') return true;
-        if (!state.userProfile.vip_until) return false;
-        return new Date(state.userProfile.vip_until).getTime() > Date.now();
+      function getCurrentUser() {
+        const u = state.users.find((item) => item.id === state.currentUserId) || null;
+        if (u && u.isVip && !isUserTrulyVip(u)) {
+          u.isVip = false;
+          u.vipUntil = null;
+          u.vipSig = '';
+        }
+        return u;
       }
 
-      function isCurrentUserAdmin() {
-        return Boolean(state.userProfile && state.userProfile.role === 'admin');
-      }
-
-      function getDaysRemaining(vipUntilIso) {
-        if (!vipUntilIso) return 0;
-        const diff = new Date(vipUntilIso).getTime() - Date.now();
+      function getDaysRemaining(vipUntil) {
+        if (!vipUntil) return 0;
+        const diff = vipUntil - Date.now();
         return diff > 0 ? Math.ceil(diff / 86400000) : 0;
       }
 
@@ -996,12 +1051,19 @@
         });
       }
 
+      function grantVerifiedVip(userObj, days = 30) {
+        const until = Date.now() + Number(days) * 86400000;
+        userObj.isVip = true;
+        userObj.vipUntil = until;
+        userObj.vipSig = computeVipSig(userObj.id, until);
+      }
+
       function buildVideoEmbedHtml(rawUrl) {
         if (!rawUrl || !rawUrl.trim()) {
           return `<div class="w-full h-full flex flex-col items-center justify-center p-8 text-center space-y-3 bg-[#060810]">
             <div class="w-14 h-14 rounded-full bg-[#ff1722]/20 border border-[#ff1722]/40 flex items-center justify-center text-2xl">🎬</div>
-            <p class="text-base font-bold text-[#00d4ff]">Vídeo protegido ou em atualização</p>
-            <p class="text-xs text-gray-300 max-w-md">Verifique sua assinatura VIP ou aguarde a publicação do episódio.</p>
+            <p class="text-base font-bold text-[#00d4ff]">Vídeo em processamento</p>
+            <p class="text-xs text-gray-300 max-w-md">Abra o Estúdio ADM, clique em "✏️ Editar Ep" neste episódio e cole o link do vídeo.</p>
           </div>`;
         }
         let url = rawUrl.trim();
@@ -1059,127 +1121,13 @@
         }
       }
 
-      async function loadAuthenticatedProfile(authUser) {
-        if (!authUser || !state.supabaseClient) {
-          state.sessionUser = null;
-          state.userProfile = null;
-          renderAll();
-          return;
-        }
-        state.sessionUser = authUser;
-        const { data: prof } = await state.supabaseClient
-          .from('profiles')
-          .select('*')
-          .eq('id', authUser.id)
-          .single();
-
-        if (prof) {
-          state.userProfile = prof;
-        } else {
-          const fallbackProfile = {
-            id: authUser.id,
-            email: authUser.email,
-            name: authUser.user_metadata?.name || authUser.user_metadata?.full_name || (authUser.email || 'Membro').split('@')[0],
-            whatsapp: authUser.user_metadata?.whatsapp || '',
-            role: 'user',
-            vip_until: null
-          };
-          await state.supabaseClient.from('profiles').upsert(fallbackProfile);
-          state.userProfile = fallbackProfile;
-        }
-
-        if (isCurrentUserAdmin()) {
-          const { data: allProfs } = await state.supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
-          if (Array.isArray(allProfs)) state.allProfiles = allProfs;
-        }
-        await loadTickets();
-        renderAll();
-      }
-
-      async function loadCatalogAndSettings() {
-        if (!state.supabaseClient) return;
-        try {
-          const { data: cfg } = await state.supabaseClient.from('site_settings').select('*').eq('id', 1).single();
-          if (cfg) {
-            if (cfg.base_price) state.basePrice = Number(cfg.base_price);
-            if (cfg.support_whatsapp) state.supportWhatsapp = cfg.support_whatsapp;
-            if (cfg.official_instagram) state.officialInstagram = cfg.official_instagram;
-          }
-
-          const { data: sRows } = await state.supabaseClient.from('series').select('*').order('created_at', { ascending: false });
-          const { data: epRows } = await state.supabaseClient.from('episodes').select('*');
-
-          if (Array.isArray(sRows) && sRows.length > 0) {
-            state.seriesList = sRows.map((s) => ({
-              id: s.id,
-              title: s.title,
-              category: s.category,
-              synopsis: s.synopsis,
-              poster: s.poster,
-              banner: s.banner || s.poster,
-              isHeroLaunch: Boolean(s.is_hero),
-              episodes: (epRows || [])
-                .filter((e) => e.serie_id === s.id)
-                .map((e) => ({
-                  id: e.id,
-                  season: Number(e.season) || 1,
-                  number: Number(e.number) || 1,
-                  title: e.title,
-                  duration: e.duration || '04 min',
-                  isVip: Boolean(e.is_vip),
-                  isVertical: Boolean(e.is_vertical),
-                  thumb: e.thumb || s.poster
-                }))
-            }));
-            if (!state.seriesList.some((s) => s.id === state.selectedSeriesId)) {
-              state.selectedSeriesId = state.seriesList[0].id;
-            }
-          }
-
-          const { data: revRows } = await state.supabaseClient.from('reviews').select('*').order('created_at', { ascending: false }).limit(12);
-          if (Array.isArray(revRows)) state.reviews = revRows;
-        } catch (e) {}
-      }
-
-      async function loadTickets() {
-        if (!state.supabaseClient || !state.sessionUser) return;
-        try {
-          const { data: tRows } = await state.supabaseClient.from('tickets').select('*').order('created_at', { ascending: true });
-          if (Array.isArray(tRows)) state.tickets = tRows;
-        } catch (e) {}
-      }
-
-      async function initSupabase() {
-        if (!window.supabase) return;
-        try {
-          state.supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
-          await loadCatalogAndSettings();
-
-          const { data: sessionData } = await state.supabaseClient.auth.getSession();
-          if (sessionData?.session?.user) {
-            await loadAuthenticatedProfile(sessionData.session.user);
-          } else {
-            renderAll();
-          }
-
-          state.supabaseClient.auth.onAuthStateChange((_event, session) => {
-            if (session?.user) {
-              loadAuthenticatedProfile(session.user);
-            } else {
-              state.sessionUser = null;
-              state.userProfile = null;
-              renderAll();
-            }
-          });
-        } catch (e) {
-          renderAll();
-        }
-      }
-
       function renderSupportMessages() {
         const box = document.getElementById('support-messages-box');
         if (!box) return;
-        const user = state.userProfile;
+        const user = getCurrentUser();
+        const myTickets = user
+          ? state.tickets.filter((t) => t.userId === user.id)
+          : state.tickets.filter((t) => t.userId === 'guest');
 
         let html = `
           <div class="p-3 rounded-2xl bg-white/5 border border-white/10 text-gray-200">
@@ -1188,26 +1136,26 @@
           </div>
         `;
 
-        state.tickets.forEach((t) => {
+        myTickets.forEach((t) => {
           html += `
             <div class="p-3 rounded-2xl bg-[#ff1722]/20 border border-[#ff1722]/40 text-white ml-6">
-              <span class="block text-[10px] text-gray-300 font-bold">${escapeHtml(t.time)} • ${escapeHtml(t.user_name)}</span>
+              <span class="block text-[10px] text-gray-300 font-bold">${escapeHtml(t.time)} • Você</span>
               ${escapeHtml(t.question)}
             </div>
           `;
-          if (t.auto_reply) {
+          if (t.autoReply) {
             html += `
               <div class="p-3 rounded-2xl bg-[#00d4ff]/15 border border-[#00d4ff]/30 text-gray-200 mr-6">
                 <span class="block text-[10px] text-[#00d4ff] font-black uppercase">⚡ Resposta Rápida</span>
-                ${escapeHtml(t.auto_reply)}
+                ${escapeHtml(t.autoReply)}
               </div>
             `;
           }
-          if (t.admin_reply) {
+          if (t.adminReply) {
             html += `
               <div class="p-3 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-white mr-6">
                 <span class="block text-[10px] text-emerald-400 font-black uppercase">👨‍💻 Equipe de Suporte Oficial</span>
-                ${escapeHtml(t.admin_reply)}
+                ${escapeHtml(t.adminReply)}
               </div>
             `;
           }
@@ -1217,10 +1165,133 @@
         box.scrollTop = box.scrollHeight;
       }
 
+      async function initSupabase() {
+        if (!window.supabase) return;
+        try {
+          state.supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
+
+          const { data, error } = await state.supabaseClient.from('app_state').select('*').eq('id', 1).single();
+          if (!error && data) {
+            if (Array.isArray(data.series_data) && data.series_data.length > 0) {
+              state.seriesList = data.series_data.map((s) => ({
+                ...s,
+                episodes: (s.episodes || []).map((ep) => ({
+                  ...ep,
+                  season: Number(ep.season) || 1
+                }))
+              }));
+            }
+            if (Array.isArray(data.users_data)) {
+              state.users = data.users_data.map((u) => {
+                if (u.isVip && u.vipUntil && !u.vipSig) {
+                  return { ...u, vipSig: computeVipSig(u.id, u.vipUntil) };
+                }
+                return u;
+              });
+            }
+            if (Array.isArray(data.coupons_data)) {
+              state.coupons = data.coupons_data.filter((c) => c.id !== '__SYS_CONFIG__');
+            }
+            if (data.settings_data && typeof data.settings_data === 'object') {
+              if (data.settings_data.supportWhatsapp) state.supportWhatsapp = data.settings_data.supportWhatsapp;
+              if (data.settings_data.officialInstagram) state.officialInstagram = data.settings_data.officialInstagram;
+              if (data.settings_data.basePrice) state.basePrice = Number(data.settings_data.basePrice);
+              if (data.settings_data.mpToken) state.gatewayKey = decodeKey(data.settings_data.mpToken);
+              if (data.settings_data.creatorHash) state.creatorHash = data.settings_data.creatorHash;
+              if (Array.isArray(data.settings_data.reviews)) state.reviews = data.settings_data.reviews;
+              if (Array.isArray(data.settings_data.tickets)) state.tickets = data.settings_data.tickets;
+            }
+            saveLocalState();
+            renderAll();
+          }
+
+          state.supabaseClient.auth.onAuthStateChange((_event, session) => {
+            if (session && session.user) {
+              const sUser = session.user;
+              const email = (sUser.email || '').toLowerCase();
+              if (!email) return;
+              let localUser = state.users.find((u) => u.email.toLowerCase() === email);
+              let isNewUser = false;
+              if (!localUser) {
+                localUser = {
+                  id: 'u_' + Date.now(),
+                  name: sUser.user_metadata?.full_name || email.split('@')[0],
+                  email,
+                  whatsapp: '',
+                  isVip: false,
+                  vipUntil: null,
+                  vipSig: ''
+                };
+                state.users.unshift(localUser);
+                isNewUser = true;
+              }
+              state.currentUserId = localUser.id;
+              if (isNewUser) syncCloud(false);
+              else saveLocalState();
+              renderAll();
+            }
+          });
+        } catch (e) {}
+      }
+
+      async function syncCloud(isAdminAction = false) {
+        saveLocalState();
+        if (!state.supabaseClient) return;
+        try {
+          if (isAdminAction || state.creatorUnlocked) {
+            await state.supabaseClient.from('app_state').upsert({
+              id: 1,
+              series_data: state.seriesList,
+              users_data: state.users,
+              coupons_data: state.coupons,
+              settings_data: {
+                supportWhatsapp: state.supportWhatsapp,
+                officialInstagram: state.officialInstagram,
+                basePrice: state.basePrice,
+                mpToken: encodeKey(state.gatewayKey),
+                creatorHash: state.creatorHash,
+                reviews: state.reviews,
+                tickets: state.tickets
+              },
+              updated_at: new Date().toISOString()
+            });
+          } else {
+            const { data: currentRemote } = await state.supabaseClient.from('app_state').select('settings_data').eq('id', 1).single();
+            const safeSettings = currentRemote?.settings_data || {};
+            safeSettings.reviews = state.reviews;
+            safeSettings.tickets = state.tickets;
+
+            await state.supabaseClient
+              .from('app_state')
+              .update({
+                users_data: state.users,
+                coupons_data: state.coupons,
+                settings_data: safeSettings,
+                updated_at: new Date().toISOString()
+              })
+              .eq('id', 1);
+          }
+        } catch (e) {}
+      }
+
+      function saveLocalState() {
+        try {
+          localStorage.setItem('dup_clean_series', JSON.stringify(state.seriesList));
+          localStorage.setItem('dup_clean_users', JSON.stringify(state.users));
+          localStorage.setItem('dup_clean_coupons', JSON.stringify(state.coupons));
+          localStorage.setItem('dup_clean_reviews', JSON.stringify(state.reviews));
+          localStorage.setItem('dup_clean_tickets', JSON.stringify(state.tickets));
+          localStorage.setItem('dup_clean_wa', state.supportWhatsapp);
+          localStorage.setItem('dup_clean_insta', state.officialInstagram);
+          localStorage.setItem('dup_clean_price', String(state.basePrice));
+          localStorage.setItem('dup_creator_hash', state.creatorHash);
+          if (state.currentUserId) localStorage.setItem('dup_clean_uid', state.currentUserId);
+          else localStorage.removeItem('dup_clean_uid');
+        } catch (e) {}
+      }
+
       function renderAll() {
-        const user = state.userProfile;
-        const vipActive = isCurrentUserVip();
-        const isAdmin = isCurrentUserAdmin();
+        const user = getCurrentUser();
         const priceFormatted = 'R$ ' + (state.discountedPrice || state.basePrice).toFixed(2).replace('.', ',');
 
         document.querySelectorAll('.vip-price-label').forEach((el) => (el.textContent = priceFormatted));
@@ -1248,9 +1319,10 @@
               <button onclick="window.app.openAuthModal('register')" class="btn-red-glow px-3.5 py-2 rounded-xl text-xs font-extrabold bg-[#ff1722] text-white shadow-lg">Ser Membro</button>
             `;
           } else {
-            const daysLeft = getDaysRemaining(user.vip_until);
+            const vipActive = isUserTrulyVip(user);
+            const daysLeft = getDaysRemaining(user.vipUntil);
             const memberBadge = vipActive
-              ? `<button onclick="window.app.openProfileModal()" class="px-3 py-1.5 rounded-full text-xs font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/50">👑 VIP (${isAdmin ? 'ADM' : daysLeft + 'd'})</button>`
+              ? `<button onclick="window.app.openProfileModal()" class="px-3 py-1.5 rounded-full text-xs font-black bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/50">👑 VIP (${daysLeft}d)</button>`
               : `<button onclick="window.app.openVipCheckout()" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#ff1722] to-[#00d4ff] text-white">👑 VIP 30d</button>`;
 
             html += `
@@ -1261,6 +1333,9 @@
               </button>
               <button onclick="window.app.logout()" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-[#ff1722] text-xs font-bold text-gray-200 hover:text-white">Sair</button>
             `;
+          }
+          if (state.creatorUnlocked) {
+            html += `<button onclick="window.app.closeStudio()" class="px-3 py-1.5 rounded-xl bg-[#ff1722] text-white text-xs font-black">Fechar ADM</button>`;
           }
           headerActions.innerHTML = html;
         }
@@ -1298,7 +1373,7 @@
               const selected = s.id === state.selectedSeriesId;
               const sSeasons = getSeriesSeasons(s);
               const badgeText = sSeasons.length > 1 ? `${sSeasons.length} Temps • ${(s.episodes || []).length} Eps` : `${(s.episodes || []).length} Eps`;
-              const studioControls = isAdmin
+              const studioControls = state.creatorUnlocked
                 ? `<div onclick="event.stopPropagation()" class="p-2 bg-[#0b0e17] border-t border-white/10 flex items-center justify-between text-xs">
                     <button onclick="window.app.setHero('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-[#00d4ff]/20 text-[#00d4ff] font-bold">${s.isHeroLaunch ? '⭐ Capa' : 'Destacar'}</button>
                     <button onclick="window.app.editSerie('${escapeHtml(s.id)}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Editar</button>
@@ -1348,9 +1423,9 @@
           const epsOfSelectedSeason = sortAllEpisodes(activeSerie.episodes).filter((ep) => (Number(ep.season) || 1) === state.selectedSeason);
           document.getElementById('episodes-grid').innerHTML = epsOfSelectedSeason
             .map((ep) => {
-              const locked = ep.isVip && !vipActive;
+              const locked = ep.isVip && !isUserTrulyVip(user);
               const sNum = Number(ep.season) || 1;
-              const studioEpBtns = isAdmin
+              const studioEpBtns = state.creatorUnlocked
                 ? `<div onclick="event.stopPropagation()" class="mt-3 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-1 text-xs">
                     <button onclick="window.app.toggleEpVip('${escapeHtml(activeSerie.id)}','${escapeHtml(ep.id)}')" class="px-2 py-1 rounded bg-white/10 text-[#00d4ff] font-bold">${ep.isVip ? 'Mudar p/ Grátis' : 'Mudar p/ VIP'}</button>
                     <button onclick="window.app.editEp('${escapeHtml(activeSerie.id)}','${escapeHtml(ep.id)}')" class="px-2 py-1 rounded bg-white/10 text-white font-bold">✏️ Editar Ep</button>
@@ -1384,7 +1459,7 @@
         if (revBox) {
           if (state.reviews.length === 0) {
             revBox.innerHTML = `<div class="col-span-3 p-6 rounded-2xl bg-[#040508] border border-white/10 text-center text-gray-300">
-              Seja o primeiro membro verificado a comentar no mural!
+              Seja o primeiro membro oficial a comentar no mural!
             </div>`;
           } else {
             revBox.innerHTML = state.reviews
@@ -1392,7 +1467,7 @@
               .map((r) => `<div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-amber-400 font-bold">${'★'.repeat(Math.min(5, Math.max(1, Number(r.stars) || 5)))}</span>
-                  <span class="px-2 py-0.5 rounded bg-[#00d4ff]/15 text-[#00d4ff] text-xs font-black uppercase">${r.is_vip ? '👑 Membro VIP' : '✓ Membro'}</span>
+                  <span class="px-2 py-0.5 rounded bg-[#00d4ff]/15 text-[#00d4ff] text-xs font-black uppercase">${r.isVip ? '👑 Membro VIP' : '✓ Membro'}</span>
                 </div>
                 <p class="text-gray-200 leading-relaxed">"${escapeHtml(r.text)}"</p>
                 <div class="flex items-center justify-between text-xs pt-1 border-t border-white/5">
@@ -1404,18 +1479,12 @@
         }
 
         renderSupportMessages();
-        const studioContainer = document.getElementById('creator-studio-container');
-        if (isAdmin) {
-          renderCreatorStudio();
-        } else if (studioContainer) {
-          studioContainer.classList.add('hidden');
-          studioContainer.innerHTML = '';
-        }
+        if (state.creatorUnlocked) renderCreatorStudio();
       }
 
       function renderCreatorStudio() {
         const container = document.getElementById('creator-studio-container');
-        if (!container || !isCurrentUserAdmin()) return;
+        if (!container) return;
         container.classList.remove('hidden');
         const editing = state.editingEpData;
         const editingSerie = state.seriesList.find((x) => x.id === state.editingSerieId) || null;
@@ -1425,8 +1494,8 @@
             <div class="max-w-6xl mx-auto space-y-6">
               <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
                 <div>
-                  <h2 class="font-display text-lg font-black text-[#00d4ff] uppercase">🛡️ Estúdio ADM Blindado (Autenticado via RLS)</h2>
-                  <p class="text-xs text-gray-300">Seu Access Token do Mercado Pago agora fica protegido nas Variáveis de Ambiente da Vercel (MP_ACCESS_TOKEN).</p>
+                  <h2 class="font-display text-lg font-black text-[#00d4ff] uppercase">🎬 Estúdio Master ADM — Séries, Membros & Suporte</h2>
+                  <p class="text-xs text-gray-300">Gerencie séries, temporadas, chave PIX, WhatsApp de suporte e Instagram oficial da plataforma.</p>
                 </div>
               </div>
 
@@ -1459,7 +1528,7 @@
                     <input type="number" min="1" id="ne-num" value="${editing ? editing.number : 1}" placeholder="Nº Ep" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white font-bold" />
                   </div>
                   <input type="text" id="ne-title" required value="${editing ? escapeHtml(editing.title) : ''}" placeholder="Título do Episódio" class="w-full px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
-                  <input type="text" id="ne-video" required value="${editing ? escapeHtml(editing.videoUrl || '') : ''}" placeholder="Link Protegido do Vídeo (YouTube/Drive/MP4)" class="w-full px-2.5 py-2 rounded bg-[#0b0e17] border border-white/15 text-xs text-emerald-400" />
+                  <input type="text" id="ne-video" required value="${editing ? escapeHtml(editing.videoUrl) : ''}" placeholder="Link YouTube Não Listado / Drive / MP4" class="w-full px-2.5 py-2 rounded bg-[#0b0e17] border border-white/15 text-xs text-emerald-400" />
                   <input type="file" accept="video/*" onchange="window.app.uploadMedia(this.files[0], 'ne-video')" class="w-full text-xs" />
                   <div class="flex items-center justify-between text-xs text-gray-200">
                     <label><input type="checkbox" id="ne-vip" ${editing ? (editing.isVip ? 'checked' : '') : 'checked'} /> 🔒 VIP</label>
@@ -1468,35 +1537,33 @@
                   <button type="submit" class="btn-red-glow w-full py-2.5 rounded-xl bg-[#ff1722] text-white font-black text-xs uppercase">${editing ? '💾 Salvar' : '+ Publicar Ep'}</button>
                 </form>
 
-                <!-- 3. CONFIGURAÇÕES & MEMBROS -->
+                <!-- 3. PIX, REDES OFICIAIS & MEMBROS -->
                 <div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2">
-                  <h3 class="text-xs font-black uppercase text-[#00d4ff]">3. Preço, Redes & Membros (${state.allProfiles.length})</h3>
+                  <h3 class="text-xs font-black uppercase text-[#00d4ff]">3. PIX, WhatsApp & Instagram (${state.users.length})</h3>
+                  <input type="password" id="cfg-token" value="${escapeHtml(state.gatewayKey)}" placeholder="Token Mercado Pago APP_USR-..." class="w-full px-3 py-1.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-emerald-400 font-mono" />
                   <div class="grid grid-cols-2 gap-1.5">
                     <input type="number" step="0.10" id="cfg-price" value="${state.basePrice}" placeholder="Valor VIP" class="w-full px-2.5 py-1.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                     <input type="text" id="cfg-wa" value="${escapeHtml(state.supportWhatsapp)}" placeholder="WhatsApp Suporte" class="w-full px-2.5 py-1.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-white" />
                   </div>
                   <input type="text" id="cfg-insta" value="${escapeHtml(state.officialInstagram)}" placeholder="Instagram da Plataforma" class="w-full px-3 py-1.5 rounded-xl bg-[#0b0e17] border border-white/15 text-xs text-pink-400" />
                   <button onclick="window.app.saveConfig()" class="w-full py-2 rounded-xl bg-[#00d4ff] text-[#040508] font-black text-xs uppercase">💾 Salvar Configurações</button>
-                  <div class="max-h-28 overflow-y-auto divide-y divide-white/10 text-xs pt-1">
-                    ${state.allProfiles.map((u) => {
-                      const uVip = u.vip_until && new Date(u.vip_until).getTime() > Date.now();
-                      return `<div class="py-1.5 flex items-center justify-between">
-                        <span class="truncate">${escapeHtml(u.name || u.email)}</span>
-                        <button onclick="window.app.toggleUserVip('${escapeHtml(u.id)}', ${uVip})" class="px-2 py-0.5 rounded bg-white/10 text-[#00d4ff] font-bold">${uVip ? '👑 VIP' : '+30d'}</button>
-                      </div>`;
-                    }).join('')}
+                  <div class="max-h-24 overflow-y-auto divide-y divide-white/10 text-xs pt-1">
+                    ${state.users.map((u) => `<div class="py-1 flex items-center justify-between">
+                      <span class="truncate">${escapeHtml(u.name)}</span>
+                      <button onclick="window.app.toggleUserVip('${escapeHtml(u.id)}')" class="px-2 py-0.5 rounded bg-white/10 text-[#00d4ff] font-bold">${isUserTrulyVip(u) ? '👑 VIP' : '+30d'}</button>
+                    </div>`).join('')}
                   </div>
                 </div>
 
-                <!-- 4. SUPORTE INTERNO -->
+                <!-- 4. SUPORTE INTERNO DA PLATAFORMA -->
                 <div class="bg-[#040508] border border-white/10 rounded-2xl p-4 space-y-2.5">
-                  <h3 class="text-xs font-black uppercase text-emerald-400">4. Chamados do Chat (${state.tickets.length})</h3>
+                  <h3 class="text-xs font-black uppercase text-emerald-400">4. Chamados do Chat Interno (${state.tickets.length})</h3>
                   <div class="max-h-48 overflow-y-auto space-y-2 text-xs">
                     ${state.tickets.length === 0 ? '<p class="text-gray-400">Nenhuma dúvida enviada ainda.</p>' : state.tickets.slice(0, 8).map((t) => `
                       <div class="p-2 rounded-xl bg-[#0b0e17] border border-white/10 space-y-1">
-                        <div class="font-bold text-[#00d4ff]">${escapeHtml(t.user_name)}:</div>
+                        <div class="font-bold text-[#00d4ff]">${escapeHtml(t.userName)}:</div>
                         <p class="text-gray-200">"${escapeHtml(t.question)}"</p>
-                        ${t.admin_reply ? `<p class="text-emerald-400">✓ Respondido: ${escapeHtml(t.admin_reply)}</p>` : `
+                        ${t.adminReply ? `<p class="text-emerald-400">✓ Respondido: ${escapeHtml(t.adminReply)}</p>` : `
                           <div class="flex gap-1 pt-1">
                             <input type="text" id="rep-${escapeHtml(t.id)}" placeholder="Sua resposta..." class="flex-1 px-2 py-1 rounded bg-black text-xs text-white" />
                             <button onclick="window.app.replyTicket('${escapeHtml(t.id)}')" class="px-2 py-1 rounded bg-emerald-500 text-black font-black text-xs">Enviar</button>
@@ -1535,10 +1602,10 @@
           const bodyEl = document.getElementById('legal-modal-body');
           if (type === 'terms') {
             titleEl.textContent = 'Termos de Uso — Da Um Play IA';
-            bodyEl.innerHTML = `<p>1. O Passe VIP Mensal concede acesso pessoal e intransferível por 30 dias corridos ao catálogo de séries e mini novelinhas da plataforma Da Um Play IA, sem renovação automática.</p><p>2. Todas as obras disponibilizadas são produções originais criadas com recursos de Inteligência Artificial e protegidas por direitos autorais. É vedada a cópia ou redistribuição comercial.</p>`;
+            bodyEl.innerHTML = `<p>1. O Passe VIP Mensal concede acesso pessoal por 30 dias corridos ao catálogo de séries e mini novelinhas da plataforma Da Um Play IA, sem renovação automática.</p><p>2. Todas as obras disponibilizadas são produções originais criadas com recursos de Inteligência Artificial e protegidas por direitos autorais.</p>`;
           } else if (type === 'privacy') {
             titleEl.textContent = 'Política de Privacidade (LGPD)';
-            bodyEl.innerHTML = `<p>Em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), coletamos apenas Nome, E-mail e WhatsApp (opcional) com a finalidade exclusiva de autenticação da sua conta de membro e liberação automática da assinatura VIP via PIX.</p><p>Seus dados são armazenados com criptografia e segurança RLS e você pode solicitar a exclusão da sua conta a qualquer momento pelos canais oficiais de suporte.</p>`;
+            bodyEl.innerHTML = `<p>Em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), coletamos apenas Nome, E-mail e WhatsApp (opcional) com a finalidade exclusiva de autenticação da sua conta de membro e liberação automática da assinatura VIP via PIX.</p>`;
           } else {
             titleEl.textContent = 'Política de Cancelamento e Reembolso';
             bodyEl.innerHTML = `<p>Em respeito ao Art. 49 do Código de Defesa do Consumidor (CDC), garantimos o direito de arrependimento e reembolso integral em até 7 (sete) dias corridos após a confirmação do pagamento, bastando solicitar pelo nosso Suporte Oficial no WhatsApp.</p>`;
@@ -1547,7 +1614,10 @@
         },
 
         async loginWithGoogle() {
-          if (!state.supabaseClient) return;
+          if (!state.supabaseClient) {
+            toast('Conectando ao servidor Google...');
+            return;
+          }
           try {
             const { error } = await state.supabaseClient.auth.signInWithOAuth({
               provider: 'google',
@@ -1555,7 +1625,7 @@
             });
             if (error) throw error;
           } catch (e) {
-            toast('Ative o provedor Google em Authentication -> Providers no Supabase.');
+            toast('Para usar o botão Google, ative a chave Google no menu Authentication -> Providers do seu Supabase.');
           }
         },
 
@@ -1567,22 +1637,26 @@
           }
           state.pendingOtpEmail = email;
           document.getElementById('otp-verify-box').classList.remove('hidden');
-          try {
-            const { error } = await state.supabaseClient.auth.signInWithOtp({
-              email,
-              options: { shouldCreateUser: true }
-            });
-            if (error) throw error;
-            toast('📩 Código enviado para ' + email + '! Verifique sua Caixa de Entrada.');
-          } catch (e) {
-            toast('Erro ao enviar código. Verifique o e-mail informado.');
+
+          if (state.supabaseClient) {
+            try {
+              const { error } = await state.supabaseClient.auth.signInWithOtp({
+                email,
+                options: { shouldCreateUser: true }
+              });
+              if (!error) {
+                toast('📩 Código enviado para ' + email + '! Verifique sua Caixa de Entrada e Spam.');
+                return;
+              }
+            } catch (e) {}
           }
+          toast('📩 Solicitação enviada! Verifique seu e-mail.');
         },
 
         async verifyEmailOtpCode() {
           const code = document.getElementById('otp-code-digits').value.trim();
           if (!code || code.length < 6) {
-            toast('Digite os 6 números do código enviado ao seu e-mail.');
+            toast('Digite os 6 números do código que chegou no seu e-mail.');
             return;
           }
           try {
@@ -1592,30 +1666,45 @@
               type: 'email'
             });
             if (error) throw error;
-            if (data?.user) {
-              await loadAuthenticatedProfile(data.user);
+            if (data) {
+              let user = state.users.find((u) => u.email.toLowerCase() === state.pendingOtpEmail);
+              if (!user) {
+                user = {
+                  id: 'u_' + Date.now(),
+                  name: state.pendingOtpEmail.split('@')[0],
+                  email: state.pendingOtpEmail,
+                  whatsapp: '',
+                  isVip: false,
+                  vipUntil: null,
+                  vipSig: ''
+                };
+                state.users.unshift(user);
+              }
+              state.currentUserId = user.id;
               this.closeModals();
-              toast('🎉 Acesso confirmado!');
+              syncCloud(false);
+              renderAll();
+              toast('🎉 Acesso confirmado via código de e-mail!');
             }
           } catch (e) {
-            toast('Código inválido ou expirado.');
+            toast('Código inválido ou expirado. Solicite um novo código.');
           }
         },
 
         openProfileModal() {
-          const user = state.userProfile;
+          const user = getCurrentUser();
           if (!user) {
             this.openAuthModal('login');
             return;
           }
-          const vipActive = isCurrentUserVip();
-          const days = getDaysRemaining(user.vip_until);
+          const vipActive = isUserTrulyVip(user);
+          const days = getDaysRemaining(user.vipUntil);
           const pct = vipActive ? Math.min(100, Math.round((days / 30) * 100)) : 0;
 
           document.getElementById('prof-avatar').textContent = (user.name || 'M').charAt(0).toUpperCase();
           document.getElementById('prof-display-name').textContent = user.name;
           document.getElementById('prof-display-email').textContent = user.email;
-          document.getElementById('prof-vip-badge').textContent = vipActive ? `👑 VIP ATIVO (${days} DIAS)` : 'Membro Grátis';
+          document.getElementById('prof-vip-badge').textContent = vipActive ? `👑 VIP MENSAL (${days} DIAS)` : 'Membro Grátis';
           document.getElementById('prof-vip-days').textContent = vipActive ? `${days} de 30 dias ativos` : 'Plano Grátis';
           document.getElementById('prof-vip-bar').style.width = pct + '%';
 
@@ -1632,40 +1721,36 @@
           document.getElementById('btn-prof-tab-edit').className = `flex-1 py-2 rounded-lg text-xs font-black uppercase ${isEdit ? 'bg-[#00d4ff] text-[#040508]' : 'text-gray-400'}`;
           document.getElementById('btn-prof-tab-pass').className = `flex-1 py-2 rounded-lg text-xs font-black uppercase ${!isEdit ? 'bg-[#ff1722] text-white' : 'text-gray-400'}`;
         },
-        async saveProfileChanges(e) {
+        saveProfileChanges(e) {
           e.preventDefault();
-          if (!state.userProfile || !state.supabaseClient) return;
+          const user = getCurrentUser();
+          if (!user) return;
           const name = document.getElementById('edit-prof-name').value.trim();
-          const whatsapp = document.getElementById('edit-prof-phone').value.trim();
-          const { error } = await state.supabaseClient
-            .from('profiles')
-            .update({ name, whatsapp })
-            .eq('id', state.userProfile.id);
+          const phone = document.getElementById('edit-prof-phone').value.trim();
 
-          if (!error) {
-            state.userProfile.name = name;
-            state.userProfile.whatsapp = whatsapp;
-            renderAll();
-            this.openProfileModal();
-            toast('✅ Perfil atualizado com segurança!');
-          }
+          user.name = name || user.name;
+          user.whatsapp = phone;
+          syncCloud(false);
+          renderAll();
+          this.openProfileModal();
+          toast('✅ Seu perfil foi atualizado com sucesso!');
         },
         async changeUserPassword(e) {
           e.preventDefault();
+          const user = getCurrentUser();
+          if (!user) return;
           const p1 = document.getElementById('new-user-pass').value;
           const p2 = document.getElementById('confirm-user-pass').value;
           if (p1 !== p2) {
             toast('❌ As duas senhas digitadas não conferem.');
             return;
           }
-          const { error } = await state.supabaseClient.auth.updateUser({ password: p1 });
-          if (error) {
-            toast('❌ Erro ao atualizar senha: ' + error.message);
-            return;
-          }
+          user.passwordHash = await sha256(p1);
+          delete user.password;
           document.getElementById('new-user-pass').value = '';
           document.getElementById('confirm-user-pass').value = '';
-          toast('🔒 Sua senha foi alterada com sucesso no Supabase Auth!');
+          syncCloud(false);
+          toast('🔒 Sua senha foi alterada com sucesso!');
         },
 
         toggleSupportChat() {
@@ -1679,53 +1764,49 @@
           document.getElementById('support-input-text').value = questionText;
           this.submitSupportMessage(new Event('submit'));
         },
-        async submitSupportMessage(e) {
+        submitSupportMessage(e) {
           if (e && e.preventDefault) e.preventDefault();
-          if (!state.sessionUser) {
-            toast('Faça login para enviar uma mensagem no suporte interno.');
-            this.openAuthModal('login');
-            return;
-          }
           const input = document.getElementById('support-input-text');
           const q = input.value.trim();
           if (!q) return;
+          const user = getCurrentUser();
 
-          let autoReply = 'Recebemos sua mensagem! Nossa equipe responderá neste chat ou pelo botão verde do WhatsApp.';
+          let autoReply = 'Recebemos sua mensagem aqui na plataforma! Nossa equipe responderá neste chat ou, se preferir atendimento imediato, clique no botão verde do WhatsApp.';
           const qLow = q.toLowerCase();
           if (qLow.includes('vip') || qLow.includes('30 dias')) {
-            autoReply = 'O Plano VIP Mensal garante 30 dias corridos de acesso ilimitado a todas as séries e temporadas por pagamento único via PIX.';
+            autoReply = 'O Plano VIP Mensal garante 30 dias corridos de acesso ilimitado a todas as séries e temporadas por pagamento único via PIX (sem renovação automática).';
           } else if (qLow.includes('pix') || qLow.includes('libera')) {
-            autoReply = 'Assim que o pagamento PIX é compensado pelo Mercado Pago, nosso servidor libera automaticamente seu acesso VIP no banco de dados!';
+            autoReply = 'Assim que você paga o QR Code ou PIX Copia e Cola, o sistema reconhece automaticamente em cerca de 3 segundos e ativa seu selo 👑 MEMBRO VIP!';
+          } else if (qLow.includes('perfil') || qLow.includes('senha')) {
+            autoReply = 'Para editar seu nome ou trocar a senha, clique no botão "👤 Meu Perfil" no topo direito da plataforma.';
           }
 
           const now = new Date();
           const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-          const newTk = {
+          state.tickets.push({
             id: 'tk_' + Date.now(),
-            user_id: state.sessionUser.id,
-            user_name: state.userProfile?.name || 'Membro',
+            userId: user ? user.id : 'guest',
+            userName: user ? user.name : 'Visitante',
             question: q,
-            auto_reply: autoReply,
-            admin_reply: '',
+            autoReply,
+            adminReply: '',
             time: timeStr
-          };
+          });
 
           input.value = '';
-          await state.supabaseClient.from('tickets').insert(newTk);
-          await loadTickets();
+          syncCloud(false);
           renderAll();
         },
-        async replyTicket(ticketId) {
-          if (!isCurrentUserAdmin()) return;
+        replyTicket(ticketId) {
           const inp = document.getElementById('rep-' + ticketId);
           if (!inp || !inp.value.trim()) return;
-          await state.supabaseClient
-            .from('tickets')
-            .update({ admin_reply: inp.value.trim() })
-            .eq('id', ticketId);
-          await loadTickets();
-          renderAll();
-          toast('Resposta enviada!');
+          const tk = state.tickets.find((t) => t.id === ticketId);
+          if (tk) {
+            tk.adminReply = inp.value.trim();
+            syncCloud(true);
+            renderAll();
+            toast('Resposta enviada para o chat do membro!');
+          }
         },
 
         playHeroFirstEp() {
@@ -1735,32 +1816,22 @@
             this.playEpisode(hero.id, sorted[0].id);
           }
         },
-        async playEpisode(serieId, epId) {
+        playEpisode(serieId, epId) {
           const serie = state.seriesList.find((s) => s.id === serieId);
           const allEps = sortAllEpisodes(serie?.episodes || []);
           const epIndex = allEps.findIndex((e) => e.id === epId);
           const ep = allEps[epIndex];
           if (!ep) return;
 
-          if (!state.sessionUser) {
-            toast('Entre na sua conta de Membro para assistir!');
-            this.openAuthModal('login');
+          const user = getCurrentUser();
+          if (!user && !state.creatorUnlocked) {
+            toast('Entre ou crie sua conta de Membro para assistir!');
+            this.openAuthModal('register');
             return;
           }
-          if (ep.isVip && !isCurrentUserVip()) {
+          if (ep.isVip && !state.creatorUnlocked && !isUserTrulyVip(user)) {
             this.openVipCheckout();
             return;
-          }
-
-          // Busca o link do vídeo na tabela protegida por RLS no servidor Supabase
-          let videoUrl = ep.videoUrl || '';
-          if (state.supabaseClient) {
-            const { data: vidRow } = await state.supabaseClient
-              .from('episode_videos')
-              .select('video_url')
-              .eq('episode_id', ep.id)
-              .single();
-            if (vidRow?.video_url) videoUrl = vidRow.video_url;
           }
 
           const sNum = Number(ep.season) || 1;
@@ -1773,7 +1844,7 @@
 
           document.getElementById('player-ep-label').textContent = `${serie.title} • ${sNum}ª TEMPORADA • EP. ${ep.number}`;
           document.getElementById('player-ep-title').textContent = ep.title;
-          document.getElementById('player-stage').innerHTML = buildVideoEmbedHtml(videoUrl);
+          document.getElementById('player-stage').innerHTML = buildVideoEmbedHtml(ep.videoUrl);
           document.getElementById('player-modal').classList.remove('hidden');
           document.body.style.overflow = 'hidden';
 
@@ -1823,12 +1894,16 @@
 
           const titleEl = document.getElementById('auth-heading-title');
           const subEl = document.getElementById('auth-heading-sub');
+          const iconEl = document.getElementById('auth-context-icon');
           const footerQ = document.getElementById('auth-footer-question');
           const footerBtn = document.getElementById('auth-footer-switch');
 
           if (mode === 'register') {
             if (titleEl) titleEl.textContent = 'Crie sua conta';
             if (subEl) subEl.textContent = 'Cadastre-se para começar';
+            if (iconEl) {
+              iconEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>`;
+            }
             if (footerQ) footerQ.textContent = 'Já tem conta?';
             if (footerBtn) {
               footerBtn.textContent = 'Entrar';
@@ -1836,7 +1911,10 @@
             }
           } else {
             if (titleEl) titleEl.textContent = mode === 'otp' ? 'Acesso Rápido' : 'Bem-vindo de volta';
-            if (subEl) subEl.textContent = mode === 'otp' ? 'Receba seu código por e-mail' : 'Acesse sua conta segura';
+            if (subEl) subEl.textContent = mode === 'otp' ? 'Receba seu código por e-mail' : 'Acesse sua conta';
+            if (iconEl) {
+              iconEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>`;
+            }
             if (footerQ) footerQ.textContent = 'Não tem conta?';
             if (footerBtn) {
               footerBtn.textContent = 'Criar conta';
@@ -1851,93 +1929,119 @@
         async handleLogin(e) {
           e.preventDefault();
           const email = document.getElementById('login-email').value.trim().toLowerCase();
-          const password = document.getElementById('login-pass').value;
-          const err = document.getElementById('auth-error-msg');
-          err.classList.add('hidden');
+          const pass = document.getElementById('login-pass').value;
+          const hashedInput = await sha256(pass);
 
-          const { data, error } = await state.supabaseClient.auth.signInWithPassword({ email, password });
-          if (error || !data?.user) {
+          if (email === 'admin' || email === 'adm') {
+            if (hashedInput === state.creatorHash) {
+              state.creatorUnlocked = true;
+              this.closeModals();
+              renderAll();
+              toast('Estúdio Master ADM Liberado');
+              return;
+            }
+          }
+
+          const found = state.users.find((u) => u.email.toLowerCase() === email && (u.passwordHash === hashedInput || u.password === pass));
+          if (!found) {
+            const err = document.getElementById('auth-error-msg');
             err.textContent = 'E-mail ou senha incorretos.';
             err.classList.remove('hidden');
             return;
           }
-          await loadAuthenticatedProfile(data.user);
+          if (!found.passwordHash) { found.passwordHash = hashedInput; delete found.password; }
+          state.currentUserId = found.id;
           this.closeModals();
-          toast('Bem-vindo de volta!');
+          syncCloud(false);
+          renderAll();
+          toast('Bem-vindo de volta, ' + found.name);
         },
         async handleRegister(e) {
           e.preventDefault();
           const name = document.getElementById('reg-name').value.trim();
           const email = document.getElementById('reg-email').value.trim().toLowerCase();
-          const whatsapp = document.getElementById('reg-phone').value.trim();
+          const phone = document.getElementById('reg-phone').value.trim();
           const password = document.getElementById('reg-pass').value;
 
-          const { data, error } = await state.supabaseClient.auth.signUp({
-            email,
-            password,
-            options: { data: { name, whatsapp } }
-          });
-
-          if (error) {
-            toast('Erro no cadastro: ' + error.message);
+          if (email === 'admin' || email === 'adm') { toast('E-mail reservado.'); return; }
+          if (state.users.some((u) => u.email.toLowerCase() === email)) {
+            toast('Este e-mail já é membro! Faça login.');
+            this.switchAuthTab('login');
             return;
           }
-          if (data?.user) {
-            await loadAuthenticatedProfile(data.user);
-            this.closeModals();
-            toast('🎉 Conta criada com sucesso!');
-          }
+
+          const passwordHash = await sha256(password);
+          const nu = {
+            id: 'u_' + Date.now(),
+            name,
+            email,
+            whatsapp: phone,
+            passwordHash,
+            isVip: false,
+            vipUntil: null,
+            vipSig: ''
+          };
+          state.users.unshift(nu);
+          state.currentUserId = nu.id;
+          this.closeModals();
+          syncCloud(false);
+          renderAll();
+          toast('🎉 Parabéns! Agora você é um Membro Oficial!');
         },
-        async logout() {
-          if (state.supabaseClient) await state.supabaseClient.auth.signOut().catch(() => {});
-          state.sessionUser = null;
-          state.userProfile = null;
+        logout() {
+          state.currentUserId = null;
+          if (state.supabaseClient) state.supabaseClient.auth.signOut().catch(() => {});
+          saveLocalState();
           renderAll();
           toast('Sessão encerrada.');
         },
         toggleInlineCoupon() { document.getElementById('inline-coupon-box')?.classList.toggle('hidden'); },
         handleCoupon(e) {
           e.preventDefault();
+          const user = getCurrentUser();
+          if (!user) { this.closeModals(); this.openAuthModal('register'); return; }
           const code = document.getElementById('coupon-code-input').value.trim().toUpperCase();
-          if (!code) return;
-          state.appliedCouponCode = code;
-          document.getElementById('coupon-feedback').textContent = `⏳ Validando cupom "${code}" no servidor...`;
-          this.openVipCheckout();
-        },
-        async openVipCheckout() {
-          if (!state.sessionUser) {
-            this.openAuthModal('register');
+          const found = state.coupons.find((c) => c.code === code && c.usesLeft > 0);
+          if (!found) {
+            document.getElementById('coupon-feedback').textContent = '❌ Cupom inválido ou esgotado.';
             return;
           }
+          found.usesLeft -= 1;
+          if (found.type === 'price') {
+            state.discountedPrice = Number(found.value);
+            document.getElementById('coupon-feedback').textContent = `✅ Cupom aplicado! Novo valor: R$ ${Number(found.value).toFixed(2).replace('.', ',')}`;
+            this.openVipCheckout();
+            return;
+          }
+          grantVerifiedVip(user, Number(found.value));
+          syncCloud(false);
+          renderAll();
+          this.closeModals();
+          toast(`🎉 Cupom ativado! +${found.value} dias de VIP liberados!`);
+        },
+        async openVipCheckout() {
+          const user = getCurrentUser();
+          if (!user && !state.creatorUnlocked) { this.openAuthModal('register'); return; }
           const amount = Number(state.discountedPrice || state.basePrice || 9.90);
           document.getElementById('vip-modal-price').textContent = 'R$ ' + amount.toFixed(2).replace('.', ',');
           const box = document.getElementById('pix-container');
-          box.innerHTML = `<p class="text-xs text-[#00d4ff] font-bold animate-pulse py-6">Gerando QR Code PIX Oficial...</p>`;
+          box.innerHTML = `<p class="text-xs text-[#00d4ff] font-bold animate-pulse py-6">Gerando QR Code PIX para 30 Dias VIP...</p>`;
           document.getElementById('vip-modal').classList.remove('hidden');
 
           try {
-            const { data: sessionData } = await state.supabaseClient.auth.getSession();
-            const jwt = sessionData?.session?.access_token || '';
-
-            // Envia o e-mail REAL do usuário autenticado e o token JWT (Sem expor mpToken no navegador!)
             const res = await fetch('/api/criar-pix', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jwt}`
-              },
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                email: state.sessionUser.email,
-                name: state.userProfile?.name || 'Membro VIP',
-                userId: state.sessionUser.id,
-                couponCode: state.appliedCouponCode || undefined
+                email: user?.email || `assinante.${Date.now()}@daumplayia.com`,
+                name: user?.name || 'Membro VIP',
+                userId: user?.id || 'vip',
+                mpToken: state.gatewayKey.trim(),
+                customAmount: amount
               })
             });
             const data = await res.json();
             if (res.ok && data.paymentId) {
-              if (data.amount) {
-                document.getElementById('vip-modal-price').textContent = 'R$ ' + Number(data.amount).toFixed(2).replace('.', ',');
-              }
               const safeQr = escapeHtml(data.qrCode);
               box.innerHTML = `
                 <div class="bg-white p-3 rounded-2xl w-48 h-48 mx-auto shadow-xl">
@@ -1947,31 +2051,27 @@
                 <button onclick="window.app.copyPix('${safeQr}')" class="w-full py-3.5 rounded-xl bg-[#00d4ff] text-[#040508] text-xs font-black uppercase shadow-lg">
                   📋 Copiar Código PIX (Copia e Cola)
                 </button>
-                <p class="text-xs text-emerald-400 font-bold">⚡ Aguardando confirmação do servidor...</p>
+                <p class="text-xs text-emerald-400 font-bold">⚡ Liberação automática de 30 dias VIP após pagar!</p>
               `;
-
               if (state.pixInterval) clearInterval(state.pixInterval);
               state.pixInterval = setInterval(async () => {
                 try {
-                  // Consulta status no servidor ou recarrega perfil atualizado pelo Webhook
-                  const statusUrl = `/api/status-pix?paymentId=${encodeURIComponent(data.paymentId)}`;
-                  const vr = await fetch(statusUrl, {
-                    headers: { 'Authorization': `Bearer ${jwt}` }
-                  }).catch(() => fetch(`/api/verificar-pix?paymentId=${encodeURIComponent(data.paymentId)}`));
-
+                  const vr = await fetch(`/api/verificar-pix?paymentId=${encodeURIComponent(data.paymentId)}&mpToken=${encodeURIComponent(state.gatewayKey.trim())}`);
                   const vd = await vr.json();
-                  await loadAuthenticatedProfile(state.sessionUser);
-
-                  if (vd.status === 'approved' || isCurrentUserVip()) {
+                  if (vd.status === 'approved') {
                     clearInterval(state.pixInterval);
+                    if (user) {
+                      grantVerifiedVip(user, 30);
+                      syncCloud(false);
+                      renderAll();
+                    }
                     this.closeModals();
-                    renderAll();
-                    toast('🎉 Pagamento Confirmado pelo Servidor! Seus 30 dias VIP estão ativos!');
+                    toast('🎉 Pagamento Aprovado! Seus 30 dias de Membro VIP estão ativos!');
                   }
                 } catch (e) {}
-              }, 4000);
+              }, 3500);
             } else {
-              box.innerHTML = `<p class="text-xs text-amber-300 font-bold py-4">${escapeHtml(data.error || 'Chame nosso Suporte Oficial no WhatsApp para ativar seu acesso.')}</p>`;
+              box.innerHTML = `<p class="text-xs text-amber-300 font-bold py-4">Configure sua chave PIX no Estúdio ADM ou chame no Suporte WhatsApp.</p>`;
             }
           } catch (e) {
             box.innerHTML = `<p class="text-xs text-red-400 font-bold py-4">Erro ao conectar com o servidor PIX.</p>`;
@@ -1985,39 +2085,41 @@
           toast('Código PIX copiado! Cole no app do seu banco.');
         },
         openReviewForm() {
-          if (!state.sessionUser) {
+          const user = getCurrentUser();
+          if (!user) {
             toast('Entre na sua conta de Membro para comentar no mural!');
             this.openAuthModal('login');
             return;
           }
           document.getElementById('review-form').classList.toggle('hidden');
         },
-        async submitRealReview(e) {
+        submitRealReview(e) {
           e.preventDefault();
-          if (!state.sessionUser) return;
-          const stars = Number(document.getElementById('review-stars').value) || 5;
+          const user = getCurrentUser();
+          if (!user) return;
+          const stars = document.getElementById('review-stars').value;
           const text = document.getElementById('review-text').value.trim();
           if (!text) return;
-
-          const newRev = {
+          state.reviews.unshift({
             id: 'rev_' + Date.now(),
-            user_id: state.sessionUser.id,
-            author: state.userProfile?.name || 'Membro',
-            is_vip: isCurrentUserVip(),
-            stars,
+            author: user.name,
+            isVip: isUserTrulyVip(user),
+            stars: Number(stars),
             text
-          };
-          const { error } = await state.supabaseClient.from('reviews').insert(newRev);
-          if (!error) {
-            state.reviews.unshift(newRev);
-            document.getElementById('review-text').value = '';
-            document.getElementById('review-form').classList.add('hidden');
-            renderAll();
-            toast('Seu comentário foi publicado!');
-          }
+          });
+          document.getElementById('review-text').value = '';
+          document.getElementById('review-form').classList.add('hidden');
+          syncCloud(false);
+          renderAll();
+          toast('Seu comentário de Membro foi publicado!');
+        },
+        closeStudio() {
+          state.creatorUnlocked = false;
+          document.getElementById('creator-studio-container').classList.add('hidden');
+          renderAll();
         },
         async uploadMedia(file, targetInputId) {
-          if (!file || !isCurrentUserAdmin()) return;
+          if (!file) return;
           if (file.size > 50 * 1024 * 1024) {
             toast('Acima de 50MB! Use link do YouTube Não Listado ou Google Drive Público.');
             return;
@@ -2035,31 +2137,25 @@
             toast('Erro no upload. Cole a URL diretamente.');
           }
         },
-        async createSerie(e) {
+        createSerie(e) {
           e.preventDefault();
-          if (!isCurrentUserAdmin()) return;
           const title = document.getElementById('ns-title').value.trim();
           const category = document.getElementById('ns-cat').value.trim();
           const synopsis = document.getElementById('ns-desc').value.trim();
           const poster = document.getElementById('ns-poster').value.trim() || makeArtworkSvg(title, category, '#2b0610', '#061524');
-
-          const serieId = state.editingSerieId || 's_' + Date.now();
-          await state.supabaseClient.from('series').upsert({
-            id: serieId,
-            title,
-            category,
-            synopsis,
-            poster,
-            banner: poster
-          });
-          state.editingSerieId = null;
-          state.selectedSeriesId = serieId;
-          await loadCatalogAndSettings();
+          if (state.editingSerieId) {
+            state.seriesList = state.seriesList.map((s) => s.id === state.editingSerieId ? { ...s, title, category, synopsis, poster, banner: poster } : s);
+            state.editingSerieId = null;
+          } else {
+            const created = { id: 's_' + Date.now(), title, category, synopsis, poster, banner: poster, isHeroLaunch: false, episodes: [] };
+            state.seriesList.unshift(created);
+            state.selectedSeriesId = created.id;
+          }
+          syncCloud(true);
           renderAll();
-          toast('Série salva no banco protegido!');
+          toast('Série salva!');
         },
         editSerie(id) {
-          if (!isCurrentUserAdmin()) return;
           state.editingSerieId = id;
           renderCreatorStudio();
           document.getElementById('creator-studio-container')?.scrollIntoView({ behavior: 'smooth' });
@@ -2068,16 +2164,11 @@
           state.editingSerieId = null;
           renderCreatorStudio();
         },
-        async editEp(serieId, epId) {
-          if (!isCurrentUserAdmin()) return;
+        editEp(serieId, epId) {
           const serie = state.seriesList.find((s) => s.id === serieId);
           const ep = serie?.episodes?.find((e) => e.id === epId);
           if (!ep) return;
-          let videoUrl = '';
-          const { data: vidRow } = await state.supabaseClient.from('episode_videos').select('video_url').eq('episode_id', ep.id).single();
-          if (vidRow?.video_url) videoUrl = vidRow.video_url;
-
-          state.editingEpData = { serieId, epId: ep.id, season: Number(ep.season) || 1, number: ep.number, title: ep.title, videoUrl, isVip: ep.isVip, isVertical: Boolean(ep.isVertical) };
+          state.editingEpData = { serieId, epId: ep.id, season: Number(ep.season) || 1, number: ep.number, title: ep.title, videoUrl: ep.videoUrl, isVip: ep.isVip, isVertical: Boolean(ep.isVertical) };
           renderCreatorStudio();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
@@ -2085,9 +2176,8 @@
           state.editingEpData = null;
           renderCreatorStudio();
         },
-        async createEpisode(e) {
+        createEpisode(e) {
           e.preventDefault();
-          if (!isCurrentUserAdmin()) return;
           const serieId = document.getElementById('ne-serie').value;
           const season = Number(document.getElementById('ne-season').value) || 1;
           const number = Number(document.getElementById('ne-num').value) || 1;
@@ -2096,82 +2186,66 @@
           const isVip = document.getElementById('ne-vip').checked;
           const isVertical = document.getElementById('ne-vert').checked;
           const serie = state.seriesList.find((s) => s.id === serieId);
-
-          const epId = state.editingEpData ? state.editingEpData.epId : 'ep_' + Date.now();
-          await state.supabaseClient.from('episodes').upsert({
-            id: epId,
-            serie_id: serieId,
-            season,
-            number,
-            title,
-            duration: '04 min',
-            is_vip: isVip,
-            is_vertical: isVertical,
-            thumb: serie?.poster || ''
-          });
-          await state.supabaseClient.from('episode_videos').upsert({
-            episode_id: epId,
-            video_url: videoUrl
-          });
-
-          state.editingEpData = null;
-          state.selectedSeriesId = serieId;
+          if (!serie) return;
+          if (state.editingEpData) {
+            const ep = serie.episodes.find((item) => item.id === state.editingEpData.epId);
+            if (ep) { ep.season = season; ep.number = number; ep.title = title; ep.videoUrl = videoUrl; ep.isVip = isVip; ep.isVertical = isVertical; }
+            state.editingEpData = null;
+          } else {
+            serie.episodes.push({ id: 'ep_' + Date.now(), season, number, title, duration: '04 min', isVip, comingSoon: false, isVertical, thumb: serie.poster, videoUrl });
+          }
+          state.selectedSeriesId = serie.id;
           state.selectedSeason = season;
-          await loadCatalogAndSettings();
+          syncCloud(true);
           renderAll();
-          toast('Episódio e link protegido salvos!');
+          toast('Episódio salvo!');
         },
-        async saveConfig() {
-          if (!isCurrentUserAdmin()) return;
+        saveConfig() {
+          const tk = document.getElementById('cfg-token').value.trim();
           const pr = Number(document.getElementById('cfg-price').value) || 9.90;
           const wa = document.getElementById('cfg-wa').value.trim() || '5575991227668';
           const insta = document.getElementById('cfg-insta').value.trim().replace(/^@/, '') || 'Essencia_da_vidah';
-          await state.supabaseClient.from('site_settings').upsert({
-            id: 1,
-            base_price: pr,
-            support_whatsapp: wa,
-            official_instagram: insta
-          });
-          await loadCatalogAndSettings();
+          state.gatewayKey = tk;
+          state.basePrice = pr;
+          state.supportWhatsapp = wa;
+          state.officialInstagram = insta;
+          try {
+            sessionStorage.setItem('dup_session_gk', encodeKey(tk));
+            localStorage.setItem('dup_mp_token_v10', encodeKey(tk));
+          } catch (e) {}
+          syncCloud(true);
           renderAll();
-          toast('Configurações salvas no servidor!');
+          toast('Configurações, WhatsApp e Instagram salvos!');
         },
-        async setHero(id) {
-          if (!isCurrentUserAdmin()) return;
-          await state.supabaseClient.from('series').update({ is_hero: false }).neq('id', id);
-          await state.supabaseClient.from('series').update({ is_hero: true }).eq('id', id);
-          await loadCatalogAndSettings();
-          renderAll();
-        },
-        async deleteSerie(id) {
-          if (!isCurrentUserAdmin() || state.seriesList.length <= 1) return;
-          await state.supabaseClient.from('series').delete().eq('id', id);
-          await loadCatalogAndSettings();
+        setHero(id) { state.seriesList.forEach((s) => (s.isHeroLaunch = s.id === id)); syncCloud(true); renderAll(); },
+        deleteSerie(id) {
+          if (state.seriesList.length <= 1) return;
+          state.seriesList = state.seriesList.filter((s) => s.id !== id);
+          state.selectedSeriesId = state.seriesList[0].id;
+          syncCloud(true);
           renderAll();
         },
-        async toggleEpVip(sId, epId) {
-          if (!isCurrentUserAdmin()) return;
+        toggleEpVip(sId, epId) {
           const s = state.seriesList.find((item) => item.id === sId);
           const ep = s?.episodes?.find((item) => item.id === epId);
-          if (!ep) return;
-          await state.supabaseClient.from('episodes').update({ is_vip: !ep.isVip }).eq('id', epId);
-          await loadCatalogAndSettings();
+          if (ep) ep.isVip = !ep.isVip;
+          syncCloud(true);
           renderAll();
         },
-        async deleteEp(_sId, epId) {
-          if (!isCurrentUserAdmin()) return;
-          await state.supabaseClient.from('episodes').delete().eq('id', epId);
-          await loadCatalogAndSettings();
+        deleteEp(sId, epId) {
+          const s = state.seriesList.find((item) => item.id === sId);
+          if (s) s.episodes = s.episodes.filter((item) => item.id !== epId);
+          syncCloud(true);
           renderAll();
         },
-        async toggleUserVip(uId, currentlyVip) {
-          if (!isCurrentUserAdmin()) return;
-          const nextUntil = currentlyVip ? null : new Date(Date.now() + 30 * 86400000).toISOString();
-          await state.supabaseClient.from('profiles').update({ vip_until: nextUntil }).eq('id', uId);
-          const { data: allProfs } = await state.supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
-          if (Array.isArray(allProfs)) state.allProfiles = allProfs;
-          renderAll();
-          toast('Status VIP atualizado no banco!');
+        toggleUserVip(uId) {
+          const u = state.users.find((item) => item.id === uId);
+          if (u) {
+            if (isUserTrulyVip(u)) { u.isVip = false; u.vipUntil = null; u.vipSig = ''; }
+            else grantVerifiedVip(u, 30);
+            syncCloud(true);
+            renderAll();
+          }
         }
       };
 
